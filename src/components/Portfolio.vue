@@ -1,5 +1,11 @@
 <template>
-  <v-card hover>
+  <v-card
+    hover
+    :to="{
+      name: 'portfoliodetail',
+      params: { portfolio: { title, body, date } }
+    }"
+  >
     <v-img :src="imgSrc" height="200px" />
     <v-card-title primary-title>
       <div class="portfolio-content">
