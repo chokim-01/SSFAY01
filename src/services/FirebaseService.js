@@ -59,6 +59,7 @@ export default {
         return docSnapshots.docs.map(doc => {
           let data = doc.data();
           data.created_at = new Date(data.created_at.toDate());
+          data.id = doc.id;
           return data;
         });
       });
@@ -71,6 +72,26 @@ export default {
       created_at: firebase.firestore.FieldValue.serverTimestamp()
     });
   },
+  updatePortfolio(doc, body) {
+    var updatepf = firestore.collection(PORTFOLIOS).doc(doc);
+
+    return updatepf.update({
+        body: body,
+        created_at: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(function() {
+        alert("수정되었습니다.");
+      })
+      .catch(function() {
+        // The document probably doesn't exist.
+      });
+  },
+  deletePortfolio(doc) {
+    var deletepf = firestore.collection(PORTFOLIOS).doc(doc);
+    return deletepf.delete().then(function() {
+      alert("삭제되었습니다.");
+    });
+  },
   loginWithGoogle() {
     let provider = new firebase.auth.GoogleAuthProvider();
 
@@ -78,7 +99,9 @@ export default {
       .auth()
       .signInWithPopup(provider)
       .then(function(result) {
-        _login({ text: "Google login" }).then(function() {});
+        _login({
+          text: "Google login"
+        }).then(function() {});
         alert("Hi! ");
         return result;
       });
@@ -90,7 +113,9 @@ export default {
       .auth()
       .signInWithPopup(provider)
       .then(function(result) {
-        _login({ text: "Facebook login" }).then(function() {});
+        _login({
+          text: "Facebook login"
+        }).then(function() {});
         alert("Hi! ");
         return result;
       });
@@ -101,7 +126,9 @@ export default {
       .signInWithEmailAndPassword(email, password)
       .then(
         function(user) {
-          _login({ text: "Email Login" }).then(function() {});
+          _login({
+            text: "Email Login"
+          }).then(function() {});
           alert("Hi! ");
           return user;
         },
@@ -115,7 +142,9 @@ export default {
       .auth()
       .signOut()
       .then(function() {
-        _logout({ text: store.state.accessToken }).then(function() {});
+        _logout({
+          text: store.state.accessToken
+        }).then(function() {});
         store.state.accessToken = null;
         store.state.user = null;
         alert("bye");
@@ -138,7 +167,9 @@ export default {
       .createUserWithEmailAndPassword(email, password)
       .then(
         function() {
-          _signup({ text: "Email SignUp" }).then(function() {});
+          _signup({
+            text: "Email SignUp"
+          }).then(function() {});
           alert("welcome!");
           window.location.href = "/";
         },
