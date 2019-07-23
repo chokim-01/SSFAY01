@@ -34,9 +34,11 @@ export default {
   methods: {
     updatePortfolio() {
       Fbs.updatePortfolio(this.portfolio.id, this.portfolio.body);
+      this.$router.push("/");
     },
     deletePortfolio() {
       Fbs.deletePortfolio(this.portfolio.id);
+      this.$router.push("/");
     }
   }
 };

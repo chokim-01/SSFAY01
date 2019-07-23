@@ -74,8 +74,8 @@ export default {
   },
   updatePortfolio(doc, body) {
     var updatepf = firestore.collection(PORTFOLIOS).doc(doc);
-
-    return updatepf.update({
+    return updatepf
+      .update({
         body: body,
         created_at: firebase.firestore.FieldValue.serverTimestamp()
       })
