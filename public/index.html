@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="shortcut icon" href="./img/icons/favicon.png">
+  <link rel="icon" type="image/png" href="./img/icons/favicon.png" sizes="192x192">
+  <title>ssafy</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Do+Hyeon|Press+Start+2P|Russo+One&display=swap">
+  <link rel="stylesheet" href="./css/common.css">
+
+  <script type="text/javascript">
+    //즐겨찾기 버튼
+    function bookmarksite(title, url) {
+      // Internet Explorer
+      if (document.all) {
+        window.external.AddFavorite(url, title);
+      }
+      // Google Chrome
+      else if (window.chrome) {
+        alert("Ctrl+D누르면 즐겨찾기 추가");
+      }
+      // Firefox
+      else if (window.sidebar) {
+        window.sidebar.addPanel(title, url, "");
+      }
+      // Opera
+      else if (window.opera && window.print) {
+        var elem = document.createElement('a');
+        elem.setAttribute('href', url);
+        elem.setAttribute('title', title);
+        elem.setAttribute('rel', 'sidebar');
+        elem.click();
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but ssafy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+  </noscript>
+
+  <div id="app"></div>
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'ko'
+      }, 'google_translate_element');
+    }
+  </script>
+
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+
+</html>
