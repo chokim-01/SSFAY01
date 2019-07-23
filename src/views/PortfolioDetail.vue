@@ -15,17 +15,23 @@
 
         <p>Context</p>
         <v-text-field v-model="portfolio.body" solo />
-
-        <v-btn @click="updatePortfolio">수정</v-btn>
-        <v-btn @click="deletePortfolio">삭제</v-btn>
+        <vue-markdown>{{portfolio.body}}</vue-markdown>
+        <v-btn @click="updatePortfolio" right>수정</v-btn>
+        <v-btn @click="deletePortfolio" right>삭제</v-btn>
       </v-container>
     </v-form>
   </div>
 </template>
+<script src="path/to/vue.js"></script>
+<script src="path/to/vue-markdown.js"></script>
 <script>
+import VueMarkdown from 'vue-markdown';
 import Fbs from "../services/FirebaseService.js";
 
 export default {
+  components: {
+    VueMarkdown
+  },
   data() {
     return {
       portfolio: this.$route.params.portfolio
