@@ -55,11 +55,10 @@ h5 {
   width: 60px;
   height: 60px;
   padding: 10px 16px;
-  border-radius: 20%;
+  border-radius: 50%;
   font-size: 22px;
-  line-height: 22px;
   color: white;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 173, 181, 0.5);
 }
 
 .scrollbtn {
