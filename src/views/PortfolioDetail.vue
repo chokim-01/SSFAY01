@@ -27,7 +27,6 @@
             v-model="portfolio.body"
             ref="markdownEditor"
           ></markdown-editor>
-          <Imgur></Imgur>
         </template>
         <v-btn @click="updatePortfolio">수정</v-btn>
         <v-btn @click="deletePortfolio">삭제</v-btn>
@@ -39,14 +38,12 @@
 <script>
 import markdownEditor from "vue-simplemde/src/markdown-editor";
 import VueMarkdown from "vue-markdown";
-import Imgur from "../components/Imgur";
 import Fbs from "../services/FirebaseService.js";
 
 export default {
   components: {
     VueMarkdown,
-    markdownEditor,
-    Imgur
+    markdownEditor
   },
   data() {
     return {
@@ -61,14 +58,9 @@ export default {
         alert("마크다운 에디터로 전환되었습니다. 수정해주세요.");
         return;
       }
-      this.$EventBus.$emit(
-        "editPF",
-        this.portfolio.id,
-        this.portfolio.body,
-        this.portfolio.imgSrc
-      );
-      this.$EventBus.$off("editPF");
+      Fbs.updatePortfolio(this.portfolio.id, this.portfolio.body);
       this.editflag = true;
+      this.$router.push("/");
     },
     deletePortfolio() {
       Fbs.deletePortfolio(this.portfolio.id);

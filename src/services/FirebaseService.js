@@ -81,9 +81,6 @@ export default {
       })
       .then(function() {
         alert("수정되었습니다.");
-      })
-      .catch(function() {
-        // The document probably doesn't exist.
       });
   },
   deletePortfolio(doc) {
