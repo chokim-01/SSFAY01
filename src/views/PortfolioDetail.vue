@@ -3,44 +3,72 @@
     <v-form>
       <v-container my-5>
         <v-layout row>
+          <!-- Title -->
           <v-flex sm7>
             <p>Title</p>
             <v-text-field v-model="portfolio.title" solo readonly />
           </v-flex>
+          <!-- Date -->
           <v-flex sm5>
             <p>Date</p>
             <v-text-field v-model="portfolio.date" solo readonly />
           </v-flex>
         </v-layout>
 
+        <!-- Context -->
         <p>Context</p>
-        <v-text-field v-model="portfolio.body" solo />
-        <vue-markdown>{{portfolio.body}}</vue-markdown>
-        <v-btn @click="updatePortfolio" right>수정</v-btn>
-        <v-btn @click="deletePortfolio" right>삭제</v-btn>
+        <!-- View markdown ( No Edit ) -->
+        <template v-if="editflag">
+          <vue-markdown>{{ portfolio.body }}</vue-markdown>
+        </template>
+        <!-- Edit markdown -->
+        <template v-else>
+          <markdown-editor
+            v-model="portfolio.body"
+            ref="markdownEditor"
+          ></markdown-editor>
+          <Imgur></Imgur>
+        </template>
+        <v-btn @click="updatePortfolio">수정</v-btn>
+        <v-btn @click="deletePortfolio">삭제</v-btn>
       </v-container>
     </v-form>
   </div>
 </template>
-<script src="path/to/vue.js"></script>
-<script src="path/to/vue-markdown.js"></script>
+
 <script>
-import VueMarkdown from 'vue-markdown';
+import markdownEditor from "vue-simplemde/src/markdown-editor";
+import VueMarkdown from "vue-markdown";
+import Imgur from "../components/Imgur";
 import Fbs from "../services/FirebaseService.js";
 
 export default {
   components: {
-    VueMarkdown
+    VueMarkdown,
+    markdownEditor,
+    Imgur
   },
   data() {
     return {
-      portfolio: this.$route.params.portfolio
+      portfolio: this.$route.params.portfolio,
+      editflag: true
     };
   },
   methods: {
     updatePortfolio() {
-      Fbs.updatePortfolio(this.portfolio.id, this.portfolio.body);
-      this.$router.push("/");
+      if (this.editflag) {
+        this.editflag = false;
+        alert("마크다운 에디터로 전환되었습니다. 수정해주세요.");
+        return;
+      }
+      this.$EventBus.$emit(
+        "editPF",
+        this.portfolio.id,
+        this.portfolio.body,
+        this.portfolio.imgSrc
+      );
+      this.$EventBus.$off("editPF");
+      this.editflag = true;
     },
     deletePortfolio() {
       Fbs.deletePortfolio(this.portfolio.id);
