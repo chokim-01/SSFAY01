@@ -20,11 +20,10 @@ class MyFlask(Flask):
 ROOT_PATH = os.path.dirname(os.path.abspath("__file__"))
 STATIC_PATH = os.path.join(ROOT_PATH+"\\..\\", 'dist')
 
-app = MyFlask(__name__, static_folder=STATIC_PATH, static_url_path='')
+app = MyFlask("__name__", static_folder=STATIC_PATH, static_url_path='')
 
 @app.route('/')
 def index():
-    print(STATIC_PATH, file=sys.stderr)
     return app.send_static_file('index.html')
 
 @app.errorhandler(404)

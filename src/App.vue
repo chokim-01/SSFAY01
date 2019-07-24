@@ -1,60 +1,48 @@
 <template>
-  <v-card height="400px">
-    <v-navigation-drawer v-model="drawer" permanent absolute>
-      <v-toolbar flat class="transparent">
-        <v-list class="pa-0">
-          <v-list-tile avatar>
-            <v-list-tile-avatar>
-              <img src="https://randomuser.me/api/portraits/men/85.jpg" />
-            </v-list-tile-avatar>
+  <v-app dark>
+    <Header> </Header>
+    <v-content>
+      <router-view />
+    </v-content>
 
-            <v-list-tile-content>
-              <v-list-tile-title>John Leider</v-list-tile-title>
-            </v-list-tile-content>
-            <div>{{ test() }}</div>
-          </v-list-tile>
-        </v-list>
-      </v-toolbar>
+    <!-- Buttom to Top Button -->
+    <back-to-top>
+      <button type="button" class="btn btn-info btn-to-top">
+        <i class="fa fa-chevron-up"></i>
+      </button>
+    </back-to-top>
 
-      <v-list class="pt-0" dense>
-        <v-divider></v-divider>
-
-        <v-list-tile v-for="item in items" :key="item.title">
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-  </v-card>
+    <Footer> </Footer>
+  </v-app>
 </template>
 
 <script>
-import axios from "axios";
+import store from "./store";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export default {
-  name: "AdminPage",
-  data() {
-    return {
-      drawer: true,
-      items: [
-        { title: "Home", icon: "dashboard" },
-        { title: "About", icon: "question_answer" }
-      ],
-      right: null
-    };
+  name: "App",
+  components: {
+    Header,
+    Footer
   },
-  methods: {
-    async test() {
-      await axios.get("http://localhost:5000/api/admin").then(res => {
-        console.log(res);
-        return res;
-      });
-    }
+
+  store,
+  data() {
+    return {};
   }
 };
+
+// Alert Chrome Optimization
+const { detect } = require("detect-browser");
+const browser = detect();
+
+switch (browser && browser.name) {
+  case "chrome":
+    break;
+
+  default:
+    alert("해당 사이트는 크롬에 최적화 되어있습니다.");
+}
 </script>
