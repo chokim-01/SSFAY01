@@ -46,7 +46,14 @@ def getPosts():
     cursor = conn.db().cursor()
     cursor.execute("select * from posts")
     res = cursor.fetchall()
-    conn.db().close()
+    return jsonify(res)
+
+@app.route("/api/portfolios")
+def getPortfolios():
+    cursor = conn.db().cursor()
+    cursor.execute("select * from portfolios")
+    res = cursor.fetchall()
+    print(res, file=sys.stdout)
     return jsonify(res)
 
 if __name__ == "__main__":

@@ -35,8 +35,10 @@
 </template>
 
 <script>
+import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-import FirebaseService from "@/services/FirebaseService";
+//import FirebaseService from "@/services/FirebaseService";
+const BASE_URL = "http://localhost:5000";
 
 export default {
   name: "PortfoliosList",
@@ -57,7 +59,11 @@ export default {
   },
   methods: {
     async getPortfolios() {
-      this.portfolios = await FirebaseService.getPortfolios();
+      await Server(BASE_URL)
+        .get("/api/portfolios")
+        .then(res => {
+          this.portfolios = res["data"];
+        });
     },
     loadMorePortfolios() {
       this.loadMore = true;
