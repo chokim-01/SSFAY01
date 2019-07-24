@@ -1,19 +1,26 @@
 <template>
-  <v-app dark>
-    <Header> </Header>
+  <div v-if="this.$route.path != `/Admin`">
+    <v-app dark>
+      <Header> </Header>
+      <v-content>
+        <router-view />
+      </v-content>
+
+      <!-- Buttom to Top Button -->
+      <back-to-top>
+        <button type="button" class="btn btn-info btn-to-top">
+          <i class="fa fa-chevron-up"></i>
+        </button>
+      </back-to-top>
+
+      <Footer> </Footer>
+    </v-app>
+  </div>
+  <div v-else>
     <v-content>
       <router-view />
     </v-content>
-
-    <!-- Buttom to Top Button -->
-    <back-to-top>
-      <button type="button" class="btn btn-info btn-to-top">
-        <i class="fa fa-chevron-up"></i>
-      </button>
-    </back-to-top>
-
-    <Footer> </Footer>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -27,7 +34,6 @@ export default {
     Header,
     Footer
   },
-
   store,
   data() {
     return {};
