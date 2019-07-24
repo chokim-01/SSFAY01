@@ -30,6 +30,13 @@
         </template>
         <v-btn @click="updatePortfolio">수정</v-btn>
         <v-btn @click="deletePortfolio">삭제</v-btn>
+
+        <div class="comments">
+          <VueDisqus
+            shortname="webmobile-team10"
+            :identifier="portfolio.id"
+          ></VueDisqus>
+        </div>
       </v-container>
     </v-form>
   </div>
