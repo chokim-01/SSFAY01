@@ -28,8 +28,9 @@
 </template>
 
 <script>
+import Server from "../services/Server.js";
 import Post from "@/components/Post";
-import FirebaseService from "@/services/FirebaseService";
+const BASE_URL = "http://localhost:5000";
 
 export default {
   name: "PostList",
@@ -40,7 +41,8 @@ export default {
   data() {
     return {
       posts: [],
-      limits: 4
+      limits: 4,
+      postsTest: []
     };
   },
   components: {
@@ -51,7 +53,11 @@ export default {
   },
   methods: {
     async getPosts() {
-      this.posts = await FirebaseService.getPosts();
+      await Server(BASE_URL)
+        .get("/api/posts")
+        .then(res => {
+          this.posts = res["data"];
+        });
     },
     loadMorePosts() {
       this.loadMore = true;
