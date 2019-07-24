@@ -30,7 +30,7 @@
 <script>
 import Server from "../services/Server.js";
 import Post from "@/components/Post";
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://192.168.100.78:5000";
 
 export default {
   name: "PostList",

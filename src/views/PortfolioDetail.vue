@@ -8,6 +8,7 @@
             <p>Title</p>
             <v-text-field v-model="portfolio.title" solo readonly />
           </v-flex>
+
           <!-- Date -->
           <v-flex sm5>
             <p>Date</p>
@@ -21,6 +22,7 @@
         <template v-if="editflag">
           <vue-markdown>{{ portfolio.body }}</vue-markdown>
         </template>
+
         <!-- Edit markdown -->
         <template v-else>
           <markdown-editor
@@ -28,6 +30,7 @@
             ref="markdownEditor"
           ></markdown-editor>
         </template>
+
         <v-btn @click="updatePortfolio">수정</v-btn>
         <v-btn @click="deletePortfolio">삭제</v-btn>
       </v-container>
@@ -38,7 +41,8 @@
 <script>
 import markdownEditor from "vue-simplemde/src/markdown-editor";
 import VueMarkdown from "vue-markdown";
-import Fbs from "../services/FirebaseService.js";
+import Server from "../services/Server.js";
+const BASE_URL = "http://localhost:5000";
 
 export default {
   components: {
@@ -52,18 +56,30 @@ export default {
     };
   },
   methods: {
+    makeFormData() {
+      var form = new FormData();
+      form.append("num", this.portfolio.num);
+      form.append("title", this.portfolio.title);
+      form.append("body", this.portfolio.body);
+      form.append("img", this.portfolio.imgSrc);
+      form.append("created_at", this.portfolio.date);
+      return form;
+    },
     updatePortfolio() {
       if (this.editflag) {
         this.editflag = false;
         alert("마크다운 에디터로 전환되었습니다. 수정해주세요.");
         return;
       }
-      Fbs.updatePortfolio(this.portfolio.id, this.portfolio.body);
+      var form = this.makeFormData();
+      Server(BASE_URL).post("/api/edit/portfolio", form);
+
       this.editflag = true;
       this.$router.push("/");
     },
     deletePortfolio() {
-      Fbs.deletePortfolio(this.portfolio.id);
+      var form = this.makeFormData();
+      Server(BASE_URL).post("/api/del/portfolio", form);
       this.$router.push("/");
     }
   }
