@@ -64,13 +64,11 @@ export default {
     async sendBanner() {
       const bannerID = "N9DRFuvC9ppf6r4";
       var form = this.makeFormData(bannerID);
-
       await ImgurApi(BASE_URL).post(`image`, form);
     },
     async sendPF(title, content) {
       const portfolioID = "3W37WEYawFLVyPi";
       var form = this.makeFormData(portfolioID);
-
       await ImgurApi(BASE_URL)
         .post(`image`, form)
         .then(response => {

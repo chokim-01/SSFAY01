@@ -1,5 +1,11 @@
 <template>
-  <v-card hover>
+  <v-card
+    hover
+    :to="{
+      name: 'portfoliodetail',
+      params: { portfolio: { id, title, body, date, imgSrc } }
+    }"
+  >
     <v-img :src="imgSrc" height="200px" />
     <v-card-title primary-title>
       <div class="portfolio-content">
@@ -20,7 +26,8 @@ export default {
     date: { type: String },
     title: { type: String },
     body: { type: String },
-    imgSrc: { type: String }
+    imgSrc: { type: String },
+    id: { type: String }
   }
 };
 </script>
