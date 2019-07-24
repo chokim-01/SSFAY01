@@ -229,6 +229,10 @@ export default {
       {
         title: "Post",
         route: "/Post"
+      },
+      {
+        title: "Admin",
+        route: "/Admin"
       }
     ],
     language: "KOR",
