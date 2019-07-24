@@ -5,6 +5,7 @@ import PostPage from "./views/PostPage.vue";
 import PortfolioPage from "./views/PortfolioPage.vue";
 import PortfolioWritePage from "./views/PortfolioWritePage.vue";
 import SignUpPage from "./views/SignUpPage.vue";
+import PortfolioDetail from "./views/PortfolioDetail.vue";
 import AdminPage from "./views/AdminPage.vue";
 
 Vue.use(Router);
@@ -37,6 +38,12 @@ export default new Router({
       path: "/signUp",
       name: "signUp",
       component: SignUpPage
+    },
+    {
+      path: "/portfoliodetail",
+      name: "portfoliodetail",
+      component: PortfolioDetail,
+      props: true
     },
     {
       path: "/admin",
