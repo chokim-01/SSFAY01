@@ -35,6 +35,7 @@
           <v-btn @click="updatePortfolio">수정</v-btn>
           <v-btn @click="deletePortfolio">삭제</v-btn>
         </div>
+        <!-- Comments -->
         <div class="comments">
           <VueDisqus
             shortname="webmobile-team10"
@@ -45,7 +46,6 @@
           ></VueDisqus>
         </div>
       </v-container>
-      <!-- Comments -->
     </v-form>
   </div>
 </template>

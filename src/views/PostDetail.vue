@@ -9,33 +9,33 @@
           </v-layout>
           <hr />
           <!-- Date -->
-
           <v-flex>
             <v-text-field v-model="post.created_at" readonly reverse />
           </v-flex>
-
-          <!-- Context -->
-          <!-- View markdown ( No Edit ) -->
-          <vue-markdown>{{ post.body }}</vue-markdown>
         </template>
 
-        <!-- Edit markdown -->
-
+        <!-- Edit mode -->
         <template v-else>
           <v-flex>
             <v-text-field v-model="post.title" solo></v-text-field>
           </v-flex>
-          <markdown-editor
-            v-model="post.body"
-            ref="markdownEditor"
-          ></markdown-editor>
         </template>
+        <!--context-->
+        <v-textarea
+          light
+          v-model="post.body"
+          placeholder="내용"
+          rows="20"
+          solo
+          :readonly="editflag"
+        ></v-textarea>
 
         <div class="editBtn">
           <v-btn @click="updatePost">수정</v-btn>
           <v-btn @click="deletePost">삭제</v-btn>
         </div>
         <div class="comments">
+          <!-- Comments -->
           <VueDisqus
             shortname="webmobile-team10"
             :url="'https://webmobile-team10.disqus.com/post' + post.num"
@@ -43,22 +43,15 @@
           ></VueDisqus>
         </div>
       </v-container>
-      <!-- Comments -->
     </v-form>
   </div>
 </template>
 
 <script>
-import markdownEditor from "vue-simplemde/src/markdown-editor";
-import VueMarkdown from "vue-markdown";
 import Server from "../services/Server.js";
 const SERVER_URL = "http://localhost:5000";
 
 export default {
-  components: {
-    VueMarkdown,
-    markdownEditor
-  },
   data() {
     return {
       post: this.$route.params.post,
@@ -77,7 +70,7 @@ export default {
     updatePost() {
       if (this.editflag) {
         this.editflag = false;
-        alert("마크다운 에디터로 전환되었습니다. 수정해주세요.");
+        alert("수정모드로 전환되었습니다. 수정해주세요.");
         return;
       }
       var form = this.makeFormData();

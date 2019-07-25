@@ -98,6 +98,16 @@ def editPortfoilo():
 # Edit post
 @app.route("/api/edit/post", methods=["POST"])
 def editPost():
+    num = request.form.get("num")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "update posts set title = %s, body = %s where num = %s"
+    cursor.execute(sql, (title,body,num))
+    db.commit()
+
     return ""
 
 
@@ -121,7 +131,7 @@ def delPost():
     num = request.form.get("num")
     db = conn.db()
     cursor = db.cursor()
-    sql = "delete from post where num = %s"
+    sql = "delete from posts where num = %s"
     cursor.execute(sql, (num))
     db.commit()
     return ""
