@@ -2,6 +2,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask_cors import CORS
+import pymysql
 import conn.conn as conn
 import sys
 import itertools
@@ -148,6 +149,26 @@ def addPortfolio():
 @app.route("/api/add/post", methods=["POST"])
 def addPost():
     return ""
+
+
+# Insert user
+@app.route("/api/add/user", methods=["POST"])
+def addUser():
+    umail = request.form.get("umail")
+    upasswd = request.form.get("upasswd")
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "insert into users (umail, upasswd, uauth) values(%s, %s, 0)"
+
+    try:
+        cursor.execute(sql, (umail, upasswd))
+    except pymysql.err.IntegrityError as e:
+        return jsonify({'success': False})
+
+    db.commit()
+
+    return jsonify({'success' : True})
 
 if __name__ == "__main__":
   app.run(host="localhost", debug=True)
