@@ -14,8 +14,8 @@
         :date="portfolios[idx - 1].created_at.toString()"
         :title="portfolios[idx - 1].title"
         :body="portfolios[idx - 1].body"
-        :imgSrc="portfolios[idx - 1].img"
-        :id="portfolios[idx - 1].id"
+        :img="portfolios[idx - 1].img"
+        :num="portfolios[idx - 1].num"
       ></Portfolio>
     </v-flex>
 
@@ -37,7 +37,6 @@
 <script>
 import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-//import FirebaseService from "@/services/FirebaseService";
 const SERVER_URL = "http://192.168.100.78:5000";
 
 export default {
