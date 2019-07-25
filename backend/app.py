@@ -74,6 +74,13 @@ def getPortfolios():
     res = cursor.fetchall()
     return jsonify(res)
 
+@app.route("/api/users")
+def getUsers():
+    cursor = conn.db().cursor()
+    cursor.execute("select * from users")
+    res = cursor.fetchall()
+    return jsonify(res)
+
 
 ### EDIT DATA SECTION
 
