@@ -6,8 +6,13 @@
         <v-flex>
           <v-text-field v-model="title" label="제목" solo></v-text-field>
         </v-flex>
-        <textarea v-model="content" placeholder="내용"></textarea>
-
+        <v-textarea
+          light
+          v-model="content"
+          placeholder="내용"
+          rows="20"
+          solo
+        ></v-textarea>
         <!-- Write Portfolio Button -->
         <v-btn
           id="highlight-backColor"
