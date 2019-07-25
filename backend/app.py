@@ -2,6 +2,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask_cors import CORS
+import pymysql
 import conn.conn as conn
 import sys
 import itertools
@@ -74,6 +75,14 @@ def getPortfolios():
     res = cursor.fetchall()
     return jsonify(res)
 
+
+@app.route("/api/login")
+def login():
+    cursor = conn.db().cursor()
+    cursor.execute()
+    res =cursor.fetone()
+    return ""
+
 @app.route("/api/users")
 def getUsers():
     cursor = conn.db().cursor()
@@ -91,8 +100,6 @@ def editPortfoilo():
     title = request.form.get("title")
     body = request.form.get("body")
 
-    print(num, title, body, file=sys.stdout)
-
     db = conn.db()
     cursor = db.cursor()
     sql = "update portfolios set title = %s, body = %s where num = %s"
@@ -105,6 +112,16 @@ def editPortfoilo():
 # Edit post
 @app.route("/api/edit/post", methods=["POST"])
 def editPost():
+    num = request.form.get("num")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "update posts set title = %s, body = %s where num = %s"
+    cursor.execute(sql, (title,body,num))
+    db.commit()
+
     return ""
 
 
@@ -154,7 +171,35 @@ def addPortfolio():
 # Insert post
 @app.route("/api/add/post", methods=["POST"])
 def addPost():
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "insert into posts (num, title, body, created_at) values(0, %s, %s, timestamp(now()))"
+    cursor.execute(sql, (title,body))
+    db.commit()
     return ""
+
+
+# Insert user
+@app.route("/api/add/user", methods=["POST"])
+def addUser():
+    umail = request.form.get("umail")
+    upasswd = request.form.get("upasswd")
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "insert into users (umail, upasswd, uauth) values(%s, %s, 0)"
+
+    try:
+        cursor.execute(sql, (umail, upasswd))
+    except pymysql.err.IntegrityError as e:
+        return jsonify({"msg": "중복된 계정입니다."})
+
+    db.commit()
+
+    return jsonify({"msg" : "가입완료!"})
 
 if __name__ == "__main__":
   app.run(host="localhost", debug=True)

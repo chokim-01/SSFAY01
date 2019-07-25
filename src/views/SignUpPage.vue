@@ -43,7 +43,8 @@
 </template>
 
 <script>
-import FirebaseService from "@/services/FirebaseService";
+import Server from "../services/Server.js";
+const SERVER_URL = "http://localhost:5000";
 
 export default {
   name: "signUpPage",
@@ -54,8 +55,19 @@ export default {
     };
   },
   methods: {
-    signUp() {
-      FirebaseService.signUp(this.email, this.password);
+    async signUp() {
+      if (this.email != "" && this.password != "") {
+        var userForm = new FormData();
+        userForm.append("umail", this.email);
+        userForm.append("upasswd", this.password);
+        await Server(SERVER_URL)
+          .post("/api/add/user", userForm)
+          .then(res => {
+            alert(res.data.msg);
+          });
+      } else {
+        alert("입력정보를 확인하세요.");
+      }
     }
   }
 };
