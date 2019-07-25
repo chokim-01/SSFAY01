@@ -98,16 +98,17 @@ export default {
       albumImgs: [],
       dialog: false,
       uploadBannerDialog: false,
-      selectedImg: ""
+      selectedImg: "",
+      random_base_url: "https://source.unsplash.com/random"
     };
   },
   created() {
-    this.$store.commit("setUrl", this.$store.state.random_url);
+    this.$store.commit("setUrl", this.random_base_url);
     this.imgSrc = this.$store.state.url;
   },
   methods: {
     RandomImg() {
-      this.$store.commit("setUrl", this.$store.state.random_url);
+      this.$store.commit("setUrl", this.random_base_url);
       this.imgSrc = this.$store.state.url;
       this.dialog = false;
     },
