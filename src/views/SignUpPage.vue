@@ -56,7 +56,6 @@ export default {
   },
   methods: {
     async signUp() {
-      //FirebaseService.signUp(this.email, this.password);
       if (this.email != "" && this.password != "") {
         var userForm = new FormData();
         userForm.append("umail", this.email);
@@ -64,11 +63,7 @@ export default {
         await Server(SERVER_URL)
           .post("/api/add/user", userForm)
           .then(res => {
-            if (res["data"]["success"]) {
-              alert("가입완료!");
-            } else {
-              alert("중복된 계정입니다.");
-            }
+            alert(res.data.msg);
           });
       } else {
         alert("입력정보를 확인하세요.");

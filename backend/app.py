@@ -75,6 +75,12 @@ def getPortfolios():
     res = cursor.fetchall()
     return jsonify(res)
 
+@app.route("/api/login")
+def login():
+    cursor = conn.db().cursor()
+    cursor.execute()
+    res =cursor.fetone()
+    return ""
 
 ### EDIT DATA SECTION
 
@@ -84,8 +90,6 @@ def editPortfoilo():
     num = request.form.get("num")
     title = request.form.get("title")
     body = request.form.get("body")
-
-    print(num, title, body, file=sys.stdout)
 
     db = conn.db()
     cursor = db.cursor()
@@ -164,11 +168,11 @@ def addUser():
     try:
         cursor.execute(sql, (umail, upasswd))
     except pymysql.err.IntegrityError as e:
-        return jsonify({'success': False})
+        return jsonify({"msg": "중복된 계정입니다."})
 
     db.commit()
 
-    return jsonify({'success' : True})
+    return jsonify({"msg" : "가입완료!"})
 
 if __name__ == "__main__":
   app.run(host="localhost", debug=True)
