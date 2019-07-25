@@ -2,8 +2,11 @@
   <v-layout py-4 h-100>
     <v-flex row>
       <div class="post-content">
-        <h2 class="font-weight-light">{{ title }}</h2>
-        <div class="color-666 caption">{{ formatedDate }}</div>
+        <router-link
+          :to="{ name: 'postdetail', params: { post: { num, title, body } } }"
+          ><h2 class="font-weight-light">{{ title }}</h2></router-link
+        >
+        <div class="color-666 caption">{{ created_at }}</div>
         <p class="mb-1 font-weight-light">{{ body }}</p>
       </div>
     </v-flex>
@@ -14,7 +17,8 @@
 export default {
   name: "Post",
   props: {
-    date: { type: String },
+    num: { type: String },
+    created_at: { type: String },
     title: { type: String },
     body: { type: String }
   },
@@ -33,5 +37,10 @@ export default {
 
 .h-100 {
   height: 100%;
+}
+a,
+h2 {
+  text-decoration: none;
+  color: #00adb5;
 }
 </style>

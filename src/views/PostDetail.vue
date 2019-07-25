@@ -5,43 +5,41 @@
         <template v-if="editflag">
           <!-- Title -->
           <v-layout justify-center>
-            <p>{{ portfolio.title }}</p>
+            <p>{{ post.title }}</p>
           </v-layout>
           <hr />
           <!-- Date -->
 
           <v-flex>
-            <v-text-field v-model="portfolio.created_at" readonly reverse />
+            <v-text-field v-model="post.created_at" readonly reverse />
           </v-flex>
 
           <!-- Context -->
           <!-- View markdown ( No Edit ) -->
-          <vue-markdown>{{ portfolio.body }}</vue-markdown>
+          <vue-markdown>{{ post.body }}</vue-markdown>
         </template>
 
         <!-- Edit markdown -->
 
         <template v-else>
           <v-flex>
-            <v-text-field v-model="portfolio.title" solo></v-text-field>
+            <v-text-field v-model="post.title" solo></v-text-field>
           </v-flex>
           <markdown-editor
-            v-model="portfolio.body"
+            v-model="post.body"
             ref="markdownEditor"
           ></markdown-editor>
         </template>
 
         <div class="editBtn">
-          <v-btn @click="updatePortfolio">수정</v-btn>
-          <v-btn @click="deletePortfolio">삭제</v-btn>
+          <v-btn @click="updatePost">수정</v-btn>
+          <v-btn @click="deletePost">삭제</v-btn>
         </div>
         <div class="comments">
           <VueDisqus
             shortname="webmobile-team10"
-            :url="
-              'https://webmobile-team10.disqus.com/portfolio' + portfolio.num
-            "
-            :identifier="portfolio.num"
+            :url="'https://webmobile-team10.disqus.com/post' + post.num"
+            :identifier="post.num"
           ></VueDisqus>
         </div>
       </v-container>
@@ -63,34 +61,33 @@ export default {
   },
   data() {
     return {
-      portfolio: this.$route.params.portfolio,
+      post: this.$route.params.post,
       editflag: true
     };
   },
   methods: {
     makeFormData() {
       var form = new FormData();
-      form.append("num", this.portfolio.num);
-      form.append("title", this.portfolio.title);
-      form.append("body", this.portfolio.body);
-      form.append("img", this.portfolio.img);
-      form.append("created_at", this.portfolio.created_at);
+      form.append("num", this.post.num);
+      form.append("title", this.post.title);
+      form.append("body", this.post.body);
+      form.append("created_at", this.post.created_at);
       return form;
     },
-    updatePortfolio() {
+    updatePost() {
       if (this.editflag) {
         this.editflag = false;
         alert("마크다운 에디터로 전환되었습니다. 수정해주세요.");
         return;
       }
       var form = this.makeFormData();
-      Server(SERVER_URL).post("/api/edit/portfolio", form);
+      Server(SERVER_URL).post("/api/edit/post", form);
       this.$router.push("/");
       alert("수정 되었습니다.");
     },
-    deletePortfolio() {
+    deletePost() {
       var form = this.makeFormData();
-      Server(SERVER_URL).post("/api/del/portfolio", form);
+      Server(SERVER_URL).post("/api/del/post", form);
       this.$router.push("/");
       alert("삭제 되었습니다.");
     }

@@ -10,9 +10,10 @@
     >
       <!-- Get Post information -->
       <Post
-        :date="posts[idx - 1].created_at"
+        :created_at="posts[idx - 1].created_at"
         :title="posts[idx - 1].title"
         :body="posts[idx - 1].body"
+        :num="posts[idx - 1].num"
       ></Post>
       <v-divider></v-divider>
     </v-flex>
