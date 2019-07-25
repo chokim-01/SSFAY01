@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       portfolios: [],
-      limits: 3
+      limits: 6
     };
   },
   components: {
@@ -61,7 +61,7 @@ export default {
     },
     loadMorePortfolios() {
       this.loadMore = true;
-      this.limits += 3;
+      this.limits += 6;
     }
   }
 };
