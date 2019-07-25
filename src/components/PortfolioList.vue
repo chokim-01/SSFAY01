@@ -11,7 +11,7 @@
       <!-- Get portfolio information -->
       <Portfolio
         class="ma-3"
-        :date="portfolios[idx - 1].created_at.toString()"
+        :created_at="portfolios[idx - 1].created_at.toString()"
         :title="portfolios[idx - 1].title"
         :body="portfolios[idx - 1].body"
         :img="portfolios[idx - 1].img"
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       portfolios: [],
-      limits: 3
+      limits: 6
     };
   },
   components: {
@@ -66,7 +66,7 @@ export default {
     },
     loadMorePortfolios() {
       this.loadMore = true;
-      this.limits += 3;
+      this.limits += 6;
     }
   }
 };
