@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     accessToken: "",
+    refreshToken: "",
     user: "",
     umail: "",
     uauth: 0,
@@ -16,20 +17,24 @@ export default new Vuex.Store({
     setUrl(state, _url) {
       state.url = _url;
     },
-    login(state) {
-      state.accessToken = "";
-      state.umail = "";
-      state.uauth = "";
+    login(state, userInfo) {
+      state.accessToken = userInfo.accessToken;
+      state.refreshToken = userInfo.refreshToken;
+      state.umail = userInfo.umail;
+      state.uauth = userInfo.uauth;
     },
     logout(state) {
       state.accessToken = "";
       state.umail = "";
-      state.uauth = 0;
+      state.uauth = "";
     }
   },
   actions: {
-    login({ commit }) {
-      commit("login")
+    login({ commit }, userInfo) {
+      commit("login", userInfo);
+    },
+    logout({ commit }) {
+      commit("logout");
     }
   }
 });

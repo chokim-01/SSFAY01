@@ -1,7 +1,12 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask import session
+from flask import escape
 from flask_cors import CORS
+from flask_restful import Api
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 import pymysql
 import conn.conn as conn
 import sys
@@ -31,6 +36,10 @@ ROOT_PATH = os.path.dirname(os.path.abspath("__file__"))
 STATIC_PATH = os.path.join(ROOT_PATH+"\\..\\", 'dist')
 
 app = MyFlask("__name__", static_folder=STATIC_PATH, static_url_path='')
+app.config['JWT_SECRET_KEY'] = 'jwt-secret'
+api = Api(app)
+jwt_manager = JWTManager()
+jwt_manager.init_app(app)
 
 # CORS setting
 cors = CORS(app, resources={
@@ -75,13 +84,37 @@ def getPortfolios():
     res = cursor.fetchall()
     return jsonify(res)
 
-
-@app.route("/api/login")
+# Get one user using login
+@app.route("/api/login", methods=["POST"])
 def login():
+    umail = request.form.get("umail")
+    upasswd = request.form.get("upasswd")
+
     cursor = conn.db().cursor()
-    cursor.execute()
-    res =cursor.fetone()
+    sql = "select * from users where umail = %s and upasswd = %s"
+    cursor.execute(sql, (umail, upasswd))
+    res = cursor.fetchone()
+
+    if len(res) == 0:
+        return jsonify({"msg": "해당 정보가 없습니다.", "success": False})
+
+
+    # Set session
+    token_identity = {"umail": umail}
+    accessToken = create_access_token(identity=token_identity)
+    refreshToken = create_refresh_token(identity=token_identity)
+
+    session = ({'accessToken': accessToken,
+                    'refresh_token': refreshToken})
+
+    return jsonify({"msg": "로그인 성공", "success": True, "user": res, "session": session})
+
+# Get one user using login
+@app.route("/api/logout", methods=["POST"])
+def logout():
     return ""
+
+
 
 @app.route("/api/users")
 def getUsers():
