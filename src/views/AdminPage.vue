@@ -112,7 +112,16 @@
               >
                 <template v-slot:items="props">
                   <td>{{ props.item.num }}</td>
-                  <td>{{ props.item.title }}</td>
+                  <td>
+                    <router-link
+                      :to="{
+                        name: 'portfoliodetail',
+                        params: { portfolio: props.item }
+                      }"
+                    >
+                      {{ props.item.title }}
+                    </router-link>
+                  </td>
                   <td>{{ props.item.created_at }}</td>
                   <td>
                     <v-icon small @click="deletePost(props.item)">
