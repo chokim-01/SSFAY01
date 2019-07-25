@@ -20,12 +20,9 @@
           <v-tab-item>
             <v-card flat>
               <v-card-title>
-                <p>
-                  Members
-                </p>
                 <v-spacer></v-spacer>
                 <v-text-field
-                  v-model="search"
+                  v-model="search_user"
                   append-icon="search"
                   label="Search"
                   single-line
@@ -34,10 +31,10 @@
                 ></v-text-field>
               </v-card-title>
               <v-data-table
-                :headers="headers"
+                :headers="user_headers"
                 :items="users"
                 class="elevation-1"
-                :search="search"
+                :search="search_user"
                 prev-icon="fa-caret-left"
                 next-icon="fa-caret-right"
               >
@@ -61,18 +58,78 @@
           <!-- Portfolio -->
           <v-tab-item>
             <v-card flat>
-              <v-card-text>
-                포트폴리오
-              </v-card-text>
+              <v-card-title>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search_portfolio"
+                  append-icon="search"
+                  label="Search"
+                  single-line
+                  hide-details
+                  color="#00adb5"
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="portfolio_headers"
+                :items="portfolios"
+                class="elevation-1"
+                :search="search_portfolio"
+                prev-icon="fa-caret-left"
+                next-icon="fa-caret-right"
+                sort-icon="fa-caret-down"
+              >
+                <template v-slot:items="props">
+                  <td>{{ props.item.num }}</td>
+                  <td>{{ props.item.title }}</td>
+                  <td>{{ props.item.created_at }}</td>
+                </template>
+              </v-data-table>
             </v-card>
           </v-tab-item>
 
           <!-- Post -->
           <v-tab-item>
             <v-card flat>
-              <v-card-text>
-                포스트
-              </v-card-text>
+              <v-card-title>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search_post"
+                  append-icon="search"
+                  label="Search"
+                  single-line
+                  hide-details
+                  color="#00adb5"
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="post_headers"
+                :items="posts"
+                class="elevation-1"
+                :search="search_post"
+                prev-icon="fa-caret-left"
+                next-icon="fa-caret-right"
+                sort-icon="fa-caret-down"
+              >
+                <template v-slot:items="props">
+                  <td>{{ props.item.num }}</td>
+                  <td>
+                    <router-link
+                      :to="{
+                        name: 'portfoliodetail',
+                        params: { portfolio: props.item }
+                      }"
+                    >
+                      {{ props.item.title }}
+                    </router-link>
+                  </td>
+                  <td>{{ props.item.created_at }}</td>
+                  <td>
+                    <v-icon small @click="deletePost(props.item)">
+                      delete
+                    </v-icon>
+                  </td>
+                </template>
+              </v-data-table>
             </v-card>
           </v-tab-item>
 
@@ -98,13 +155,28 @@ const SERVER_URL = "http://localhost:5000";
 export default {
   data() {
     return {
-      search: "",
-      headers: [
+      search_user: "",
+      search_portfolio: "",
+      search_post: "",
+      user_headers: [
         { text: "Email", sortable: false, value: "uemail" },
         { text: "PassWord", sortable: false, value: "upasswd" },
         { text: "Grade", sortable: false, value: "uauth" }
       ],
-      users: []
+      users: [],
+      portfolio_headers: [
+        { text: "Num", value: "num" },
+        { text: "Title", sortable: false, value: "title" },
+        { text: "Date", value: "created_at" }
+      ],
+      portfolios: [],
+      post_headers: [
+        { text: "Num", value: "num" },
+        { text: "Title", sortable: false, value: "title" },
+        { text: "Date", value: "created_at" },
+        { text: "Actions", sortable: false, value: "num" }
+      ],
+      posts: []
     };
   },
   components: {
@@ -112,14 +184,50 @@ export default {
   },
   mounted() {
     this.getUsers();
+    this.getPortfolios();
+    this.getPosts();
   },
   methods: {
+    makeFormData() {
+      var form = new FormData();
+      form.append("num", this.portfolio.num);
+      form.append("title", this.portfolio.title);
+      form.append("body", this.portfolio.body);
+      form.append("img", this.portfolio.img);
+      form.append("created_at", this.portfolio.date);
+      return form;
+    },
     async getUsers() {
       await Server(SERVER_URL)
         .get("/api/users")
         .then(res => {
           this.users = res["data"];
         });
+    },
+    async getPortfolios() {
+      await Server(SERVER_URL)
+        .get("/api/portfolios")
+        .then(res => {
+          this.portfolios = res["data"];
+        });
+    },
+    async getPosts() {
+      await Server(SERVER_URL)
+        .get("/api/posts")
+        .then(res => {
+          this.posts = res["data"];
+        });
+    },
+    deletePost(item) {
+      var form = new FormData();
+      form.append("num", item.num);
+      const index = this.posts.indexOf(item);
+      if (
+        confirm("Are you sure you want to delete this post?") &&
+        this.posts.splice(index, 1)
+      ) {
+        Server(SERVER_URL).post("/api/del/post", form);
+      }
     }
   }
 };

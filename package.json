@@ -31,7 +31,7 @@
     "vue-simple-file-upload": "^1.2.5",
     "vue-simplemde": "^0.5.2",
     "vuejs-uploader": "^0.6.5",
-    "vuetify": "^1.5.5",
+    "vuetify": "^1.5.16",
     "vuetify-upload-button": "^2.0.2",
     "vuex": "^3.0.1"
   },
