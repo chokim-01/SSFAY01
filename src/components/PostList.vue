@@ -30,7 +30,7 @@
 <script>
 import Server from "../services/Server.js";
 import Post from "@/components/Post";
-const BASE_URL = "http://192.168.100.78:5000";
+const SERVER_URL = "http://192.168.100.78:5000";
 
 export default {
   name: "PostList",
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     async getPosts() {
-      await Server(BASE_URL)
+      await Server(SERVER_URL)
         .get("/api/posts")
         .then(res => {
           this.posts = res["data"];

@@ -27,9 +27,11 @@
 </template>
 
 <script>
-import Fbs from "../services/FirebaseService.js";
+//import Fbs from "../services/FirebaseService.js";
 import ImgurApi from "../services/ImgurApi";
-const BASE_URL = "https://api.imgur.com/3/";
+import Server from "../services/Server.js";
+const IMGUR_URL = "https://api.imgur.com/3/";
+const SERVER_URL = "http://192.168.100.78:5000";
 
 export default {
   data() {
@@ -53,6 +55,14 @@ export default {
     });
   },
   methods: {
+    sendFormData(title, body, img) {
+      var form = new FormData();
+      form.append("title", title);
+      form.append("body", body);
+      form.append("img", img);
+
+      return form;
+    },
     makeFormData(albumID) {
       var form = new FormData();
       form.append("image", this.imageFile);
@@ -64,19 +74,22 @@ export default {
     async sendBanner() {
       const bannerID = "N9DRFuvC9ppf6r4";
       var form = this.makeFormData(bannerID);
-      await ImgurApi(BASE_URL).post(`image`, form);
+      await ImgurApi(IMGUR_URL).post(`image`, form);
     },
     async sendPF(title, content) {
       const portfolioID = "3W37WEYawFLVyPi";
       var form = this.makeFormData(portfolioID);
-      await ImgurApi(BASE_URL)
+      var self = this;
+      await ImgurApi(IMGUR_URL)
         .post(`image`, form)
         .then(response => {
           this.imageUrl = response.data.data.link;
-          Fbs.postPortfolio(title, content, this.imageUrl);
-          alert("글을 작성했습니다.");
-          window.location.href = "/";
+          //Fbs.postPortfolio(title, content, this.imageUrl);
         });
+      var portfolioForm = this.sendFormData(title, content, self.imgUrl);
+      await Server(SERVER_URL).post("/api/add/portfolio", portfolioForm);
+      alert("글을 작성했습니다.");
+      window.location.href = "/";
     },
     selectImg() {
       this.$refs.image.click();
