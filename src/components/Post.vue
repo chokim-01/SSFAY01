@@ -3,7 +3,10 @@
     <v-flex row>
       <div class="post-content">
         <router-link
-          :to="{ name: 'postdetail', params: { post: { num, title, body } } }"
+          :to="{
+            name: 'postdetail',
+            params: { post: { num, title, body, created_at } }
+          }"
           ><h2 class="font-weight-light">{{ title }}</h2></router-link
         >
         <div class="color-666 caption">{{ created_at }}</div>
@@ -17,7 +20,7 @@
 export default {
   name: "Post",
   props: {
-    num: { type: String },
+    num: { type: Number },
     created_at: { type: String },
     title: { type: String },
     body: { type: String }

@@ -147,6 +147,14 @@ def addPortfolio():
 # Insert post
 @app.route("/api/add/post", methods=["POST"])
 def addPost():
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "insert into posts (num, title, body, created_at) values(0, %s, %s, timestamp(now()))"
+    cursor.execute(sql, (title,body))
+    db.commit()
     return ""
 
 if __name__ == "__main__":

@@ -18,11 +18,16 @@
       <v-divider></v-divider>
     </v-flex>
 
-    <!-- loadMore Button -->
+    <!-- LoadMore and Wirte Post Button -->
     <v-flex xs12 text-xs-center round my-5 v-if="loadMore">
       <v-btn depressed id="highlight-backColor" v-on:click="loadMorePosts">
         <v-icon size="25" class="mr-2">fa-plus</v-icon>
         <span>더 보기</span>
+      </v-btn>
+
+      <v-btn depressed id="highlight-backColor" to="/postWrite">
+        <v-icon class="mr-2">fa-edit</v-icon>
+        <span>글쓰기</span>
       </v-btn>
     </v-flex>
   </v-layout>

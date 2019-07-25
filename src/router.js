@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import HomePage from "./views/HomePage.vue";
 import PostPage from "./views/PostPage.vue";
+import PostWritePage from "./views/PostWritePage.vue";
 import PortfolioPage from "./views/PortfolioPage.vue";
 import PortfolioWritePage from "./views/PortfolioWritePage.vue";
 import SignUpPage from "./views/SignUpPage.vue";
@@ -24,6 +25,11 @@ export default new Router({
       path: "/post",
       name: "post",
       component: PostPage
+    },
+    {
+      path: "/postWrite",
+      name: "postWrite",
+      component: PostWritePage
     },
     {
       path: "/portfolio",
