@@ -12,8 +12,8 @@
       </v-toolbar-items>
 
       <!-- Appers after login -->
-      <div class="hidden-sm-and-down" v-if="this.$store.state.user">
-        {{ this.$store.state.accessToken }}
+      <div class="hidden-sm-and-down" v-if="this.$store.state.accessToken">
+        {{ this.$store.state.umail }}
       </div>
 
       <!--Spacing Logo and Menus-->
@@ -37,7 +37,7 @@
         </v-btn>
 
         <!-- Login Logout Button-->
-        <v-btn v-if="this.$store.state.user" v-on:click="logout()" flat>
+        <v-btn v-if="this.$store.state.accessToken" v-on:click="logout()" flat>
           logout
         </v-btn>
         <v-btn v-else @click="dialog_login = true" flat>login</v-btn>
@@ -86,8 +86,8 @@
         <v-list-tile avatar>
           <v-list-tile-content>
             <!-- Appers after Login -->
-            <v-list-tile-title v-if="this.$store.state.user">
-              {{ this.$store.state.accessToken }}
+            <v-list-tile-title v-if="this.$store.state.accessToken">
+              {{ this.$store.state.umail }}
             </v-list-tile-title>
 
             <v-list-tile-title v-else>로그인 해 주세요</v-list-tile-title>
@@ -123,7 +123,7 @@
         <!-- Appers after Login -->
         <v-list-tile
           id="highlight-fontColor"
-          v-if="this.$store.state.user"
+          v-if="this.$store.state.accessToken"
           v-on:click="logout()"
         >
           Logout
@@ -217,6 +217,8 @@
 
 <script>
 import FirebaseService from "@/services/FirebaseService";
+import Server from "@/services/Server.js";
+const SERVER_URL = "http://localhost:5000";
 
 export default {
   name: "Header",
@@ -260,17 +262,27 @@ export default {
       this.$store.state.user = result.user;
     },
     async signIn() {
-      const result = await FirebaseService.signIn(this.email, this.password);
-      if (result) {
-        this.$store.state.user = result.user;
-      } else {
-        this.$store.state.user = null;
-      }
+      var form = new FormData();
+      form.append("umail", this.email);
+      form.append("upasswd", this.password);
+
+      await Server(SERVER_URL)
+        .post("/api/login", form)
+        .then(res => {
+          if (res.data.success) {
+            this.$store.dispatch("login", {
+              accessToken: res.data.session.accessToken,
+              refreshToken: res.data.session.refreshToken,
+              umail: res.data.user.umail,
+              uauth: res.data.user.uauth
+            });
+          }
+        });
     },
-    logout() {
-      FirebaseService.logout();
-      this.email = "";
-      this.password = "";
+    async logout() {
+      await Server(SERVER_URL)
+        .post("/api/logout")
+        .then(this.$store.dispatch("logout"));
     }
   }
 };
