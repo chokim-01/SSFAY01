@@ -11,10 +11,10 @@
       <!-- Get portfolio information -->
       <Portfolio
         class="ma-3"
-        :date="portfolios[idx - 1].created_at.toString()"
+        :created_at="portfolios[idx - 1].created_at.toString()"
         :title="portfolios[idx - 1].title"
         :body="portfolios[idx - 1].body"
-        :imgSrc="portfolios[idx - 1].img"
+        :img="portfolios[idx - 1].img"
         :id="portfolios[idx - 1].id"
       ></Portfolio>
     </v-flex>
@@ -35,8 +35,10 @@
 </template>
 
 <script>
+import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-import FirebaseService from "@/services/FirebaseService";
+//import FirebaseService from "@/services/FirebaseService";
+const SERVER_URL = "http://192.168.100.78:5000";
 
 export default {
   name: "PortfoliosList",
@@ -57,7 +59,11 @@ export default {
   },
   methods: {
     async getPortfolios() {
-      this.portfolios = await FirebaseService.getPortfolios();
+      await Server(SERVER_URL)
+        .get("/api/portfolios")
+        .then(res => {
+          this.portfolios = res["data"];
+        });
     },
     loadMorePortfolios() {
       this.loadMore = true;

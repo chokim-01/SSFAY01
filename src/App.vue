@@ -7,7 +7,7 @@
       </v-content>
 
       <!-- Buttom to Top Button -->
-      <back-to-top>
+      <back-to-top bottom="90px" right="20px">
         <button type="button" class="btn btn-info btn-to-top">
           <i class="fa fa-chevron-up"></i>
         </button>
