@@ -15,7 +15,11 @@
         :title="portfolios[idx - 1].title"
         :body="portfolios[idx - 1].body"
         :img="portfolios[idx - 1].img"
+<<<<<<< HEAD
         :id="portfolios[idx - 1].id"
+=======
+        :num="portfolios[idx - 1].num"
+>>>>>>> 98442b120f8b7bfcceb0186e8abef1761cc8c420
       ></Portfolio>
     </v-flex>
 
@@ -37,7 +41,6 @@
 <script>
 import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-//import FirebaseService from "@/services/FirebaseService";
 const SERVER_URL = "http://192.168.100.78:5000";
 
 export default {
