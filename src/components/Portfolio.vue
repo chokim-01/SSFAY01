@@ -3,11 +3,7 @@
     hover
     :to="{
       name: 'portfoliodetail',
-<<<<<<< HEAD
       params: { portfolio: { num, title, body, created_at, img } }
-=======
-      params: { portfolio: { num, title, body, date, img } }
->>>>>>> 98442b120f8b7bfcceb0186e8abef1761cc8c420
     }"
   >
     <v-img :src="img" height="200px" />
@@ -27,7 +23,7 @@
 export default {
   name: "Portfolio",
   props: {
-    date: { type: String },
+    created_at: { type: String },
     title: { type: String },
     body: { type: String },
     img: { type: String },
