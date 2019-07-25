@@ -1,16 +1,15 @@
-# ssafy
+# SW Development Secretary
+
 
 ## Project setup
 ```
-npm install
-```
+python3
+pip install flask
+pip install pymysql
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+cd webmobile-final
+webmobile-final> npm run build
+cd backend
+webmobile-final\backend > python app.py
+http://localhost:5000
 ```
