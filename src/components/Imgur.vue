@@ -31,7 +31,7 @@
 import ImgurApi from "../services/ImgurApi";
 import Server from "../services/Server.js";
 const IMGUR_URL = "https://api.imgur.com/3/";
-const SERVER_URL = "http://192.168.100.78:5000";
+const SERVER_URL = "http://localhost:5000";
 
 export default {
   data() {
@@ -84,9 +84,8 @@ export default {
         .post(`image`, form)
         .then(response => {
           this.imageUrl = response.data.data.link;
-          //Fbs.postPortfolio(title, content, this.imageUrl);
         });
-      var portfolioForm = this.sendFormData(title, content, self.imgUrl);
+      var portfolioForm = this.sendFormData(title, content, self.imageUrl);
       await Server(SERVER_URL).post("/api/add/portfolio", portfolioForm);
       alert("글을 작성했습니다.");
       window.location.href = "/";

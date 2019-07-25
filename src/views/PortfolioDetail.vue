@@ -42,7 +42,7 @@
 import markdownEditor from "vue-simplemde/src/markdown-editor";
 import VueMarkdown from "vue-markdown";
 import Server from "../services/Server.js";
-const BASE_URL = "http://localhost:5000";
+const SERVER_URL = "http://localhost:5000";
 
 export default {
   components: {
@@ -61,7 +61,7 @@ export default {
       form.append("num", this.portfolio.num);
       form.append("title", this.portfolio.title);
       form.append("body", this.portfolio.body);
-      form.append("img", this.portfolio.imgSrc);
+      form.append("img", this.portfolio.img);
       form.append("created_at", this.portfolio.date);
       return form;
     },
@@ -72,14 +72,14 @@ export default {
         return;
       }
       var form = this.makeFormData();
-      Server(BASE_URL).post("/api/edit/portfolio", form);
+      Server(SERVER_URL).post("/api/edit/portfolio", form);
 
       this.editflag = true;
       this.$router.push("/");
     },
     deletePortfolio() {
       var form = this.makeFormData();
-      Server(BASE_URL).post("/api/del/portfolio", form);
+      Server(SERVER_URL).post("/api/del/portfolio", form);
       this.$router.push("/");
     }
   }

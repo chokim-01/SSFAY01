@@ -72,7 +72,6 @@ def getPortfolios():
     cursor = conn.db().cursor()
     cursor.execute("select * from portfolios order by num desc")
     res = cursor.fetchall()
-    #print(res, file=sys.stdout)
     return jsonify(res)
 
 
@@ -81,8 +80,18 @@ def getPortfolios():
 # Edit portfolio
 @app.route("/api/edit/portfolio", methods=['POST'])
 def editPortfoilo():
-    res = request.form.get("num")
-    print(res, file=sys.stdout)
+    num = request.form.get("num")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    print(num, title, body, file=sys.stdout)
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "update portfolios set title = %s, body = %s where num = %s"
+    cursor.execute(sql, (title, body, num))
+    db.commit()
+
     return ""
 
 
@@ -123,12 +132,9 @@ def delPost():
 # Insert portfolios
 @app.route("/api/add/portfolio", methods=["POST"])
 def addPortfolio():
-    print("called", file=sys.stdout)
     title = request.form.get("title")
     body = request.form.get("body")
     img = request.form.get("img")
-
-    print(title, body, img, file=sys.stdout)
 
     db = conn.db()
     cursor = db.cursor()
@@ -144,4 +150,4 @@ def addPost():
     return ""
 
 if __name__ == "__main__":
-  app.run(host='0.0.0.0', debug=True)
+  app.run(host="localhost", debug=True)
