@@ -15,7 +15,7 @@
         :title="portfolios[idx - 1].title"
         :body="portfolios[idx - 1].body"
         :imgSrc="portfolios[idx - 1].img"
-        :num="portfolios[idx - 1].num"
+        :id="portfolios[idx - 1].id"
       ></Portfolio>
     </v-flex>
 
@@ -38,7 +38,7 @@
 import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
 //import FirebaseService from "@/services/FirebaseService";
-const BASE_URL = "http://192.168.100.78:5000";
+const SERVER_URL = "http://192.168.100.78:5000";
 
 export default {
   name: "PortfoliosList",
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     async getPortfolios() {
-      await Server(BASE_URL)
+      await Server(SERVER_URL)
         .get("/api/portfolios")
         .then(res => {
           this.portfolios = res["data"];

@@ -14,7 +14,7 @@
 export default {
   name: "Post",
   props: {
-    date: { type: Date },
+    date: { type: String },
     title: { type: String },
     body: { type: String }
   },

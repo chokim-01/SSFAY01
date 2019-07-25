@@ -61,6 +61,7 @@ export default {
     },
     writePortfolio() {
       if (this.chkNull()) {
+        // writePF $on at compoents/Imgur.vue
         this.$EventBus.$emit("writePF", this.title, this.content);
         this.$EventBus.$off("wirtePF");
       }
