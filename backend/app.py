@@ -128,7 +128,7 @@ def delPost():
     num = request.form.get("num")
     db = conn.db()
     cursor = db.cursor()
-    sql = "delete from post where num = %s"
+    sql = "delete from posts where num = %s"
     cursor.execute(sql, (num))
     db.commit()
     return ""
