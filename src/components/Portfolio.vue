@@ -3,10 +3,10 @@
     hover
     :to="{
       name: 'portfoliodetail',
-      params: { portfolio: { id, title, body, date, imgSrc } }
+      params: { portfolio: { num, title, body, date, img } }
     }"
   >
-    <v-img :src="imgSrc" height="200px" />
+    <v-img :src="img" height="200px" />
     <v-card-title primary-title>
       <div class="portfolio-content">
         <div class="portfolio-title headline font-weight-light">
@@ -26,8 +26,8 @@ export default {
     date: { type: String },
     title: { type: String },
     body: { type: String },
-    imgSrc: { type: String },
-    id: { type: String }
+    img: { type: String },
+    num: { type: Number }
   }
 };
 </script>
