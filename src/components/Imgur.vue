@@ -84,9 +84,8 @@ export default {
         .post(`image`, form)
         .then(response => {
           this.imageUrl = response.data.data.link;
-          //Fbs.postPortfolio(title, content, this.imageUrl);
         });
-      var portfolioForm = this.sendFormData(title, content, self.imgUrl);
+      var portfolioForm = this.sendFormData(title, content, self.imageUrl);
       await Server(SERVER_URL).post("/api/add/portfolio", portfolioForm);
       alert("글을 작성했습니다.");
       window.location.href = "/";
