@@ -30,10 +30,13 @@
         </template>
         <v-btn @click="updatePortfolio">수정</v-btn>
         <v-btn @click="deletePortfolio">삭제</v-btn>
-
+        <v-text-field v-model="portfolio.id"></v-text-field>
         <div class="comments">
           <VueDisqus
             shortname="webmobile-team10"
+            :url="
+              'https://webmobile-team10.disqus.com/dsfgsfhdfh' + portfolio.id
+            "
             :identifier="portfolio.id"
           ></VueDisqus>
         </div>
@@ -64,10 +67,11 @@ export default {
         this.editflag = false;
         alert("마크다운 에디터로 전환되었습니다. 수정해주세요.");
         return;
+      } else {
+        Fbs.updatePortfolio(this.portfolio.id, this.portfolio.body);
+        this.editflag = true;
+        this.$router.push("/");
       }
-      Fbs.updatePortfolio(this.portfolio.id, this.portfolio.body);
-      this.editflag = true;
-      this.$router.push("/");
     },
     deletePortfolio() {
       Fbs.deletePortfolio(this.portfolio.id);
