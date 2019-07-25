@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.$route.path != `/Admin`">
+  <div>
     <v-app dark>
       <Header> </Header>
       <v-content>
@@ -15,11 +15,6 @@
 
       <Footer> </Footer>
     </v-app>
-  </div>
-  <div v-else>
-    <v-content>
-      <router-view />
-    </v-content>
   </div>
 </template>
 
@@ -51,4 +46,16 @@ switch (browser && browser.name) {
   default:
     alert("해당 사이트는 크롬에 최적화 되어있습니다.");
 }
+
+(function(d, s, id) {
+  var js,
+    fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {
+    return;
+  }
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://danbee.ai/js/plugins/frogue-embed/frogue-embed.min.js";
+  fjs.parentNode.insertBefore(js, fjs);
+})(document, "script", "frogue-embed");
 </script>
