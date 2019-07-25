@@ -42,7 +42,7 @@
 import markdownEditor from "vue-simplemde/src/markdown-editor";
 import VueMarkdown from "vue-markdown";
 import Server from "../services/Server.js";
-const SERVER_URL = "http://192.168.100.78:5000";
+const SERVER_URL = "http://localhost:5000";
 
 export default {
   components: {
