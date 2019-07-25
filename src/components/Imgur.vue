@@ -31,7 +31,7 @@
 import ImgurApi from "../services/ImgurApi";
 import Server from "../services/Server.js";
 const IMGUR_URL = "https://api.imgur.com/3/";
-const SERVER_URL = "http://192.168.100.78:5000";
+const SERVER_URL = "http://localhost:5000";
 
 export default {
   data() {

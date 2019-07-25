@@ -37,7 +37,7 @@
 <script>
 import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-const SERVER_URL = "http://192.168.100.78:5000";
+const SERVER_URL = "http://localhost:5000";
 
 export default {
   name: "PortfoliosList",
