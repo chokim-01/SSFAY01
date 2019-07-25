@@ -39,7 +39,7 @@
           <VueDisqus
             shortname="webmobile-team10"
             :url="'https://webmobile-team10.disqus.com/post' + post.num"
-            :identifier="post.num"
+            :identifier="'post' + post.num"
           ></VueDisqus>
         </div>
       </v-container>

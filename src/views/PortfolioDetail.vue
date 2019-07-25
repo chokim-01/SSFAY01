@@ -41,7 +41,7 @@
             :url="
               'https://webmobile-team10.disqus.com/portfolio' + portfolio.num
             "
-            :identifier="portfolio.num"
+            :identifier="'portfolio' + portfolio.num"
           ></VueDisqus>
         </div>
       </v-container>
