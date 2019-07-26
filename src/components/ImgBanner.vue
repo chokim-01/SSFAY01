@@ -122,8 +122,7 @@ export default {
       this.dialog = false;
     },
     getAlbumImg() {
-      const BASE_URL = "https://api.imgur.com/3/";
-      var images = ImgurApi(BASE_URL).get(`album/pQivCF9`);
+      var images = ImgurApi(this.$store.state.IMGUR_URL).get(`album/pQivCF9`);
       images.then(data => {
         var response = data["data"];
         this.albumImgs = response["data"]["images"];

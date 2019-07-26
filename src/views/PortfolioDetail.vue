@@ -66,7 +66,6 @@
 import markdownEditor from "vue-simplemde/src/markdown-editor";
 import VueMarkdown from "vue-markdown";
 import Server from "../services/Server.js";
-const SERVER_URL = "http://localhost:5000";
 
 export default {
   components: {
@@ -107,13 +106,13 @@ export default {
         return;
       }
       var form = this.makeFormData();
-      Server(SERVER_URL).post("/api/edit/portfolio", form);
+      Server(this.$store.state.SERVER_URL).post("/api/edit/portfolio", form);
       this.$router.push("/");
       alert("수정 되었습니다.");
     },
     deletePortfolio() {
       var form = this.makeFormData();
-      Server(SERVER_URL).post("/api/del/portfolio", form);
+      Server(this.$store.state.SERVER_URL).post("/api/del/portfolio", form);
       this.$router.push("/");
       alert("삭제 되었습니다.");
     }

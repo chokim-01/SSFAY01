@@ -40,7 +40,6 @@
 <script>
 import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-const SERVER_URL = "http://localhost:5000";
 
 export default {
   name: "PortfoliosList",
@@ -67,7 +66,7 @@ export default {
   },
   methods: {
     async getPortfolios() {
-      await Server(SERVER_URL)
+      await Server(this.$store.state.SERVER_URL)
         .get("/api/portfolios")
         .then(res => {
           this.portfolios = res["data"];

@@ -44,7 +44,6 @@
 
 <script>
 import Server from "../services/Server.js";
-const SERVER_URL = "http://localhost:5000";
 
 export default {
   name: "signUpPage",
@@ -60,7 +59,7 @@ export default {
         var userForm = new FormData();
         userForm.append("umail", this.email);
         userForm.append("upasswd", this.password);
-        await Server(SERVER_URL)
+        await Server(this.$store.state.SERVER_URL)
           .post("/api/add/user", userForm)
           .then(res => {
             alert(res.data.msg);
