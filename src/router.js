@@ -9,8 +9,14 @@ import SignUpPage from "./views/SignUpPage.vue";
 import PortfolioDetail from "./views/PortfolioDetail.vue";
 import PostDetail from "./views/PostDetail.vue";
 import AdminPage from "./views/AdminPage.vue";
+import store from "./store.js";
 
 Vue.use(Router);
+
+const requireAuth = () => (from, to, next) => {
+  if (store.state.uauth == 2) return next();
+  next("/");
+};
 
 export default new Router({
   mode: "history",
@@ -61,7 +67,8 @@ export default new Router({
     {
       path: "/admin",
       name: "admin",
-      component: AdminPage
+      component: AdminPage,
+      beforeEnter: requireAuth()
     }
   ]
 });

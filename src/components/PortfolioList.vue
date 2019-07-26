@@ -16,6 +16,7 @@
         :body="portfolios[idx - 1].body"
         :img="portfolios[idx - 1].img"
         :num="portfolios[idx - 1].num"
+        :author="portfolios[idx - 1].author"
       ></Portfolio>
     </v-flex>
 
@@ -26,10 +27,12 @@
         <span> 더 보기 </span>
       </v-btn>
 
-      <v-btn depressed id="highlight-backColor" to="/portfolioWrite">
-        <v-icon class="mr-2">fa-edit</v-icon>
-        <span>글쓰기</span>
-      </v-btn>
+      <template v-if="chkAuth">
+        <v-btn depressed id="highlight-backColor" to="/portfolioWrite">
+          <v-icon class="mr-2">fa-edit</v-icon>
+          <span>글쓰기</span>
+        </v-btn>
+      </template>
     </v-flex>
   </v-layout>
 </template>
@@ -47,11 +50,17 @@ export default {
   data() {
     return {
       portfolios: [],
-      limits: 6
+      limits: 6,
+      chkAuth: false
     };
   },
   components: {
     Portfolio
+  },
+  created() {
+    if (this.$store.state.uauth > 0) {
+      this.chkAuth = true;
+    }
   },
   mounted() {
     this.getPortfolios();

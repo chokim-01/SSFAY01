@@ -1,3 +1,3 @@
-start npm run build
+start npm run serve
 start python backend/app.py
 exit
