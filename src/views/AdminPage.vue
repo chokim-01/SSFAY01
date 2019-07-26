@@ -92,8 +92,22 @@
               >
                 <template v-slot:items="props">
                   <td>{{ props.item.num }}</td>
-                  <td>{{ props.item.title }}</td>
+                  <td>
+                    <router-link
+                      :to="{
+                        name: 'portfoliodetail',
+                        params: { portfolio: props.item }
+                      }"
+                    >
+                      {{ props.item.title }}
+                    </router-link>
+                  </td>
                   <td>{{ props.item.created_at }}</td>
+                  <td>
+                    <v-icon @click="deletePortfolio(props.item)">
+                      fa-trash
+                    </v-icon>
+                  </td>
                 </template>
               </v-data-table>
             </v-card>
@@ -130,8 +144,8 @@
                   <td>
                     <router-link
                       :to="{
-                        name: 'portfoliodetail',
-                        params: { portfolio: props.item }
+                        name: 'postdetail',
+                        params: { post: props.item }
                       }"
                     >
                       {{ props.item.title }}
@@ -139,8 +153,8 @@
                   </td>
                   <td>{{ props.item.created_at }}</td>
                   <td>
-                    <v-icon small @click="deletePost(props.item)">
-                      🗑️
+                    <v-icon @click="deletePost(props.item)">
+                      fa-trash
                     </v-icon>
                   </td>
                 </template>
@@ -182,7 +196,8 @@ export default {
       portfolio_headers: [
         { text: "Num", value: "num" },
         { text: "Title", sortable: false, value: "title" },
-        { text: "Date", value: "created_at" }
+        { text: "Date", value: "created_at" },
+        { text: "Actions", sortable: false, value: "num" }
       ],
       portfolios: [],
       post_headers: [
@@ -232,6 +247,17 @@ export default {
         .then(res => {
           this.posts = res["data"];
         });
+    },
+    deletePortfolio(item) {
+      var form = new FormData();
+      form.append("num", item.num);
+      const index = this.portfolios.indexOf(item);
+      if (
+        confirm("Are you sure you want to delete this portfolio?") &&
+        this.portfolios.splice(index, 1)
+      ) {
+        Server(SERVER_URL).post("/api/del/portfolio", form);
+      }
     },
     deletePost(item) {
       var form = new FormData();
