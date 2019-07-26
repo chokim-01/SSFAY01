@@ -158,6 +158,21 @@ def editPost():
     return ""
 
 
+# Edit user
+@app.route("/api/edit/user", methods=["POST"])
+def editUser():
+    umail = request.form.get("umail")
+    uauth = request.form.get("uauth")
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "update users set uauth = %s where umail = %s"
+    cursor.execute(sql, (uauth, umail))
+    db.commit()
+
+    return ""
+
+
 ### DELETE DATA SECITON
 
 # Del portfolio
@@ -187,11 +202,11 @@ def delPost():
 # Del user
 @app.route("/api/del/user", methods=["POST"])
 def delUser():
-    email = request.form.get("umail")
+    umail = request.form.get("umail")
     db = conn.db()
     cursor = db.cursor()
     sql = "delete from users where umail = %s"
-    cursor.execute(sql, (email))
+    cursor.execute(sql, (umail))
     db.commit()
     return ""
 

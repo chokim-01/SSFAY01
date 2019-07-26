@@ -45,20 +45,43 @@
                 <template v-slot:items="props">
                   <td>{{ props.item.umail }}</td>
                   <td>{{ props.item.upasswd }}</td>
-                  <td v-if="props.item.uauth == 0">
-                    <div id="user_auth">
-                      <span>🐟guest</span>
-                    </div>
-                  </td>
-                  <td v-if="props.item.uauth == 1">
-                    <div id="user_auth">
-                      <span>🐠member</span>
-                    </div>
-                  </td>
-                  <td v-if="props.item.uauth == 2">
-                    <div id="user_auth">
-                      <span>🦈admin</span>
-                    </div>
+                  <td>
+                    <v-menu offset-y>
+                      <template v-slot:activator="{ on }">
+                        <div id="user_auth" v-on="on">
+                          <span v-if="props.item.uauth == 0">🐟guest</span>
+                          <span v-if="props.item.uauth == 1">🐠member</span>
+                          <span v-if="props.item.uauth == 2">🦈admin</span>
+                        </div>
+                      </template>
+                      <v-list>
+                        <v-list-tile
+                          v-for="(item, index) in grades"
+                          :key="index"
+                        >
+                          <v-list-tile-title>
+                            <span
+                              v-if="item == 0"
+                              @click="editUserAuth(props.item, 0)"
+                            >
+                              🐟guest
+                            </span>
+                            <span
+                              v-if="item == 1"
+                              @click="editUserAuth(props.item, 1)"
+                            >
+                              🐠member
+                            </span>
+                            <span
+                              v-if="item == 2"
+                              @click="editUserAuth(props.item, 2)"
+                            >
+                              🦈admin
+                            </span>
+                          </v-list-tile-title>
+                        </v-list-tile>
+                      </v-list>
+                    </v-menu>
                   </td>
                   <td>
                     <v-icon @click="deleteUser(props.item)">
@@ -213,7 +236,8 @@ export default {
         { text: "Date", value: "created_at" },
         { text: "Actions", sortable: false, value: "num" }
       ],
-      posts: []
+      posts: [],
+      grades: [0, 1, 2]
     };
   },
   components: {
@@ -287,6 +311,19 @@ export default {
       ) {
         Server(SERVER_URL).post("/api/del/post", form);
       }
+    },
+    editUserAuth(item, auth) {
+      var form = new FormData();
+      form.append("umail", item.umail);
+      form.append("uauth", auth);
+      const index = this.users.indexOf(item);
+
+      Object.assign(this.users[index], {
+        umail: item.umail,
+        upasswd: item.upasswd,
+        uauth: auth
+      });
+      Server(SERVER_URL).post("/api/edit/user", form);
     }
   }
 };
