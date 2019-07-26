@@ -2,6 +2,7 @@
 node_modules
 /dist
 /backend/__pycahce__
+/backend/conn/__pycahce__
 
 # local env files
 .env.local

@@ -5,7 +5,7 @@
         <router-link
           :to="{
             name: 'postdetail',
-            params: { post: { num, title, body, created_at } }
+            params: { post: { num, title, body, created_at, author } }
           }"
           ><h2 class="font-weight-light">{{ title }}</h2></router-link
         >
@@ -23,7 +23,8 @@ export default {
     num: { type: Number },
     created_at: { type: String },
     title: { type: String },
-    body: { type: String }
+    body: { type: String },
+    author: { type: String }
   },
   computed: {
     formatedDate() {

@@ -5,22 +5,31 @@
         <template v-if="editflag">
           <!-- Title -->
           <v-layout justify-center>
-            <p>{{ portfolio.title }}</p>
+            <p class="posttitle">{{ portfolio.title }}</p>
           </v-layout>
           <hr />
+          <!-- Author -->
+          <v-layout justify-end>
+            <v-chip color="#00adb5" label>
+              <v-icon left>mdi-account-circle-outline</v-icon>
+              {{ portfolio.author }}
+            </v-chip>
+          </v-layout>
           <!-- Date -->
-
-          <v-flex>
-            <v-text-field v-model="portfolio.created_at" readonly reverse />
-          </v-flex>
-
+          <v-layout>
+            <v-chip color="grey" label text-color="white">
+              <v-icon left>label</v-icon>
+              {{ portfolio.created_at }}
+            </v-chip>
+          </v-layout>
           <!-- Context -->
           <!-- View markdown ( No Edit ) -->
-          <vue-markdown>{{ portfolio.body }}</vue-markdown>
+          <div class="postcontext my-5">
+            <vue-markdown>{{ portfolio.body }}</vue-markdown>
+          </div>
         </template>
-
+        <!-- Context -->
         <!-- Edit markdown -->
-
         <template v-else>
           <v-flex>
             <v-text-field v-model="portfolio.title" solo></v-text-field>
@@ -31,10 +40,13 @@
           ></markdown-editor>
         </template>
 
-        <div class="editBtn">
-          <v-btn @click="updatePortfolio">수정</v-btn>
-          <v-btn @click="deletePortfolio">삭제</v-btn>
-        </div>
+        <template v-if="authCheck">
+          <div class="editBtn">
+            <v-btn @click="updatePortfolio">수정</v-btn>
+            <v-btn @click="deletePortfolio">삭제</v-btn>
+          </div>
+        </template>
+
         <!-- Comments -->
         <div class="comments">
           <VueDisqus
@@ -64,8 +76,19 @@ export default {
   data() {
     return {
       portfolio: this.$route.params.portfolio,
-      editflag: true
+      editflag: true,
+      authCheck: false
     };
+  },
+  created() {
+    var uauth = this.$store.state.uauth;
+    if (uauth == 2) {
+      this.authCheck = true;
+    } else if (uauth == 1) {
+      if (this.$store.state.umail == this.post.author) {
+        this.authCheck = true;
+      }
+    }
   },
   methods: {
     makeFormData() {
@@ -99,6 +122,13 @@ export default {
 </script>
 
 <style>
+.postcontext {
+  border: 2px solid white;
+  min-height: 500px;
+}
+.posttitle {
+  font-size: 3em;
+}
 hr {
   border: dotted;
   width: 40%;
