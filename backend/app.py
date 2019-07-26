@@ -115,7 +115,7 @@ def logout():
     return ""
 
 
-
+# Get all user data
 @app.route("/api/users")
 def getUsers():
     cursor = conn.db().cursor()
@@ -180,6 +180,18 @@ def delPost():
     cursor = db.cursor()
     sql = "delete from posts where num = %s"
     cursor.execute(sql, (num))
+    db.commit()
+    return ""
+
+
+# Del user
+@app.route("/api/del/user", methods=["POST"])
+def delUser():
+    email = request.form.get("umail")
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "delete from users where umail = %s"
+    cursor.execute(sql, (email))
     db.commit()
     return ""
 

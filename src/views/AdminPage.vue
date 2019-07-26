@@ -40,6 +40,7 @@
                 :search="search_user"
                 prev-icon="fa-caret-left"
                 next-icon="fa-caret-right"
+                sort-icon="fa-caret-down"
               >
                 <template v-slot:items="props">
                   <td>{{ props.item.umail }}</td>
@@ -58,6 +59,11 @@
                     <div id="user_auth">
                       <span>🦈admin</span>
                     </div>
+                  </td>
+                  <td>
+                    <v-icon @click="deleteUser(props.item)">
+                      fa-trash
+                    </v-icon>
                   </td>
                 </template>
               </v-data-table>
@@ -190,7 +196,8 @@ export default {
       user_headers: [
         { text: "Email", sortable: false, value: "uemail" },
         { text: "PassWord", sortable: false, value: "upasswd" },
-        { text: "Grade", sortable: false, value: "uauth" }
+        { text: "Grade", value: "uauth" },
+        { text: "Actions", sortable: false, value: "num" }
       ],
       users: [],
       portfolio_headers: [
@@ -247,6 +254,17 @@ export default {
         .then(res => {
           this.posts = res["data"];
         });
+    },
+    deleteUser(item) {
+      var form = new FormData();
+      form.append("umail", item.umail);
+      const index = this.users.indexOf(item);
+      if (
+        confirm("Are you sure you want to delete this user?") &&
+        this.users.splice(index, 1)
+      ) {
+        Server(SERVER_URL).post("/api/del/user", form);
+      }
     },
     deletePortfolio(item) {
       var form = new FormData();
