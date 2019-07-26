@@ -1,15 +1,25 @@
-# SW Development Secretary
+# Software Development Secretary 
+
+The Software Development Secretary is a 7week project at the Samsung Software Academy For Youth(SSAFY).
 
 
-## Project setup
+### Prerequisites
+
+This project uses Python(3.7), Flask, Mysql and Vue.js(1.5).
+
 ```
-python3
-pip install flask
-pip install pymysql
+https://nodejs.org/en/
+https://python.org/
+```
 
-cd webmobile-final
-webmobile-final> npm run build
-cd backend
-webmobile-final\backend > python app.py
-http://localhost:5000
+### Installing
+
+```
+pip install flask, flask_cors, flask_restful, flask_jwt_extended, pymysql
+```
+
+When you installed module,
+
+```
+execute.bat (double-click)
 ```
