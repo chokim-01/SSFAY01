@@ -43,7 +43,8 @@ export default {
     return {
       title: "",
       content: "",
-      dialog: false
+      dialog: false,
+      author: this.$store.state.umail
     };
   },
   methods: {
@@ -62,7 +63,7 @@ export default {
     writePortfolio() {
       if (this.chkNull()) {
         // writePF $on at compoents/Imgur.vue
-        this.$EventBus.$emit("writePF", this.title, this.content);
+        this.$EventBus.$emit("writePF", this.author, this.title, this.content);
         this.$EventBus.$off("wirtePF");
       }
     }

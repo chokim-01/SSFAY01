@@ -80,8 +80,6 @@ export default {
         this.authCheck = true;
       }
     }
-    //let created_at = this.post.created_at;
-    //this.post.created_at = created_at.substr(0, length(created_at));
   },
   methods: {
     makeFormData() {

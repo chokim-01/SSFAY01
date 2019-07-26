@@ -54,6 +54,7 @@ export default {
     },
     makeFormData() {
       var form = new FormData();
+      form.append("author", this.$store.state.umail);
       form.append("title", this.title);
       form.append("body", this.content);
       return form;

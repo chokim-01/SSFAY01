@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       posts: [],
-      limits: 4,
+      limits: 6,
       postsTest: [],
       chkAuth: false
     };
@@ -76,7 +76,7 @@ export default {
     },
     loadMorePosts() {
       this.loadMore = true;
-      this.limits += 3;
+      this.limits += 6;
     }
   }
 };
