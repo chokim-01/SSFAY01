@@ -26,10 +26,12 @@
         <span>더 보기</span>
       </v-btn>
 
-      <v-btn depressed id="highlight-backColor" to="/postWrite">
-        <v-icon class="mr-2">fa-edit</v-icon>
-        <span>글쓰기</span>
-      </v-btn>
+      <template v-if="chkAuth">
+        <v-btn depressed id="highlight-backColor" to="/postWrite">
+          <v-icon class="mr-2">fa-edit</v-icon>
+          <span>글쓰기</span>
+        </v-btn>
+      </template>
     </v-flex>
   </v-layout>
 </template>
@@ -49,11 +51,17 @@ export default {
     return {
       posts: [],
       limits: 4,
-      postsTest: []
+      postsTest: [],
+      chkAuth: false
     };
   },
   components: {
     Post
+  },
+  created() {
+    if (this.$store.state.uauth > 0) {
+      this.chkAuth = true;
+    }
   },
   mounted() {
     this.getPosts();
