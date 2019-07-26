@@ -208,7 +208,6 @@
 <script>
 import ImgBanner from "../components/ImgBanner";
 import Server from "../services/Server.js";
-const SERVER_URL = "http://localhost:5000";
 
 export default {
   data() {
@@ -259,21 +258,21 @@ export default {
       return form;
     },
     async getUsers() {
-      await Server(SERVER_URL)
+      await Server(this.$store.state.SERVER_URL)
         .get("/api/users")
         .then(res => {
           this.users = res["data"];
         });
     },
     async getPortfolios() {
-      await Server(SERVER_URL)
+      await Server(this.$store.state.SERVER_URL)
         .get("/api/portfolios")
         .then(res => {
           this.portfolios = res["data"];
         });
     },
     async getPosts() {
-      await Server(SERVER_URL)
+      await Server(this.$store.state.SERVER_URL)
         .get("/api/posts")
         .then(res => {
           this.posts = res["data"];
@@ -287,7 +286,7 @@ export default {
         confirm("Are you sure you want to delete this user?") &&
         this.users.splice(index, 1)
       ) {
-        Server(SERVER_URL).post("/api/del/user", form);
+        Server(this.$store.state.SERVER_URL).post("/api/del/user", form);
       }
     },
     deletePortfolio(item) {
@@ -298,7 +297,7 @@ export default {
         confirm("Are you sure you want to delete this portfolio?") &&
         this.portfolios.splice(index, 1)
       ) {
-        Server(SERVER_URL).post("/api/del/portfolio", form);
+        Server(this.$store.state.SERVER_URL).post("/api/del/portfolio", form);
       }
     },
     deletePost(item) {
@@ -309,7 +308,7 @@ export default {
         confirm("Are you sure you want to delete this post?") &&
         this.posts.splice(index, 1)
       ) {
-        Server(SERVER_URL).post("/api/del/post", form);
+        Server(this.$store.state.SERVER_URL).post("/api/del/post", form);
       }
     },
     editUserAuth(item, auth) {
@@ -323,7 +322,7 @@ export default {
         upasswd: item.upasswd,
         uauth: auth
       });
-      Server(SERVER_URL).post("/api/edit/user", form);
+      Server(this.$store.state.SERVER_URL).post("/api/edit/user", form);
     }
   }
 };

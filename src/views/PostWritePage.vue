@@ -29,7 +29,6 @@
 
 <script>
 import Server from "../services/Server.js";
-const SERVER_URL = "http://localhost:5000";
 
 export default {
   data() {
@@ -62,7 +61,7 @@ export default {
     writePost() {
       if (this.chkNull()) {
         var form = this.makeFormData();
-        Server(SERVER_URL).post("/api/add/post", form);
+        Server(this.$store.state.SERVER_URL).post("/api/add/post", form);
         this.$router.push("/");
         alert("글을 작성했습니다.");
       }
