@@ -30,6 +30,7 @@
           v-for="menu in menus"
           :key="menu.title"
           :to="menu.route"
+          :uauth="menu.uauth"
           flat
           router
         >
@@ -226,15 +227,18 @@ export default {
     menus: [
       {
         title: "Portfolio",
-        route: "/Portfolio"
+        route: "/Portfolio",
+        uauth: 0
       },
       {
         title: "Post",
-        route: "/Post"
+        route: "/Post",
+        uauth: 0
       },
       {
         title: "Admin",
-        route: "/Admin"
+        route: "/Admin",
+        uauth: 2
       }
     ],
     language: "KOR",
@@ -242,7 +246,8 @@ export default {
     password: "",
     dialog: false,
     dialog_login: false,
-    drawer: null
+    drawer: null,
+    firebaseLogin: false
   }),
   created() {
     FirebaseService.checkLogin();
@@ -253,6 +258,7 @@ export default {
     },
     async loginWithGoogle() {
       this.dialog_login = false;
+      this.firebaseLogin = true;
       await FirebaseService.loginWithGoogle().then(res => {
         this.$store.dispatch("login", {
           accessToken: res.credential.accessToken,
@@ -264,6 +270,7 @@ export default {
     },
     async loginWithFacebook() {
       this.dialog_login = false;
+      this.firebaseLogin = true;
       await FirebaseService.loginWithFacebook().then(res => {
         this.$store.dispatch("login", {
           accessToken: res.credential.accessToken,
@@ -292,9 +299,13 @@ export default {
         });
     },
     async logout() {
-      await Server(SERVER_URL)
-        .post("/api/logout")
-        .then(this.$store.dispatch("logout"));
+      if (this.firebaseLogin == true) {
+        await FirebaseService.logout();
+      } else {
+        await Server(SERVER_URL)
+          .post("/api/logout")
+          .then(this.$store.dispatch("logout"));
+      }
     }
   }
 };
