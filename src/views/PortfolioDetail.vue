@@ -2,44 +2,51 @@
   <div>
     <v-form>
       <v-container my-5>
-        <div class="postheight">
-          <template v-if="editflag">
-            <!-- Title -->
-            <v-layout justify-center>
-              <p class="posttitle">{{ portfolio.title }}</p>
-            </v-layout>
-            <hr />
-            <!-- Date -->
-            <v-layout justify-right>
-              <v-flex>
-                <v-text-field v-model="portfolio.created_at" readonly reverse />
-              </v-flex>
-              <v-flex>
-                <v-text-field v-model="portfolio.author" readonly reverse />
-              </v-flex>
-            </v-layout>
-            <!-- Context -->
-            <!-- View markdown ( No Edit ) -->
+        <template v-if="editflag">
+          <!-- Title -->
+          <v-layout justify-center>
+            <p class="posttitle">{{ portfolio.title }}</p>
+          </v-layout>
+          <hr />
+          <!-- Author -->
+          <v-layout justify-end>
+            <v-chip color="#00adb5" label>
+              <v-icon left>mdi-account-circle-outline</v-icon>
+              {{ portfolio.author }}
+            </v-chip>
+          </v-layout>
+          <!-- Date -->
+          <v-layout>
+            <v-chip color="grey" label text-color="white">
+              <v-icon left>label</v-icon>
+              {{ portfolio.created_at }}
+            </v-chip>
+          </v-layout>
+          <!-- Context -->
+          <!-- View markdown ( No Edit ) -->
+          <div class="postcontext my-5">
             <vue-markdown>{{ portfolio.body }}</vue-markdown>
-          </template>
+          </div>
+        </template>
+        <!-- Context -->
+        <!-- Edit markdown -->
+        <template v-else>
+          <v-flex>
+            <v-text-field v-model="portfolio.title" solo></v-text-field>
+          </v-flex>
+          <markdown-editor
+            v-model="portfolio.body"
+            ref="markdownEditor"
+          ></markdown-editor>
+        </template>
 
-          <!-- Edit markdown -->
+        <template v-if="authCheck">
+          <div class="editBtn">
+            <v-btn @click="updatePortfolio">수정</v-btn>
+            <v-btn @click="deletePortfolio">삭제</v-btn>
+          </div>
+        </template>
 
-          <template v-else>
-            <v-flex>
-              <v-text-field v-model="portfolio.title" solo></v-text-field>
-            </v-flex>
-            <markdown-editor
-              v-model="portfolio.body"
-              ref="markdownEditor"
-            ></markdown-editor>
-          </template>
-        </div>
-
-        <div class="editBtn">
-          <v-btn @click="updatePortfolio">수정</v-btn>
-          <v-btn @click="deletePortfolio">삭제</v-btn>
-        </div>
         <!-- Comments -->
         <div class="comments">
           <VueDisqus
@@ -69,8 +76,19 @@ export default {
   data() {
     return {
       portfolio: this.$route.params.portfolio,
-      editflag: true
+      editflag: true,
+      authCheck: false
     };
+  },
+  created() {
+    var uauth = this.$store.state.uauth;
+    if (uauth == 2) {
+      this.authCheck = true;
+    } else if (uauth == 1) {
+      if (this.$store.state.umail == this.post.author) {
+        this.authCheck = true;
+      }
+    }
   },
   methods: {
     makeFormData() {
@@ -104,7 +122,8 @@ export default {
 </script>
 
 <style>
-.postheight {
+.postcontext {
+  border: 2px solid white;
   min-height: 500px;
 }
 .posttitle {
