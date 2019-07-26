@@ -253,13 +253,25 @@ export default {
     },
     async loginWithGoogle() {
       this.dialog_login = false;
-      const result = await FirebaseService.loginWithGoogle();
-      this.$store.state.user = result.user;
+      await FirebaseService.loginWithGoogle().then(res => {
+        this.$store.dispatch("login", {
+          accessToken: res.credential.accessToken,
+          refreshToken: res.user.refreshToken,
+          umail: res.user.email,
+          uauth: 0
+        });
+      });
     },
     async loginWithFacebook() {
       this.dialog_login = false;
-      const result = await FirebaseService.loginWithFacebook();
-      this.$store.state.user = result.user;
+      await FirebaseService.loginWithFacebook().then(res => {
+        this.$store.dispatch("login", {
+          accessToken: res.credential.accessToken,
+          refreshToken: res.user.refreshToken,
+          umail: res.user.email,
+          uauth: 0
+        });
+      });
     },
     async signIn() {
       var form = new FormData();
