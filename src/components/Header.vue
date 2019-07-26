@@ -35,6 +35,9 @@
         >
           {{ menu.title }}
         </v-btn>
+        <v-btn v-if="this.$store.state.uauth == 2" to="/Admin" flat router>
+          Admin
+        </v-btn>
 
         <!-- Login Logout Button-->
         <v-btn v-if="this.$store.state.accessToken" v-on:click="logout()" flat>
@@ -231,10 +234,6 @@ export default {
       {
         title: "Post",
         route: "/Post"
-      },
-      {
-        title: "Admin",
-        route: "/Admin"
       }
     ],
     language: "KOR",
@@ -242,7 +241,8 @@ export default {
     password: "",
     dialog: false,
     dialog_login: false,
-    drawer: null
+    drawer: null,
+    firebaseLogin: false
   }),
   created() {
     FirebaseService.checkLogin();
@@ -253,13 +253,27 @@ export default {
     },
     async loginWithGoogle() {
       this.dialog_login = false;
-      const result = await FirebaseService.loginWithGoogle();
-      this.$store.state.user = result.user;
+      this.firebaseLogin = true;
+      await FirebaseService.loginWithGoogle().then(res => {
+        this.$store.dispatch("login", {
+          accessToken: res.credential.accessToken,
+          refreshToken: res.user.refreshToken,
+          umail: res.user.email,
+          uauth: 0
+        });
+      });
     },
     async loginWithFacebook() {
       this.dialog_login = false;
-      const result = await FirebaseService.loginWithFacebook();
-      this.$store.state.user = result.user;
+      this.firebaseLogin = true;
+      await FirebaseService.loginWithFacebook().then(res => {
+        this.$store.dispatch("login", {
+          accessToken: res.credential.accessToken,
+          refreshToken: res.user.refreshToken,
+          umail: res.user.email,
+          uauth: 0
+        });
+      });
     },
     async signIn() {
       var form = new FormData();
@@ -280,9 +294,13 @@ export default {
         });
     },
     async logout() {
-      await Server(SERVER_URL)
-        .post("/api/logout")
-        .then(this.$store.dispatch("logout"));
+      if (this.firebaseLogin == true) {
+        await FirebaseService.logout();
+      } else {
+        await Server(SERVER_URL)
+          .post("/api/logout")
+          .then(this.$store.dispatch("logout"));
+      }
     }
   }
 };
