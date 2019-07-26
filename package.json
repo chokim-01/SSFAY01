@@ -12,6 +12,7 @@
     "browser-detect": "^0.2.28",
     "core-js": "^2.6.5",
     "detect-browser": "^4.5.1",
+    "emoji-vue": "^0.2.4",
     "eslint": "^6.0.1",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
