@@ -216,14 +216,15 @@ def delUser():
 # Insert portfolios
 @app.route("/api/add/portfolio", methods=["POST"])
 def addPortfolio():
+    author = request.form.get("author")
     title = request.form.get("title")
     body = request.form.get("body")
     img = request.form.get("img")
 
     db = conn.db()
     cursor = db.cursor()
-    sql = "insert into portfolios (num, title, body, img, created_at) values(0, %s, %s, %s, timestamp(now()))"
-    cursor.execute(sql, (title, body, img))
+    sql = "insert into portfolios (num, author, title, body, img, created_at) values(0, %s, %s, %s, %s, timestamp(now()))"
+    cursor.execute(sql, (author, title, body, img))
     db.commit()
     return ""
 
@@ -231,13 +232,14 @@ def addPortfolio():
 # Insert post
 @app.route("/api/add/post", methods=["POST"])
 def addPost():
+    author = request.form.get("author")
     title = request.form.get("title")
     body = request.form.get("body")
 
     db = conn.db()
     cursor = db.cursor()
-    sql = "insert into posts (num, title, body, created_at) values(0, %s, %s, timestamp(now()))"
-    cursor.execute(sql, (title,body))
+    sql = "insert into posts (num, author, title, body, created_at) values(0, %s, %s, %s, timestamp(now()))"
+    cursor.execute(sql, (author, title, body))
     db.commit()
     return ""
 

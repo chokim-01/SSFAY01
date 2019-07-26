@@ -85,7 +85,7 @@ export default {
     if (uauth == 2) {
       this.authCheck = true;
     } else if (uauth == 1) {
-      if (this.$store.state.umail == this.post.author) {
+      if (this.$store.state.umail == this.portfolio.author) {
         this.authCheck = true;
       }
     }

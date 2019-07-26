@@ -18,6 +18,11 @@ const requireAuth = () => (from, to, next) => {
   next("/");
 };
 
+const requirewriteAuth = () => (from, to, next) => {
+  if (store.state.uauth >= 1) return next();
+  next("/");
+};
+
 export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
@@ -35,7 +40,8 @@ export default new Router({
     {
       path: "/postWrite",
       name: "postWrite",
-      component: PostWritePage
+      component: PostWritePage,
+      beforeEnter: requirewriteAuth()
     },
     {
       path: "/portfolio",
@@ -45,7 +51,8 @@ export default new Router({
     {
       path: "/portfolioWrite",
       name: "portfolioWrite",
-      component: PortfolioWritePage
+      component: PortfolioWritePage,
+      beforeEnter: requirewriteAuth()
     },
     {
       path: "/signUp",
