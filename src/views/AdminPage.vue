@@ -19,6 +19,7 @@
           <!-- member -->
           <v-tab-item>
             <v-card flat>
+              <!-- search-bar -->
               <v-card-title>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -30,6 +31,8 @@
                   color="#00adb5"
                 ></v-text-field>
               </v-card-title>
+
+              <!-- table -->
               <v-data-table
                 :headers="user_headers"
                 :items="users"
@@ -42,13 +45,19 @@
                   <td>{{ props.item.umail }}</td>
                   <td>{{ props.item.upasswd }}</td>
                   <td v-if="props.item.uauth == 0">
-                    <span id="u_guest">guest</span>
+                    <div id="user_auth">
+                      <span>🐟guest</span>
+                    </div>
                   </td>
                   <td v-if="props.item.uauth == 1">
-                    <span id="u_member">member</span>
+                    <div id="user_auth">
+                      <span>🐠member</span>
+                    </div>
                   </td>
                   <td v-if="props.item.uauth == 2">
-                    <span id="u_admin">admin</span>
+                    <div id="user_auth">
+                      <span>🦈admin</span>
+                    </div>
                   </td>
                 </template>
               </v-data-table>
@@ -58,6 +67,7 @@
           <!-- Portfolio -->
           <v-tab-item>
             <v-card flat>
+              <!-- search-bar -->
               <v-card-title>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -69,6 +79,8 @@
                   color="#00adb5"
                 ></v-text-field>
               </v-card-title>
+
+              <!-- table -->
               <v-data-table
                 :headers="portfolio_headers"
                 :items="portfolios"
@@ -90,6 +102,7 @@
           <!-- Post -->
           <v-tab-item>
             <v-card flat>
+              <!-- search-bar -->
               <v-card-title>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -101,6 +114,8 @@
                   color="#00adb5"
                 ></v-text-field>
               </v-card-title>
+
+              <!-- table -->
               <v-data-table
                 :headers="post_headers"
                 :items="posts"
@@ -125,7 +140,7 @@
                   <td>{{ props.item.created_at }}</td>
                   <td>
                     <v-icon small @click="deletePost(props.item)">
-                      delete
+                      🗑️
                     </v-icon>
                   </td>
                 </template>
@@ -232,3 +247,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+a,
+h2 {
+  text-decoration: none;
+  color: #00adb5;
+}
+</style>
