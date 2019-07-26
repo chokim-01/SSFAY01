@@ -30,11 +30,13 @@
           v-for="menu in menus"
           :key="menu.title"
           :to="menu.route"
-          :uauth="menu.uauth"
           flat
           router
         >
           {{ menu.title }}
+        </v-btn>
+        <v-btn v-if="this.$store.state.uauth == 2" to="/Admin" flat router>
+          Admin
         </v-btn>
 
         <!-- Login Logout Button-->
@@ -227,18 +229,11 @@ export default {
     menus: [
       {
         title: "Portfolio",
-        route: "/Portfolio",
-        uauth: 0
+        route: "/Portfolio"
       },
       {
         title: "Post",
-        route: "/Post",
-        uauth: 0
-      },
-      {
-        title: "Admin",
-        route: "/Admin",
-        uauth: 2
+        route: "/Post"
       }
     ],
     language: "KOR",
