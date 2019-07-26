@@ -19,6 +19,7 @@
           <!-- member -->
           <v-tab-item>
             <v-card flat>
+              <!-- search-bar -->
               <v-card-title>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -30,6 +31,8 @@
                   color="#00adb5"
                 ></v-text-field>
               </v-card-title>
+
+              <!-- table -->
               <v-data-table
                 :headers="user_headers"
                 :items="users"
@@ -37,18 +40,30 @@
                 :search="search_user"
                 prev-icon="fa-caret-left"
                 next-icon="fa-caret-right"
+                sort-icon="fa-caret-down"
               >
                 <template v-slot:items="props">
                   <td>{{ props.item.umail }}</td>
                   <td>{{ props.item.upasswd }}</td>
                   <td v-if="props.item.uauth == 0">
-                    <span id="u_guest">guest</span>
+                    <div id="user_auth">
+                      <span>🐟guest</span>
+                    </div>
                   </td>
                   <td v-if="props.item.uauth == 1">
-                    <span id="u_member">member</span>
+                    <div id="user_auth">
+                      <span>🐠member</span>
+                    </div>
                   </td>
                   <td v-if="props.item.uauth == 2">
-                    <span id="u_admin">admin</span>
+                    <div id="user_auth">
+                      <span>🦈admin</span>
+                    </div>
+                  </td>
+                  <td>
+                    <v-icon @click="deleteUser(props.item)">
+                      fa-trash
+                    </v-icon>
                   </td>
                 </template>
               </v-data-table>
@@ -58,6 +73,7 @@
           <!-- Portfolio -->
           <v-tab-item>
             <v-card flat>
+              <!-- search-bar -->
               <v-card-title>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -69,43 +85,13 @@
                   color="#00adb5"
                 ></v-text-field>
               </v-card-title>
+
+              <!-- table -->
               <v-data-table
                 :headers="portfolio_headers"
                 :items="portfolios"
                 class="elevation-1"
                 :search="search_portfolio"
-                prev-icon="fa-caret-left"
-                next-icon="fa-caret-right"
-                sort-icon="fa-caret-down"
-              >
-                <template v-slot:items="props">
-                  <td>{{ props.item.num }}</td>
-                  <td>{{ props.item.title }}</td>
-                  <td>{{ props.item.created_at }}</td>
-                </template>
-              </v-data-table>
-            </v-card>
-          </v-tab-item>
-
-          <!-- Post -->
-          <v-tab-item>
-            <v-card flat>
-              <v-card-title>
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="search_post"
-                  append-icon="search"
-                  label="Search"
-                  single-line
-                  hide-details
-                  color="#00adb5"
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                :headers="post_headers"
-                :items="posts"
-                class="elevation-1"
-                :search="search_post"
                 prev-icon="fa-caret-left"
                 next-icon="fa-caret-right"
                 sort-icon="fa-caret-down"
@@ -124,8 +110,57 @@
                   </td>
                   <td>{{ props.item.created_at }}</td>
                   <td>
-                    <v-icon small @click="deletePost(props.item)">
-                      delete
+                    <v-icon @click="deletePortfolio(props.item)">
+                      fa-trash
+                    </v-icon>
+                  </td>
+                </template>
+              </v-data-table>
+            </v-card>
+          </v-tab-item>
+
+          <!-- Post -->
+          <v-tab-item>
+            <v-card flat>
+              <!-- search-bar -->
+              <v-card-title>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search_post"
+                  append-icon="search"
+                  label="Search"
+                  single-line
+                  hide-details
+                  color="#00adb5"
+                ></v-text-field>
+              </v-card-title>
+
+              <!-- table -->
+              <v-data-table
+                :headers="post_headers"
+                :items="posts"
+                class="elevation-1"
+                :search="search_post"
+                prev-icon="fa-caret-left"
+                next-icon="fa-caret-right"
+                sort-icon="fa-caret-down"
+              >
+                <template v-slot:items="props">
+                  <td>{{ props.item.num }}</td>
+                  <td>
+                    <router-link
+                      :to="{
+                        name: 'postdetail',
+                        params: { post: props.item }
+                      }"
+                    >
+                      {{ props.item.title }}
+                    </router-link>
+                  </td>
+                  <td>{{ props.item.created_at }}</td>
+                  <td>
+                    <v-icon @click="deletePost(props.item)">
+                      fa-trash
                     </v-icon>
                   </td>
                 </template>
@@ -161,13 +196,15 @@ export default {
       user_headers: [
         { text: "Email", sortable: false, value: "uemail" },
         { text: "PassWord", sortable: false, value: "upasswd" },
-        { text: "Grade", sortable: false, value: "uauth" }
+        { text: "Grade", value: "uauth" },
+        { text: "Actions", sortable: false, value: "num" }
       ],
       users: [],
       portfolio_headers: [
         { text: "Num", value: "num" },
         { text: "Title", sortable: false, value: "title" },
-        { text: "Date", value: "created_at" }
+        { text: "Date", value: "created_at" },
+        { text: "Actions", sortable: false, value: "num" }
       ],
       portfolios: [],
       post_headers: [
@@ -218,6 +255,28 @@ export default {
           this.posts = res["data"];
         });
     },
+    deleteUser(item) {
+      var form = new FormData();
+      form.append("umail", item.umail);
+      const index = this.users.indexOf(item);
+      if (
+        confirm("Are you sure you want to delete this user?") &&
+        this.users.splice(index, 1)
+      ) {
+        Server(SERVER_URL).post("/api/del/user", form);
+      }
+    },
+    deletePortfolio(item) {
+      var form = new FormData();
+      form.append("num", item.num);
+      const index = this.portfolios.indexOf(item);
+      if (
+        confirm("Are you sure you want to delete this portfolio?") &&
+        this.portfolios.splice(index, 1)
+      ) {
+        Server(SERVER_URL).post("/api/del/portfolio", form);
+      }
+    },
     deletePost(item) {
       var form = new FormData();
       form.append("num", item.num);
@@ -232,3 +291,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+a,
+h2 {
+  text-decoration: none;
+  color: #00adb5;
+}
+</style>
