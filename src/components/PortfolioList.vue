@@ -16,6 +16,7 @@
         :body="portfolios[idx - 1].body"
         :img="portfolios[idx - 1].img"
         :num="portfolios[idx - 1].num"
+        :author="portfolios[idx - 1].author"
       ></Portfolio>
     </v-flex>
 

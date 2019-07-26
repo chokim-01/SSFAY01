@@ -2,34 +2,39 @@
   <div>
     <v-form>
       <v-container my-5>
-        <template v-if="editflag">
-          <!-- Title -->
-          <v-layout justify-center>
-            <p class="posttitle">{{ post.title }}</p>
-          </v-layout>
-          <hr />
-          <!-- Date -->
-          <v-layout justify-right>
+        <div class="postheight">
+          <template v-if="editflag">
+            <!-- Title -->
+            <v-layout justify-center>
+              <p class="posttitle">{{ post.title }}</p>
+            </v-layout>
+            <hr />
+            <!-- Date -->
+            <v-layout justify-right>
+              <v-flex>
+                <v-text-field v-model="post.created_at" readonly reverse />
+              </v-flex>
+              <v-flex>
+                <v-text-field v-model="post.author" readonly reverse />
+              </v-flex>
+            </v-layout>
+          </template>
+          <!-- Edit mode -->
+          <template v-else>
             <v-flex>
-              <v-text-field v-model="post.created_at" readonly reverse />
+              <v-text-field v-model="post.title" solo></v-text-field>
             </v-flex>
-          </v-layout>
-        </template>
-        <!-- Edit mode -->
-        <template v-else>
-          <v-flex>
-            <v-text-field v-model="post.title" solo></v-text-field>
-          </v-flex>
-        </template>
-        <!-- Context -->
-        <v-textarea
-          light
-          v-model="post.body"
-          placeholder="내용"
-          rows="20"
-          solo
-          :readonly="editflag"
-        ></v-textarea>
+          </template>
+          <!-- Context -->
+          <v-textarea
+            light
+            v-model="post.body"
+            placeholder="내용"
+            rows="20"
+            solo
+            :readonly="editflag"
+          ></v-textarea>
+        </div>
 
         <div class="editBtn">
           <v-btn @click="updatePost">수정</v-btn>
@@ -90,6 +95,9 @@ export default {
 </script>
 
 <style>
+.postheight {
+  min-height: 500px;
+}
 .posttitle {
   font-size: 3em;
 }

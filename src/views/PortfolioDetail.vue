@@ -2,34 +2,39 @@
   <div>
     <v-form>
       <v-container my-5>
-        <template v-if="editflag">
-          <!-- Title -->
-          <v-layout justify-center>
-            <p class="posttitle">{{ portfolio.title }}</p>
-          </v-layout>
-          <hr />
-          <!-- Date -->
-          <v-layout justify-right>
+        <div class="postheight">
+          <template v-if="editflag">
+            <!-- Title -->
+            <v-layout justify-center>
+              <p class="posttitle">{{ portfolio.title }}</p>
+            </v-layout>
+            <hr />
+            <!-- Date -->
+            <v-layout justify-right>
+              <v-flex>
+                <v-text-field v-model="portfolio.created_at" readonly reverse />
+              </v-flex>
+              <v-flex>
+                <v-text-field v-model="portfolio.author" readonly reverse />
+              </v-flex>
+            </v-layout>
+            <!-- Context -->
+            <!-- View markdown ( No Edit ) -->
+            <vue-markdown>{{ portfolio.body }}</vue-markdown>
+          </template>
+
+          <!-- Edit markdown -->
+
+          <template v-else>
             <v-flex>
-              <v-text-field v-model="portfolio.created_at" readonly reverse />
+              <v-text-field v-model="portfolio.title" solo></v-text-field>
             </v-flex>
-          </v-layout>
-          <!-- Context -->
-          <!-- View markdown ( No Edit ) -->
-          <vue-markdown>{{ portfolio.body }}</vue-markdown>
-        </template>
-
-        <!-- Edit markdown -->
-
-        <template v-else>
-          <v-flex>
-            <v-text-field v-model="portfolio.title" solo></v-text-field>
-          </v-flex>
-          <markdown-editor
-            v-model="portfolio.body"
-            ref="markdownEditor"
-          ></markdown-editor>
-        </template>
+            <markdown-editor
+              v-model="portfolio.body"
+              ref="markdownEditor"
+            ></markdown-editor>
+          </template>
+        </div>
 
         <div class="editBtn">
           <v-btn @click="updatePortfolio">수정</v-btn>
@@ -99,6 +104,9 @@ export default {
 </script>
 
 <style>
+.postheight {
+  min-height: 500px;
+}
 .posttitle {
   font-size: 3em;
 }

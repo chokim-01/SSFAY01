@@ -14,6 +14,7 @@
         :title="posts[idx - 1].title"
         :body="posts[idx - 1].body"
         :num="posts[idx - 1].num"
+        :author="posts[idx - 1].author"
       ></Post>
       <v-divider></v-divider>
     </v-flex>
