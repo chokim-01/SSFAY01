@@ -2,44 +2,50 @@
   <div>
     <v-form>
       <v-container my-5>
-        <div class="postheight">
-          <template v-if="editflag">
-            <!-- Title -->
-            <v-layout justify-center>
-              <p class="posttitle">{{ post.title }}</p>
-            </v-layout>
-            <hr />
-            <!-- Date -->
-            <v-layout justify-right>
-              <v-flex>
-                <v-text-field v-model="post.created_at" readonly reverse />
-              </v-flex>
-              <v-flex>
-                <v-text-field v-model="post.author" readonly reverse />
-              </v-flex>
-            </v-layout>
-          </template>
-          <!-- Edit mode -->
-          <template v-else>
-            <v-flex>
-              <v-text-field v-model="post.title" solo></v-text-field>
-            </v-flex>
-          </template>
-          <!-- Context -->
-          <v-textarea
-            light
-            v-model="post.body"
-            placeholder="내용"
-            rows="20"
-            solo
-            :readonly="editflag"
-          ></v-textarea>
-        </div>
+        <template v-if="editflag">
+          <!-- Title -->
+          <v-layout justify-center>
+            <p class="posttitle">{{ post.title }}</p>
+          </v-layout>
+          <hr />
+          <!-- Author -->
+          <v-layout justify-end>
+            <v-chip color="#00adb5" label>
+              <v-icon left>mdi-account-circle-outline</v-icon>
+              {{ post.author }}
+            </v-chip>
+          </v-layout>
+          <!-- Date -->
+          <v-layout>
+            <v-chip color="grey" label text-color="white">
+              <v-icon left>label</v-icon>
+              {{ post.created_at }}
+            </v-chip>
+          </v-layout>
+        </template>
+        <!-- Edit mode -->
+        <template v-else>
+          <v-flex>
+            <v-text-field v-model="post.title" solo></v-text-field>
+          </v-flex>
+        </template>
+        <!-- Context -->
+        <v-textarea
+          class="postcontext my-5"
+          light
+          v-model="post.body"
+          placeholder="내용"
+          rows="20"
+          solo
+          :readonly="editflag"
+        ></v-textarea>
 
-        <div class="editBtn">
-          <v-btn @click="updatePost">수정</v-btn>
-          <v-btn @click="deletePost">삭제</v-btn>
-        </div>
+        <template v-if="authCheck">
+          <div class="editBtn">
+            <v-btn @click="updatePost">수정</v-btn>
+            <v-btn @click="deletePost">삭제</v-btn>
+          </div>
+        </template>
         <div class="comments">
           <!-- Comments -->
           <VueDisqus
@@ -61,8 +67,21 @@ export default {
   data() {
     return {
       post: this.$route.params.post,
-      editflag: true
+      editflag: true,
+      authCheck: false
     };
+  },
+  created() {
+    var uauth = this.$store.state.uauth;
+    if (uauth == 2) {
+      this.authCheck = true;
+    } else if (uauth == 1) {
+      if (this.$store.state.umail == this.post.author) {
+        this.authCheck = true;
+      }
+    }
+    //let created_at = this.post.created_at;
+    //this.post.created_at = created_at.substr(0, length(created_at));
   },
   methods: {
     makeFormData() {
@@ -95,7 +114,8 @@ export default {
 </script>
 
 <style>
-.postheight {
+.postcontext {
+  border: 2px solid white;
   min-height: 500px;
 }
 .posttitle {
