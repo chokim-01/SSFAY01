@@ -24,9 +24,10 @@ export default new Vuex.Store({
       state.uauth = userInfo.uauth;
     },
     logout(state) {
-      state.accessToken = "";
-      state.umail = "";
-      state.uauth = "";
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.umail = null;
+      state.uauth = 0;
     }
   },
   actions: {
