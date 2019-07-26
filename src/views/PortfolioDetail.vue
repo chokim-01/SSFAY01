@@ -5,15 +5,15 @@
         <template v-if="editflag">
           <!-- Title -->
           <v-layout justify-center>
-            <p>{{ portfolio.title }}</p>
+            <p class="posttitle">{{ portfolio.title }}</p>
           </v-layout>
           <hr />
           <!-- Date -->
-
-          <v-flex>
-            <v-text-field v-model="portfolio.created_at" readonly reverse />
-          </v-flex>
-
+          <v-layout justify-right>
+            <v-flex>
+              <v-text-field v-model="portfolio.created_at" readonly reverse />
+            </v-flex>
+          </v-layout>
           <!-- Context -->
           <!-- View markdown ( No Edit ) -->
           <vue-markdown>{{ portfolio.body }}</vue-markdown>
@@ -99,6 +99,9 @@ export default {
 </script>
 
 <style>
+.posttitle {
+  font-size: 3em;
+}
 hr {
   border: dotted;
   width: 40%;

@@ -5,22 +5,23 @@
         <template v-if="editflag">
           <!-- Title -->
           <v-layout justify-center>
-            <p>{{ post.title }}</p>
+            <p class="posttitle">{{ post.title }}</p>
           </v-layout>
           <hr />
           <!-- Date -->
-          <v-flex>
-            <v-text-field v-model="post.created_at" readonly reverse />
-          </v-flex>
+          <v-layout justify-right>
+            <v-flex>
+              <v-text-field v-model="post.created_at" readonly reverse />
+            </v-flex>
+          </v-layout>
         </template>
-
         <!-- Edit mode -->
         <template v-else>
           <v-flex>
             <v-text-field v-model="post.title" solo></v-text-field>
           </v-flex>
         </template>
-        <!--context-->
+        <!-- Context -->
         <v-textarea
           light
           v-model="post.body"
@@ -89,6 +90,9 @@ export default {
 </script>
 
 <style>
+.posttitle {
+  font-size: 3em;
+}
 hr {
   border: dotted;
   width: 40%;
