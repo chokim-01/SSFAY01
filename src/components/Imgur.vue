@@ -45,8 +45,8 @@ export default {
     var self = this;
 
     // writePortfolio
-    this.$EventBus.$once("writePF", function(title, content) {
-      self.sendPF(title, content);
+    this.$EventBus.$once("writePF", function(author, title, content) {
+      self.sendPF(author, title, content);
     });
 
     // Image Banner upload
@@ -55,8 +55,9 @@ export default {
     });
   },
   methods: {
-    sendFormData(title, body, img) {
+    sendFormData(author, title, body, img) {
       var form = new FormData();
+      form.append("author", author);
       form.append("title", title);
       form.append("body", body);
       form.append("img", img);
@@ -76,7 +77,7 @@ export default {
       var form = this.makeFormData(bannerID);
       await ImgurApi(IMGUR_URL).post(`image`, form);
     },
-    async sendPF(title, content) {
+    async sendPF(author, title, content) {
       const portfolioID = "3W37WEYawFLVyPi";
       var form = this.makeFormData(portfolioID);
       var self = this;
@@ -85,7 +86,12 @@ export default {
         .then(response => {
           this.imageUrl = response.data.data.link;
         });
-      var portfolioForm = this.sendFormData(title, content, self.imageUrl);
+      var portfolioForm = this.sendFormData(
+        author,
+        title,
+        content,
+        self.imageUrl
+      );
       await Server(SERVER_URL).post("/api/add/portfolio", portfolioForm);
       alert("글을 작성했습니다.");
       window.location.href = "/";
