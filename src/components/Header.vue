@@ -221,7 +221,6 @@
 <script>
 import FirebaseService from "@/services/FirebaseService";
 import Server from "@/services/Server.js";
-const SERVER_URL = "http://localhost:5000";
 
 export default {
   name: "Header",
@@ -280,7 +279,7 @@ export default {
       form.append("umail", this.email);
       form.append("upasswd", this.password);
 
-      await Server(SERVER_URL)
+      await Server(this.$store.state.SERVER_URL)
         .post("/api/login", form)
         .then(res => {
           if (res.data.success) {
@@ -290,6 +289,8 @@ export default {
               umail: res.data.user.umail,
               uauth: res.data.user.uauth
             });
+          } else {
+            alert(res.data.msg);
           }
         });
     },
@@ -297,7 +298,7 @@ export default {
       if (this.firebaseLogin == true) {
         await FirebaseService.logout();
       } else {
-        await Server(SERVER_URL)
+        await Server(this.$store.state.SERVER_URL)
           .post("/api/logout")
           .then(this.$store.dispatch("logout"));
       }

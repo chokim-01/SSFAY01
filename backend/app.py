@@ -1,17 +1,13 @@
-from flask import Flask
-from flask import jsonify
-from flask import request
-from flask import session
-from flask import escape
+# -- coding: utf-8 --
+from flask import Flask, jsonify, request, session, escape
 from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
-import pymysql
+import os, pymysql, hashlib, sys
 import conn.conn as conn
-import sys
-import itertools
-import os
+
+SALT = "SSAFY_WEBMOIBILE!@"
 
 # If you want to access database,
 # Use conn.db().cursor()
@@ -32,12 +28,16 @@ class MyFlask(Flask):
     comment_end_string='#}',
   ))
 
+# Set directory path for vue.js statis file
 ROOT_PATH = os.path.dirname(os.path.abspath("__file__"))
 STATIC_PATH = os.path.join(ROOT_PATH+"\\..\\", 'dist')
 
+# Flask run at STATIC_PATH
 app = MyFlask("__name__", static_folder=STATIC_PATH, static_url_path='')
-app.config['JWT_SECRET_KEY'] = 'jwt-secret'
 api = Api(app)
+
+# JWT is used for session
+app.config['JWT_SECRET_KEY'] = "jwt-secret"
 jwt_manager = JWTManager()
 jwt_manager.init_app(app)
 
@@ -47,12 +47,13 @@ cors = CORS(app, resources={
 })
 
 
+# Set no cache
 @app.after_request
-def set_response_headers(r):
-    r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    r.headers['Pragma'] = 'no-cache'
-    r.headers['Expires'] = '0'
-    return r
+def set_response_headers(res):
+    res.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    res.headers["Pragma"] = "no-cache"
+    res.headers["Expires"] = "0"
+    return res
 
 # Access at localhost:5000/
 # This path is root page
@@ -65,49 +66,56 @@ def index():
 def page_not_found(e):
     return app.send_static_file("index.html")
 
-### GET DATA SECTION
+
+#######################################################################
+########################## GET DATA SECTION ###########################
+#######################################################################
 
 # Get posts data
-@app.route("/api/posts")
+@app.route("/api/get/posts")
 def getPosts():
     cursor = conn.db().cursor()
     cursor.execute("select * from posts order by num desc")
-    res = cursor.fetchall()
-    return jsonify(res)
+    result = cursor.fetchall()
+
+    return jsonify(result)
 
 
 # Get portfolio data
-@app.route("/api/portfolios")
+@app.route("/api/get/portfolios")
 def getPortfolios():
     cursor = conn.db().cursor()
     cursor.execute("select * from portfolios order by num desc")
-    res = cursor.fetchall()
-    return jsonify(res)
+    result = cursor.fetchall()
+
+    return jsonify(result)
+
 
 # Get one user using login
 @app.route("/api/login", methods=["POST"])
 def login():
     umail = request.form.get("umail")
-    upasswd = request.form.get("upasswd")
+    upasswd = request.form.get("upasswd") + SALT
+    upasswd = hashlib.sha256(upasswd.encode()).hexdigest()
 
     cursor = conn.db().cursor()
     sql = "select * from users where umail = %s and upasswd = %s"
     cursor.execute(sql, (umail, upasswd))
-    res = cursor.fetchone()
+    result = cursor.fetchone()
 
-    if len(res) == 0:
+    if isinstance(result, type(None)):
         return jsonify({"msg": "해당 정보가 없습니다.", "success": False})
-
 
     # Set session
     token_identity = {"umail": umail}
     accessToken = create_access_token(identity=token_identity)
     refreshToken = create_refresh_token(identity=token_identity)
 
-    session = ({'accessToken': accessToken,
-                    'refresh_token': refreshToken})
+    session = ({"accessToken": accessToken,
+                    "refresh_token": refreshToken})
 
-    return jsonify({"msg": "로그인 성공", "success": True, "user": res, "session": session})
+    return jsonify({"msg": "로그인 성공", "success": True, "user": result, "session": session})
+
 
 # Get one user using login
 @app.route("/api/logout", methods=["POST"])
@@ -116,15 +124,18 @@ def logout():
 
 
 # Get all user data
-@app.route("/api/users")
+@app.route("/api/get/users")
 def getUsers():
     cursor = conn.db().cursor()
     cursor.execute("select * from users")
-    res = cursor.fetchall()
-    return jsonify(res)
+    result = cursor.fetchall()
+
+    return jsonify(result)
 
 
-### EDIT DATA SECTION
+#######################################################################
+########################## EDIT DATA SECTION ##########################
+#######################################################################
 
 # Edit portfolio
 @app.route("/api/edit/portfolio", methods=['POST'])
@@ -139,8 +150,6 @@ def editPortfoilo():
     cursor.execute(sql, (title, body, num))
     db.commit()
 
-    return ""
-
 
 # Edit post
 @app.route("/api/edit/post", methods=["POST"])
@@ -152,10 +161,8 @@ def editPost():
     db = conn.db()
     cursor = db.cursor()
     sql = "update posts set title = %s, body = %s where num = %s"
-    cursor.execute(sql, (title,body,num))
+    cursor.execute(sql, (title, body, num))
     db.commit()
-
-    return ""
 
 
 # Edit user
@@ -170,48 +177,50 @@ def editUser():
     cursor.execute(sql, (uauth, umail))
     db.commit()
 
-    return ""
 
+#######################################################################
+######################### DELETE DATA SECITON #########################
+#######################################################################
 
-### DELETE DATA SECITON
-
-# Del portfolio
+# Delete portfolio
 @app.route("/api/del/portfolio", methods=["POST"])
 def delPortfolio():
     num = request.form.get("num")
+
     db = conn.db()
     cursor = db.cursor()
     sql = "delete from portfolios where num = %s"
     cursor.execute(sql, (num))
     db.commit()
-    return ""
 
 
-# Del post
+# Delete post
 @app.route("/api/del/post", methods=["POST"])
 def delPost():
     num = request.form.get("num")
+
     db = conn.db()
     cursor = db.cursor()
     sql = "delete from posts where num = %s"
     cursor.execute(sql, (num))
     db.commit()
-    return ""
 
 
-# Del user
+# Delete user
 @app.route("/api/del/user", methods=["POST"])
 def delUser():
     umail = request.form.get("umail")
+
     db = conn.db()
     cursor = db.cursor()
     sql = "delete from users where umail = %s"
     cursor.execute(sql, (umail))
     db.commit()
-    return ""
 
 
-# INSERT DATA SECITON
+#######################################################################
+######################### INSERT DATA SECITON #########################
+#######################################################################
 
 # Insert portfolios
 @app.route("/api/add/portfolio", methods=["POST"])
@@ -226,7 +235,6 @@ def addPortfolio():
     sql = "insert into portfolios (num, author, title, body, img, created_at) values(0, %s, %s, %s, %s, timestamp(now()))"
     cursor.execute(sql, (author, title, body, img))
     db.commit()
-    return ""
 
 
 # Insert post
@@ -241,14 +249,14 @@ def addPost():
     sql = "insert into posts (num, author, title, body, created_at) values(0, %s, %s, %s, timestamp(now()))"
     cursor.execute(sql, (author, title, body))
     db.commit()
-    return ""
 
 
 # Insert user
 @app.route("/api/add/user", methods=["POST"])
 def addUser():
     umail = request.form.get("umail")
-    upasswd = request.form.get("upasswd")
+    upasswd = request.form.get("upasswd") + SALT
+    upasswd = hashlib.sha256(upasswd.encode()).hexdigest()
 
     db = conn.db()
     cursor = db.cursor()

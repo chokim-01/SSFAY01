@@ -68,7 +68,7 @@ export default {
   methods: {
     async getPosts() {
       await Server(this.$store.state.SERVER_URL)
-        .get("/api/posts")
+        .get("/api/get/posts")
         .then(res => {
           this.posts = res["data"];
         });
