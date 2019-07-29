@@ -15,6 +15,13 @@ import UploadButton from "vuetify-upload-button";
 import VueDisqus from "vue-disqus";
 import axios from "axios";
 
+// vue-pullpage
+import "animate.css";
+import "fullpage-vue/src/fullpage.css";
+import VueFullpage from "fullpage-vue";
+
+Vue.use(VueFullpage);
+
 Vue.prototype.$EventBus = new Vue();
 Vue.prototype.$http = axios;
 

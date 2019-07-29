@@ -1,70 +1,84 @@
 <template>
-  <div>
-    <!-- Top image -->
-    <ImgBanner>
-      <div id="imgBanner" slot="text">
-        <h1 id="bannerTxt">
-          Keep Going
-        </h1>
+  <div class="fullpage-container">
+    <div class="fullpage-wp" v-fullpage="opts" ref="example">
+      <!-- Top image -->
+      <div class="page">
+        <ImgBanner>
+          <div id="imgBanner" slot="text">
+            <h1 id="bannerTxt">
+              Keep Going
+            </h1>
+          </div>
+        </ImgBanner>
       </div>
-    </ImgBanner>
 
-    <!-- About Me -->
-    <v-container>
-      <v-carousel
-        align-center
-        dark
-        hide-delimiters
-        delimiter-icon="stop"
-        prev-icon="fa-angle-left"
-        next-icon="fa-angle-right"
-        id="about"
-      >
-        <!-- Get member information -->
-        <v-carousel-item v-for="(member, i) in members" :key="i">
-          <v-layout fill-height id="aboutMe">
-            <v-flex xs12 md8 id="about-text" mx-2>
-              <h2 class="titles mb-3 font-weight-light">
-                <span>About</span>
-                <span id="highlight-fontColor">Me</span>
-              </h2>
+      <!-- About Me -->
+      <div class="page aboutPage">
+        <v-container fill-height grid-list-md>
+          <v-layout row wrap align-center>
 
-              <p class="font-weight-light">
-                {{ member.name }}
-              </p>
+            <!-- Title -->
+            <v-layout my-5>
+              <v-flex xs12>
+                <h2
+                  class="titles my-3 font-weight-light text-xs-center"
+                  v-animate="{ value: 'zoomInDown' }"
+                >
+                  <span>About</span>
+                  <span id="highlight-fontColor">US</span>
+                </h2>
+                <p class="text-xs-center">
+                  안녕하세요<br />
+                  10TRIILION입니다<br />
+                  3명이지만 힘들지 않습니다🤢
+                </p>
+              </v-flex>
+            </v-layout>
 
-              <!-- Each information of Member -->
-              <p v-for="prof in member.profile" :key="prof.name">
-                {{ prof }}
-              </p>
-            </v-flex>
+            <!-- content -->
+            <v-carousel
+              hide-delimiters
+              hide-controls
+              vertical
+              grid-list-md
+              text-xs-center
+              id="about"
+            >
+              <!-- Get member information -->
+              <v-carousel-item v-for="(member, i) in members" :key="i">
+                <v-layout id="aboutMe" row align-center>
+                  <!-- Member Image -->
+                  <v-flex md6 mx-2 id="about-img">
+                    <v-img id="about-img2" v-bind:src="member.src" />
+                  </v-flex>
 
-            <!-- Member Image -->
-            <v-flex md4 mx-2 id="about-img">
-              <v-img
-                id="about-img2"
-                v-bind:src="member.src"
-                aspect-ratio="1.5"
-              />
-            </v-flex>
+                  <!-- Each information of Member -->
+                  <v-flex xs12 md6 mx-2 id="about-text" text-xs-right>
+                    <h2
+                      class="titles m_name font-weight-light"
+                      id="highlight-fontColor"
+                    >
+                      {{ member.name }}
+                    </h2>
+
+                    <p v-for="prof in member.profile" :key="prof.name">
+                      {{ prof }}
+                    </p>
+                  </v-flex>
+                </v-layout>
+              </v-carousel-item>
+            </v-carousel>
           </v-layout>
-        </v-carousel-item>
-      </v-carousel>
-
-      <!-- Scroll Button -->
-      <v-layout class="align-center justify-center">
-        <button
-          class="scrollbtn"
-          v-on:click="check('#Portfolio')"
-          @click="$vuetify.goTo(target, options)"
-          icon
-        >
-          <v-icon size="30px">fa-arrow-down</v-icon>
-        </button>
-      </v-layout>
+        </v-container>
+      </div>
 
       <!-- Post, Portfolio, Gitlab information -->
-      <div v-for="view in views" v-bind:id="view.name" :key="view.name">
+      <div
+        class="page"
+        v-for="view in views"
+        v-bind:id="view.name"
+        :key="view.name"
+      >
         <v-layout my-5 class="contents">
           <v-flex xs12>
             <h2 class="titles my-3 font-weight-light text-xs-center">
@@ -78,17 +92,9 @@
           v-if="view.name === 'Portfolio' || view.name === 'Post'"
           class="align-center justify-center"
         >
-          <button
-            class="scrollbtn"
-            v-on:click="check(view.next)"
-            @click="$vuetify.goTo(target, options)"
-            icon
-          >
-            <v-icon size="30px">fa-arrow-down</v-icon>
-          </button>
         </v-layout>
       </div>
-    </v-container>
+    </div>
   </div>
 </template>
 
@@ -163,7 +169,12 @@ export default {
       type: "selector",
       selector: "",
       duration: 400,
-      offset: 50
+      offset: 50,
+      opts: {
+        start: 0,
+        dir: "v",
+        duration: 500
+      }
     };
   },
   methods: {
@@ -193,33 +204,87 @@ export default {
 <style scoped>
 .contents,
 #about {
-  background-color: #212121;
   padding: 20px;
-  border-radius: 10px;
+}
+
+#aboutMe {
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.aboutPage {
+  background-image: url("../assets/img/about_bg.jpg");
+  background-size: 120%;
+}
+
+.titles {
+  font-size: 150px;
+}
+
+.m_name {
+  font-size: 100px;
 }
 
 #about {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  height: 400px !important;
+  height: 38% !important;
 }
 
 #about-img2 {
-  height: 350px;
+  height: 80%;
 }
 
-@media screen and (max-width: 780px) {
-  #about {
-    height: 300px !important;
-  }
+.fullpage-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.fullpage-wp {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.page {
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  width: 100% !important;
+  height: 100%;
+  flex-shrink: 0;
+  margin: 0px !important;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 600px) {
-  #about {
-    height: 300px !important;
-  }
   #about-img {
-    display: none;
+    border-radius: 50%;
+  }
+
+  #about-text {
+    text-align: center !important;
+  }
+
+  #aboutMe {
+    margin: auto;
+  }
+
+  .titles {
+    font-size: 60px;
+  }
+
+  .m_name {
+    font-size: 40px;
+  }
+
+  .aboutPage {
+    background-size: 400%;
   }
 }
 </style>
