@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Show Images -->
-    <v-img :src="imgSrc">
+    <v-img :src="imgSrc" aspect-ratio="2.0">
       <v-layout align-center justify-center row fill-height>
         <v-flex text-xs-center>
           <span class="text-shadow display-2 font-weight-light">
