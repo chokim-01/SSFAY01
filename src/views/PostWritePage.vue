@@ -6,6 +6,7 @@
         <v-flex>
           <v-text-field v-model="title" label="제목" solo></v-text-field>
         </v-flex>
+
         <v-textarea
           light
           v-model="content"
@@ -13,6 +14,7 @@
           rows="20"
           solo
         ></v-textarea>
+
         <!-- Write Portfolio Button -->
         <v-btn
           id="highlight-backColor"

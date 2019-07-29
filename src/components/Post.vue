@@ -9,7 +9,9 @@
           }"
           ><h2 class="font-weight-light">{{ title }}</h2></router-link
         >
+
         <div class="color-666 caption">{{ created_at }}</div>
+
         <p class="mb-1 font-weight-light">{{ body }}</p>
       </div>
     </v-flex>
@@ -42,6 +44,7 @@ export default {
 .h-100 {
   height: 100%;
 }
+
 a,
 h2 {
   text-decoration: none;

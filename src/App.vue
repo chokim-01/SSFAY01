@@ -13,7 +13,7 @@
         </button>
       </back-to-top>
 
-      <Footer> </Footer>
+      <Footer v-if="this.$route.path != '/'"> </Footer>
     </v-app>
   </div>
 </template>

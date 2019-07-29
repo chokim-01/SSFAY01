@@ -16,6 +16,7 @@
         :num="posts[idx - 1].num"
         :author="posts[idx - 1].author"
       ></Post>
+
       <v-divider></v-divider>
     </v-flex>
 
@@ -68,9 +69,9 @@ export default {
   methods: {
     async getPosts() {
       await Server(this.$store.state.SERVER_URL)
-        .get("/api/posts")
+        .get("/api/get/posts")
         .then(res => {
-          this.posts = res["data"];
+          this.posts = res.data;
         });
     },
     loadMorePosts() {
