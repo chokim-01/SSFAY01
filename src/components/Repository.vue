@@ -86,12 +86,14 @@ export default {
         until.setDate(now.getDate() + day);
         since.setHours(-15, 0, 0, 0);
         until.setHours(+8, 59, 59, 999);
+
         var commits_7day = await GitlabService.getCommits(
           this.repos.id,
           since,
           until
         );
-        this.commitsCnt.push(commits_7day["data"].length);
+
+        this.commitsCnt.push(commits_7day.data.length);
       }
       this.autoDraw = true;
     },

@@ -21,7 +21,6 @@ const firestore = firebase.firestore();
 
 var _login = firebase.functions().httpsCallable("Login");
 var _logout = firebase.functions().httpsCallable("Logout");
-var _signup = firebase.functions().httpsCallable("Signup");
 
 const state = {
   user: null
@@ -64,23 +63,6 @@ export default {
         return result;
       });
   },
-  signIn(email, password) {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(
-        function(user) {
-          _login({
-            text: "Email Login"
-          }).then(function() {});
-          alert("Hi! ");
-          return user;
-        },
-        function(err) {
-          alert("Failed : " + err.massage);
-        }
-      );
-  },
   logout() {
     firebase
       .auth()
@@ -96,30 +78,5 @@ export default {
       .catch(function(error) {
         alert(error.massage);
       });
-  },
-  checkLogin() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        store.state.user = user;
-        store.state.accessToken = user.email;
-      }
-    });
-  },
-  signUp(email, password) {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(
-        function() {
-          _signup({
-            text: "Email SignUp"
-          }).then(function() {});
-          alert("welcome!");
-          window.location.href = "/";
-        },
-        function(err) {
-          alert("failed : " + err.message);
-        }
-      );
   }
 };

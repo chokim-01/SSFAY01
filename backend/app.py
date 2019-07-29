@@ -150,6 +150,7 @@ def editPortfoilo():
     cursor.execute(sql, (title, body, num))
     db.commit()
 
+    return ""
 
 # Edit post
 @app.route("/api/edit/post", methods=["POST"])
@@ -164,6 +165,7 @@ def editPost():
     cursor.execute(sql, (title, body, num))
     db.commit()
 
+    return ""
 
 # Edit user
 @app.route("/api/edit/user", methods=["POST"])
@@ -177,6 +179,7 @@ def editUser():
     cursor.execute(sql, (uauth, umail))
     db.commit()
 
+    return ""
 
 #######################################################################
 ######################### DELETE DATA SECITON #########################
@@ -193,6 +196,7 @@ def delPortfolio():
     cursor.execute(sql, (num))
     db.commit()
 
+    return ""
 
 # Delete post
 @app.route("/api/del/post", methods=["POST"])
@@ -205,6 +209,7 @@ def delPost():
     cursor.execute(sql, (num))
     db.commit()
 
+    return ""
 
 # Delete user
 @app.route("/api/del/user", methods=["POST"])
@@ -217,6 +222,7 @@ def delUser():
     cursor.execute(sql, (umail))
     db.commit()
 
+    return ""
 
 #######################################################################
 ######################### INSERT DATA SECITON #########################
@@ -236,6 +242,7 @@ def addPortfolio():
     cursor.execute(sql, (author, title, body, img))
     db.commit()
 
+    return ""
 
 # Insert post
 @app.route("/api/add/post", methods=["POST"])
@@ -249,6 +256,8 @@ def addPost():
     sql = "insert into posts (num, author, title, body, created_at) values(0, %s, %s, %s, timestamp(now()))"
     cursor.execute(sql, (author, title, body))
     db.commit()
+
+    return ""
 
 
 # Insert user

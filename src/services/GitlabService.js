@@ -1,13 +1,13 @@
 import Api from "@/services/Api";
 
-const BASE_URL = "https://lab.ssafy.com/api/v4";
+const GITLAB_URL = "https://lab.ssafy.com/api/v4";
 
 export default {
   getRepos(userName) {
-    return Api(BASE_URL).get(`/users/${userName}/projects`);
+    return Api(GITLAB_URL).get(`/users/${userName}/projects`);
   },
   getCommits(fullName, since, until) {
-    return Api(BASE_URL).get(
+    return Api(GITLAB_URL).get(
       `/projects/${fullName}/repository/commits?since=${since.toISOString()}&until=${until.toISOString()}&all=true`
     );
   },
@@ -17,7 +17,7 @@ export default {
       "ydk9557819@naver.com",
       "chokim159@naver.com"
     ];
-    var allCommits = Api(BASE_URL).get(
+    var allCommits = Api(GITLAB_URL).get(
       `projects/${fullName}/repository/commits?all=true`
     );
     var repoCommits = new Array();
