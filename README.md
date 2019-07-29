@@ -1,4 +1,4 @@
-# Software Development Secretary 
+# Software Development Secretary
 
 The Software Development Secretary is a 7week project at the Samsung Software Academy For Youth(SSAFY).
 
@@ -21,5 +21,6 @@ pip install flask, flask_cors, flask_restful, flask_jwt_extended, pymysql
 When you installed module,
 
 ```
+npm install
 execute.bat (double-click)
 ```

@@ -11,7 +11,7 @@
       <!-- Get portfolio information -->
       <Portfolio
         class="ma-3"
-        :created_at="portfolios[idx - 1].created_at.toString()"
+        :created_at="portfolios[idx - 1].created_at"
         :title="portfolios[idx - 1].title"
         :body="portfolios[idx - 1].body"
         :img="portfolios[idx - 1].img"
@@ -67,9 +67,9 @@ export default {
   methods: {
     async getPortfolios() {
       await Server(this.$store.state.SERVER_URL)
-        .get("/api/portfolios")
+        .get("/api/get/portfolios")
         .then(res => {
-          this.portfolios = res["data"];
+          this.portfolios = res.data;
         });
     },
     loadMorePortfolios() {

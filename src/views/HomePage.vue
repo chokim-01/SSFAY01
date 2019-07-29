@@ -16,7 +16,6 @@
       <div class="page aboutPage">
         <v-container fill-height grid-list-md>
           <v-layout row wrap align-center>
-
             <!-- Title -->
             <v-layout>
               <v-flex xs12>
