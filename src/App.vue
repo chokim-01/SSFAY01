@@ -1,19 +1,21 @@
 <template>
-  <v-app dark>
-    <Header> </Header>
-    <v-content>
-      <router-view />
-    </v-content>
+  <div>
+    <v-app dark>
+      <Header> </Header>
+      <v-content>
+        <router-view />
+      </v-content>
 
-    <!-- Buttom to Top Button -->
-    <back-to-top>
-      <button type="button" class="btn btn-info btn-to-top">
-        <i class="fa fa-chevron-up"></i>
-      </button>
-    </back-to-top>
+      <!-- Buttom to Top Button -->
+      <back-to-top bottom="90px" right="20px">
+        <button type="button" class="btn btn-info btn-to-top">
+          <i class="fa fa-chevron-up"></i>
+        </button>
+      </back-to-top>
 
-    <Footer> </Footer>
-  </v-app>
+      <Footer> </Footer>
+    </v-app>
+  </div>
 </template>
 
 <script>
@@ -27,7 +29,6 @@ export default {
     Header,
     Footer
   },
-
   store,
   data() {
     return {};
@@ -45,4 +46,16 @@ switch (browser && browser.name) {
   default:
     alert("해당 사이트는 크롬에 최적화 되어있습니다.");
 }
+
+(function(d, s, id) {
+  var js,
+    fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {
+    return;
+  }
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://danbee.ai/js/plugins/frogue-embed/frogue-embed.min.js";
+  fjs.parentNode.insertBefore(js, fjs);
+})(document, "script", "frogue-embed");
 </script>

@@ -1,6 +1,12 @@
 <template>
-  <v-card hover>
-    <v-img :src="imgSrc" height="200px" />
+  <v-card
+    hover
+    :to="{
+      name: 'portfoliodetail',
+      params: { portfolio: { num, title, body, created_at, img, author } }
+    }"
+  >
+    <v-img :src="img" height="200px" />
     <v-card-title primary-title>
       <div class="portfolio-content">
         <div class="portfolio-title headline font-weight-light">
@@ -17,10 +23,12 @@
 export default {
   name: "Portfolio",
   props: {
-    date: { type: String },
+    created_at: { type: String },
     title: { type: String },
     body: { type: String },
-    imgSrc: { type: String }
+    img: { type: String },
+    num: { type: Number },
+    author: { type: String }
   }
 };
 </script>

@@ -98,16 +98,17 @@ export default {
       albumImgs: [],
       dialog: false,
       uploadBannerDialog: false,
-      selectedImg: ""
+      selectedImg: "",
+      random_base_url: "https://source.unsplash.com/random"
     };
   },
   created() {
-    this.$store.commit("setUrl", this.$store.state.random_url);
+    this.$store.commit("setUrl", this.random_base_url);
     this.imgSrc = this.$store.state.url;
   },
   methods: {
     RandomImg() {
-      this.$store.commit("setUrl", this.$store.state.random_url);
+      this.$store.commit("setUrl", this.random_base_url);
       this.imgSrc = this.$store.state.url;
       this.dialog = false;
     },
@@ -121,8 +122,7 @@ export default {
       this.dialog = false;
     },
     getAlbumImg() {
-      const BASE_URL = "https://api.imgur.com/3/";
-      var images = ImgurApi(BASE_URL).get(`album/pQivCF9`);
+      var images = ImgurApi(this.$store.state.IMGUR_URL).get(`album/pQivCF9`);
       images.then(data => {
         var response = data["data"];
         this.albumImgs = response["data"]["images"];

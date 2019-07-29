@@ -6,21 +6,18 @@
         <v-flex>
           <v-text-field v-model="title" label="제목" solo></v-text-field>
         </v-flex>
-
-        <!-- Markdown Editor -->
-        <markdown-editor
+        <v-textarea
+          light
           v-model="content"
-          ref="markdownEditor"
-        ></markdown-editor>
-
-        <!-- upload image -->
-        <Imgur></Imgur>
-
+          placeholder="내용"
+          rows="20"
+          solo
+        ></v-textarea>
         <!-- Write Portfolio Button -->
         <v-btn
           id="highlight-backColor"
           class="right"
-          @click="writePortfolio"
+          @click="writePost"
           depressed
         >
           글쓰기
@@ -31,20 +28,14 @@
 </template>
 
 <script>
-import markdownEditor from "vue-simplemde/src/markdown-editor";
-import Imgur from "../components/Imgur";
+import Server from "../services/Server.js";
 
 export default {
-  components: {
-    markdownEditor,
-    Imgur
-  },
   data() {
     return {
       title: "",
       content: "",
-      dialog: false,
-      author: this.$store.state.umail
+      dialog: false
     };
   },
   methods: {
@@ -60,11 +51,19 @@ export default {
       chk = true;
       return chk;
     },
-    writePortfolio() {
+    makeFormData() {
+      var form = new FormData();
+      form.append("author", this.$store.state.umail);
+      form.append("title", this.title);
+      form.append("body", this.content);
+      return form;
+    },
+    writePost() {
       if (this.chkNull()) {
-        // writePF $on at compoents/Imgur.vue
-        this.$EventBus.$emit("writePF", this.author, this.title, this.content);
-        this.$EventBus.$off("wirtePF");
+        var form = this.makeFormData();
+        Server(this.$store.state.SERVER_URL).post("/api/add/post", form);
+        this.$router.push("/");
+        alert("글을 작성했습니다.");
       }
     }
   }

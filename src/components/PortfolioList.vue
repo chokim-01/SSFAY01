@@ -11,10 +11,12 @@
       <!-- Get portfolio information -->
       <Portfolio
         class="ma-3"
-        :date="portfolios[idx - 1].created_at.toString()"
+        :created_at="portfolios[idx - 1].created_at"
         :title="portfolios[idx - 1].title"
         :body="portfolios[idx - 1].body"
-        :imgSrc="portfolios[idx - 1].img"
+        :img="portfolios[idx - 1].img"
+        :num="portfolios[idx - 1].num"
+        :author="portfolios[idx - 1].author"
       ></Portfolio>
     </v-flex>
 
@@ -25,17 +27,19 @@
         <span> 더 보기 </span>
       </v-btn>
 
-      <v-btn depressed id="highlight-backColor" to="/portfolioWrite">
-        <v-icon class="mr-2">fa-edit</v-icon>
-        <span>글쓰기</span>
-      </v-btn>
+      <template v-if="chkAuth">
+        <v-btn depressed id="highlight-backColor" to="/portfolioWrite">
+          <v-icon class="mr-2">fa-edit</v-icon>
+          <span>글쓰기</span>
+        </v-btn>
+      </template>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-import FirebaseService from "@/services/FirebaseService";
 
 export default {
   name: "PortfoliosList",
@@ -45,22 +49,32 @@ export default {
   data() {
     return {
       portfolios: [],
-      limits: 3
+      limits: 6,
+      chkAuth: false
     };
   },
   components: {
     Portfolio
+  },
+  created() {
+    if (this.$store.state.uauth > 0) {
+      this.chkAuth = true;
+    }
   },
   mounted() {
     this.getPortfolios();
   },
   methods: {
     async getPortfolios() {
-      this.portfolios = await FirebaseService.getPortfolios();
+      await Server(this.$store.state.SERVER_URL)
+        .get("/api/get/portfolios")
+        .then(res => {
+          this.portfolios = res["data"];
+        });
     },
     loadMorePortfolios() {
       this.loadMore = true;
-      this.limits += 3;
+      this.limits += 6;
     }
   }
 };

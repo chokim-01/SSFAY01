@@ -6,7 +6,6 @@ import store from "@/store.js";
 import "firebase/functions";
 
 const POSTS = "posts";
-const PORTFOLIOS = "portfolios";
 
 // Setup Firebase
 const config = {
@@ -30,44 +29,10 @@ const state = {
 
 export default {
   state,
-  getPosts() {
-    const postsCollection = firestore.collection(POSTS);
-    return postsCollection
-      .orderBy("created_at", "desc")
-      .get()
-      .then(docSnapshots => {
-        return docSnapshots.docs.map(doc => {
-          let data = doc.data();
-          data.created_at = new Date(data.created_at.toDate());
-          return data;
-        });
-      });
-  },
   postPost(title, body) {
     return firestore.collection(POSTS).add({
       title,
       body,
-      created_at: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  },
-  getPortfolios() {
-    const postsCollection = firestore.collection(PORTFOLIOS);
-    return postsCollection
-      .orderBy("created_at", "desc")
-      .get()
-      .then(docSnapshots => {
-        return docSnapshots.docs.map(doc => {
-          let data = doc.data();
-          data.created_at = new Date(data.created_at.toDate());
-          return data;
-        });
-      });
-  },
-  postPortfolio(title, body, img) {
-    return firestore.collection(PORTFOLIOS).add({
-      title,
-      body,
-      img,
       created_at: firebase.firestore.FieldValue.serverTimestamp()
     });
   },
@@ -78,7 +43,9 @@ export default {
       .auth()
       .signInWithPopup(provider)
       .then(function(result) {
-        _login({ text: "Google login" }).then(function() {});
+        _login({
+          text: "Google login"
+        }).then(function() {});
         alert("Hi! ");
         return result;
       });
@@ -90,7 +57,9 @@ export default {
       .auth()
       .signInWithPopup(provider)
       .then(function(result) {
-        _login({ text: "Facebook login" }).then(function() {});
+        _login({
+          text: "Facebook login"
+        }).then(function() {});
         alert("Hi! ");
         return result;
       });
@@ -101,7 +70,9 @@ export default {
       .signInWithEmailAndPassword(email, password)
       .then(
         function(user) {
-          _login({ text: "Email Login" }).then(function() {});
+          _login({
+            text: "Email Login"
+          }).then(function() {});
           alert("Hi! ");
           return user;
         },
@@ -115,7 +86,9 @@ export default {
       .auth()
       .signOut()
       .then(function() {
-        _logout({ text: store.state.accessToken }).then(function() {});
+        _logout({
+          text: store.state.accessToken
+        }).then(function() {});
         store.state.accessToken = null;
         store.state.user = null;
         alert("bye");
@@ -138,7 +111,9 @@ export default {
       .createUserWithEmailAndPassword(email, password)
       .then(
         function() {
-          _signup({ text: "Email SignUp" }).then(function() {});
+          _signup({
+            text: "Email SignUp"
+          }).then(function() {});
           alert("welcome!");
           window.location.href = "/";
         },

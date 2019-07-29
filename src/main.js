@@ -12,6 +12,7 @@ import "./registerServiceWorker";
 import BackToTop from "vue-backtotop";
 import browserDetect from "vue-browser-detect-plugin";
 import UploadButton from "vuetify-upload-button";
+import VueDisqus from "vue-disqus";
 import axios from "axios";
 
 Vue.prototype.$EventBus = new Vue();
@@ -32,6 +33,7 @@ Vue.use(Vuetify, {
 Vue.use(VueSimplemde);
 Vue.use(UploadButton);
 Vue.use(BackToTop);
+Vue.use(VueDisqus);
 
 new Vue({
   router,

@@ -10,26 +10,35 @@
     >
       <!-- Get Post information -->
       <Post
-        :date="posts[idx - 1].created_at"
+        :created_at="posts[idx - 1].created_at"
         :title="posts[idx - 1].title"
         :body="posts[idx - 1].body"
+        :num="posts[idx - 1].num"
+        :author="posts[idx - 1].author"
       ></Post>
       <v-divider></v-divider>
     </v-flex>
 
-    <!-- loadMore Button -->
+    <!-- LoadMore and Wirte Post Button -->
     <v-flex xs12 text-xs-center round my-5 v-if="loadMore">
       <v-btn depressed id="highlight-backColor" v-on:click="loadMorePosts">
         <v-icon size="25" class="mr-2">fa-plus</v-icon>
         <span>더 보기</span>
       </v-btn>
+
+      <template v-if="chkAuth">
+        <v-btn depressed id="highlight-backColor" to="/postWrite">
+          <v-icon class="mr-2">fa-edit</v-icon>
+          <span>글쓰기</span>
+        </v-btn>
+      </template>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import Server from "../services/Server.js";
 import Post from "@/components/Post";
-import FirebaseService from "@/services/FirebaseService";
 
 export default {
   name: "PostList",
@@ -40,22 +49,33 @@ export default {
   data() {
     return {
       posts: [],
-      limits: 4
+      limits: 6,
+      postsTest: [],
+      chkAuth: false
     };
   },
   components: {
     Post
+  },
+  created() {
+    if (this.$store.state.uauth > 0) {
+      this.chkAuth = true;
+    }
   },
   mounted() {
     this.getPosts();
   },
   methods: {
     async getPosts() {
-      this.posts = await FirebaseService.getPosts();
+      await Server(this.$store.state.SERVER_URL)
+        .get("/api/get/posts")
+        .then(res => {
+          this.posts = res["data"];
+        });
     },
     loadMorePosts() {
       this.loadMore = true;
-      this.limits += 3;
+      this.limits += 6;
     }
   }
 };
