@@ -16,11 +16,11 @@
         {{ this.$store.state.umail }}
       </div>
 
-      <!--Spacing Logo and Menus-->
+      <!-- Spacing Logo and Menus -->
       <v-spacer></v-spacer>
 
       <v-toolbar-items class="hidden-sm-and-down">
-        <!--Bookmark Button-->
+        <!-- Bookmark Button -->
         <v-btn flat href="javascript:bookmarksite('home','/')" icon>
           <v-icon color="#c10000">fa-bookmark</v-icon>
         </v-btn>
@@ -45,12 +45,12 @@
         </v-btn>
         <v-btn v-else @click="dialog_login = true" flat>login</v-btn>
 
-        <!-- Translate Button-->
+        <!-- Translate Button -->
         <v-btn id="highlight-fontColor" @click="dialog = true" flat>
           Language
         </v-btn>
 
-        <!-- Translate Dialog-->
+        <!-- Translate Dialog -->
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-title>
@@ -65,7 +65,7 @@
               </v-menu>
             </v-card-title>
 
-            <!--Select language-->
+            <!-- Select language -->
             <div id="google_translate_element"></div>
 
             <v-card-actions>
@@ -148,7 +148,7 @@
           Sign In
         </v-card-title>
 
-        <!-- Email and Passwd Textfield-->
+        <!-- Email and Passwd Textfield -->
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
@@ -176,12 +176,12 @@
           <!-- Login and SignUp Button -->
           <v-flex xs12 md12 text-xs-center>
             <!-- Google Login Button -->
-            <v-btn v-on:click="loginWithGoogle" icon class="mx-3">
+            <v-btn class="mx-3" v-on:click="loginWithGoogle" icon>
               <v-icon color="#df4a31" size="40">fa-google</v-icon>
             </v-btn>
 
             <!-- Facebook Button -->
-            <v-btn v-on:click="loginWithFacebook" icon class="mx-3">
+            <v-btn class="mx-3" v-on:click="loginWithFacebook" icon>
               <v-icon color="#3b5998" size="40">fa-facebook</v-icon>
             </v-btn>
           </v-flex>
@@ -194,21 +194,24 @@
               @click="dialog_login = false"
               round
             >
-              <v-icon size="25" class="mr-2">email</v-icon>SignUp
+              <v-icon class="mr-2" size="25">email</v-icon>
+              <span>SignUp</span>
             </v-btn>
           </v-flex>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn id="highlight-fontColor" flat @click="dialog_login = false">
+
+          <v-btn id="highlight-fontColor" @click="dialog_login = false" flat>
             Close
           </v-btn>
+
           <v-btn
             id="highlight-fontColor"
-            flat
             v-on:click="signIn"
             @click="dialog_login = false"
+            flat
           >
             Sign In
           </v-btn>
@@ -253,6 +256,7 @@ export default {
     async loginWithGoogle() {
       this.dialog_login = false;
       this.firebaseLogin = true;
+
       await FirebaseService.loginWithGoogle().then(res => {
         this.$store.dispatch("login", {
           accessToken: res.credential.accessToken,
@@ -265,6 +269,7 @@ export default {
     async loginWithFacebook() {
       this.dialog_login = false;
       this.firebaseLogin = true;
+
       await FirebaseService.loginWithFacebook().then(res => {
         this.$store.dispatch("login", {
           accessToken: res.credential.accessToken,
