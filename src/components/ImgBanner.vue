@@ -50,9 +50,13 @@
         <!-- Close, RandomImg, Save Button -->
         <v-card-actions>
           <v-btn flat @click="dialog = false">Close</v-btn>
+
           <v-spacer></v-spacer>
+
           <v-btn flat @click="RandomImg">Random Img</v-btn>
+
           <v-spacer></v-spacer>
+
           <v-btn flat @click="ChangeImg">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -124,8 +128,8 @@ export default {
     getAlbumImg() {
       var images = ImgurApi(this.$store.state.IMGUR_URL).get(`album/pQivCF9`);
       images.then(data => {
-        var response = data["data"];
-        this.albumImgs = response["data"]["images"];
+        var response = data.data;
+        this.albumImgs = response.data.images;
       });
     },
     Upload() {

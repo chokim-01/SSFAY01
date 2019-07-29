@@ -69,7 +69,7 @@ export default {
       await Server(this.$store.state.SERVER_URL)
         .get("/api/get/portfolios")
         .then(res => {
-          this.portfolios = res["data"];
+          this.portfolios = res.data;
         });
     },
     loadMorePortfolios() {

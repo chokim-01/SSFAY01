@@ -7,6 +7,7 @@
     }"
   >
     <v-img :src="img" height="200px" />
+
     <v-card-title primary-title>
       <div class="portfolio-content">
         <div class="portfolio-title headline font-weight-light">

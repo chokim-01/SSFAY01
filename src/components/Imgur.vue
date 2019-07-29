@@ -5,6 +5,7 @@
         xs12
         class="text-xs-center text-sm-center text-md-center text-lg-center"
       >
+        <!-- Show image -->
         <img :src="imageUrl" height="150" v-if="imageUrl" />
 
         <v-text-field
@@ -27,7 +28,6 @@
 </template>
 
 <script>
-//import Fbs from "../services/FirebaseService.js";
 import ImgurApi from "../services/ImgurApi";
 import Server from "../services/Server.js";
 

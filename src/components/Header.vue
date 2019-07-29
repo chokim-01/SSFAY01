@@ -246,9 +246,6 @@ export default {
     drawer: null,
     firebaseLogin: false
   }),
-  created() {
-    FirebaseService.checkLogin();
-  },
   methods: {
     menuItems() {
       return this.menu;
