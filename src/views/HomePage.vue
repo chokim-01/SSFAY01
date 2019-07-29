@@ -18,7 +18,7 @@
           <v-layout row wrap align-center>
 
             <!-- Title -->
-            <v-layout my-5>
+            <v-layout>
               <v-flex xs12>
                 <h2
                   class="titles my-3 font-weight-light text-xs-center"
@@ -220,15 +220,15 @@ export default {
 }
 
 .titles {
-  font-size: 150px;
-}
-
-.m_name {
   font-size: 100px;
 }
 
+.m_name {
+  font-size: 80px;
+}
+
 #about {
-  height: 38% !important;
+  height: 50% !important;
 }
 
 #about-img2 {
