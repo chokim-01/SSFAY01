@@ -21,6 +21,7 @@ pip install flask, flask_cors, flask_restful, flask_jwt_extended, pymysql
 When you installed module,
 
 ```
+npm install --global --production windows-build-tools
 npm install
 execute.bat (double-click)
 ```
