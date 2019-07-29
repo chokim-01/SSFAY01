@@ -3,19 +3,22 @@
     <v-form>
       <v-container my-5>
         <template v-if="editflag">
-          <!-- Title -->
+          <!-- Post title -->
           <v-layout justify-center>
             <p class="posttitle">{{ post.title }}</p>
           </v-layout>
+
           <hr />
-          <!-- Author -->
+
+          <!-- Post author -->
           <v-layout justify-end>
             <v-chip color="#00adb5" label>
               <v-icon left>mdi-account-circle-outline</v-icon>
               {{ post.author }}
             </v-chip>
           </v-layout>
-          <!-- Date -->
+
+          <!-- Post created time -->
           <v-layout>
             <v-chip color="grey" label text-color="white">
               <v-icon left>label</v-icon>
@@ -23,21 +26,23 @@
             </v-chip>
           </v-layout>
         </template>
-        <!-- Edit mode -->
+
+        <!-- Edit page If user click edit button -->
         <template v-else>
           <v-flex>
             <v-text-field v-model="post.title" solo></v-text-field>
           </v-flex>
         </template>
-        <!-- Context -->
+
+        <!-- Post body -->
         <v-textarea
           class="postcontext my-5"
-          light
           v-model="post.body"
           placeholder="내용"
+          :readonly="editflag"
           rows="20"
           solo
-          :readonly="editflag"
+          light
         ></v-textarea>
 
         <template v-if="authCheck">
@@ -47,10 +52,10 @@
           </div>
         </template>
         <div class="comments">
-          <!-- Comments -->
+          <!-- Post Comments -->
           <VueDisqus
             shortname="webmobile-team10"
-            :url="'https://webmobile-team10.disqus.com/post' + post.num"
+            :url="this.$store.state.DISQUS_URL + '/post' + post.num"
             :identifier="'post' + post.num"
           ></VueDisqus>
         </div>
@@ -115,14 +120,17 @@ export default {
   border: 2px solid white;
   min-height: 500px;
 }
+
 .posttitle {
   font-size: 3em;
 }
+
 hr {
   border: dotted;
   width: 40%;
   margin: 0 auto;
 }
+
 .editBtn {
   float: right;
 }

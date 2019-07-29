@@ -3,33 +3,36 @@
     <v-form>
       <v-container my-5>
         <template v-if="editflag">
-          <!-- Title -->
+          <!-- Portfolio title -->
           <v-layout justify-center>
             <p class="posttitle">{{ portfolio.title }}</p>
           </v-layout>
+
           <hr />
-          <!-- Author -->
+
+          <!-- Portfolio author -->
           <v-layout justify-end>
             <v-chip color="#00adb5" label>
               <v-icon left>mdi-account-circle-outline</v-icon>
               {{ portfolio.author }}
             </v-chip>
           </v-layout>
-          <!-- Date -->
+
+          <!-- Portfolio created time -->
           <v-layout>
             <v-chip color="grey" label text-color="white">
               <v-icon left>label</v-icon>
               {{ portfolio.created_at }}
             </v-chip>
           </v-layout>
-          <!-- Context -->
-          <!-- View markdown ( No Edit ) -->
+
+          <!-- Portfolio body readonly -->
           <div class="postcontext my-5">
             <vue-markdown>{{ portfolio.body }}</vue-markdown>
           </div>
         </template>
-        <!-- Context -->
-        <!-- Edit markdown -->
+
+        <!-- Edit portfolio body -->
         <template v-else>
           <v-flex>
             <v-text-field v-model="portfolio.title" solo></v-text-field>
@@ -47,13 +50,11 @@
           </div>
         </template>
 
-        <!-- Comments -->
+        <!-- Portfolio comments -->
         <div class="comments">
           <VueDisqus
             shortname="webmobile-team10"
-            :url="
-              'https://webmobile-team10.disqus.com/portfolio' + portfolio.num
-            "
+            :url="this.$store.state.DISQUS_URL + '/portfolio' + portfolio.num"
             :identifier="'portfolio' + portfolio.num"
           ></VueDisqus>
         </div>
@@ -125,14 +126,17 @@ export default {
   border: 2px solid white;
   min-height: 500px;
 }
+
 .posttitle {
   font-size: 3em;
 }
+
 hr {
   border: dotted;
   width: 40%;
   margin: 0 auto;
 }
+
 .editBtn {
   float: right;
 }
