@@ -4,7 +4,7 @@
       <!-- Top image -->
       <div class="page bannerPage">
         <ImgBanner>
-          <div id="imgBanner" slot="text">
+          <div id="imgBanner" slot="text" v-animate="{ value: 'flash' }">
             <h1 id="bannerTxt" class="bannerLarge">
               Keep Going
             </h1>
@@ -25,12 +25,15 @@
               <v-flex xs12>
                 <h2
                   class="titles my-3 font-weight-light text-xs-center"
-                  v-animate="{ value: 'zoomInDown' }"
+                  v-animate="{ value: 'fadeInLeft' }"
                 >
                   <span>About</span>
                   <span id="highlight-fontColor">US</span>
                 </h2>
-                <p class="text-xs-center">
+                <p
+                  class="text-xs-center"
+                  v-animate="{ value: 'fadeInLeft', delay: 300 }"
+                >
                   안녕하세요<br />
                   10TRIILION입니다<br />
                   3명이지만 힘들지 않습니다🤢
@@ -46,6 +49,7 @@
               grid-list-md
               text-xs-center
               id="about"
+              v-animate="{ value: 'fadeInLeft', delay: 600 }"
             >
               <!-- Get member information -->
               <v-carousel-item v-for="(member, i) in members" :key="i">
