@@ -2,12 +2,16 @@
   <div class="fullpage-container">
     <div class="fullpage-wp" v-fullpage="opts" ref="example">
       <!-- Top image -->
-      <div class="page">
+      <div class="page bannerPage">
         <ImgBanner>
-          <div id="imgBanner" slot="text">
-            <h1 id="bannerTxt">
+          <div id="imgBanner" slot="text" v-animate="{ value: 'flash' }">
+            <h1 id="bannerTxt" class="bannerLarge">
               Keep Going
             </h1>
+            <div id="bannerTxt" class="bannerSmall">
+              <h1>Keep</h1>
+              <h1>Going</h1>
+            </div>
           </div>
         </ImgBanner>
       </div>
@@ -21,12 +25,15 @@
               <v-flex xs12>
                 <h2
                   class="titles my-3 font-weight-light text-xs-center"
-                  v-animate="{ value: 'zoomInDown' }"
+                  v-animate="{ value: 'fadeInLeft' }"
                 >
                   <span>About</span>
                   <span id="highlight-fontColor">US</span>
                 </h2>
-                <p class="text-xs-center">
+                <p
+                  class="text-xs-center"
+                  v-animate="{ value: 'fadeInLeft', delay: 300 }"
+                >
                   안녕하세요<br />
                   10TRIILION입니다<br />
                   3명이지만 힘들지 않습니다🤢
@@ -42,17 +49,18 @@
               grid-list-md
               text-xs-center
               id="about"
+              v-animate="{ value: 'fadeInLeft', delay: 600 }"
             >
               <!-- Get member information -->
               <v-carousel-item v-for="(member, i) in members" :key="i">
-                <v-layout id="aboutMe" row align-center>
+                <v-layout id="aboutMe" mx-2 row align-center>
                   <!-- Member Image -->
-                  <v-flex md6 mx-2 id="about-img">
+                  <v-flex md6 id="about-img">
                     <v-img id="about-img2" v-bind:src="member.src" />
                   </v-flex>
 
                   <!-- Each information of Member -->
-                  <v-flex xs12 md6 mx-2 id="about-text" text-xs-right>
+                  <v-flex xs12 md6 id="about-text" text-xs-right>
                     <h2
                       class="titles m_name font-weight-light"
                       id="highlight-fontColor"
@@ -98,7 +106,7 @@
 </template>
 
 <script>
-import ImgBanner from "../components/ImgBanner";
+import ImgBanner from "../components/HomeImgBanner";
 import PortfolioList from "../components/PortfolioList";
 import PostList from "../components/PostList";
 import RepositoryList from "../components/RepositoryList";
@@ -226,8 +234,12 @@ export default {
   font-size: 80px;
 }
 
+.bannerSmall {
+  display: none;
+}
+
 #about {
-  height: 50% !important;
+  height: 400px !important;
 }
 
 #about-img2 {
@@ -274,6 +286,10 @@ export default {
     margin: auto;
   }
 
+  #about {
+    height: 280px !important;
+  }
+
   .titles {
     font-size: 60px;
   }
@@ -284,6 +300,14 @@ export default {
 
   .aboutPage {
     background-size: 400%;
+  }
+
+  .bannerLarge {
+    display: none;
+  }
+
+  .bannerSmall {
+    display: block;
   }
 }
 </style>
