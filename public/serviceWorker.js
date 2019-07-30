@@ -1,11 +1,14 @@
-var CACHE_NAME = 'v3';
+var CACHE_NAME = 'v6';
 var urlsToCache = [
   '/',
   '/manifest.json',
   '/app.js',
   '/css/common.css',
   '/img/icons/favicon-16x16.png',
-  '/api/posts'
+  'http://localhost:5000/api/get/portfolios',
+  'http://localhost:5000/api/get/posts',
+  'https://lab.ssafy.com/api/v4/projects/',
+  'https://lab.ssafy.com/api/v4/users/k3y6reak/projects'
 
 ];
 // ServiceWorker install
@@ -21,6 +24,7 @@ self.addEventListener('install', function(event) {
       })
   );
 });
+// ServiceWorker Fetch
 self.addEventListener('fetch',event => {
   console.log('Fetch ' +event.request.url);
   event.respondWith(
@@ -30,7 +34,6 @@ self.addEventListener('fetch',event => {
   )
 })
 
-
 //Remove before installed ServiceWorker
 self.addEventListener('activate', event => {
   console.log('Activate');
@@ -38,7 +41,7 @@ self.addEventListener('activate', event => {
     caches.keys().then(keyList => {
       return Promise.all(keyList.map(key => {
         if (key !== CACHE_NAME) {
-          console.log('Removing old cache' + key);
+          console.log('Remove old cache' + key);
           return caches.delete(key);
         }
       }));
