@@ -85,21 +85,23 @@
         v-for="view in views"
         v-bind:id="view.name"
         :key="view.name"
+        v-bind:style="{ backgroundImage: 'url(' + view.bg + ')' }"
       >
-        <v-layout my-5 class="contents">
-          <v-flex xs12>
-            <h2 class="titles my-3 font-weight-light text-xs-center">
-              {{ view.name }}
-            </h2>
-            <component :is="view.comp" :column="view.column"></component>
-          </v-flex>
-        </v-layout>
-
-        <v-layout
-          v-if="view.name === 'Portfolio' || view.name === 'Post'"
-          class="align-center justify-center"
-        >
-        </v-layout>
+        <v-container fill-height grid-list-md>
+          <v-layout my-5 contents row wrap align-center>
+            <v-flex xs12>
+              <h2
+                class="titles my-3 font-weight-light text-xs-center"
+                v-animate="{ value: 'fadeInUp', delay: 0 }"
+              >
+                {{ view.name }}
+              </h2>
+              <v-flex v-animate="{ value: 'flipInX', delay: 300 }">
+                <component :is="view.comp" :column="view.column"></component>
+              </v-flex>
+            </v-flex>
+          </v-layout>
+        </v-container>
       </div>
     </div>
   </div>
@@ -127,18 +129,21 @@ export default {
           name: "Portfolio",
           comp: PortfolioList,
           next: "#Post",
+          bg: "../assets/img/bg_1.jpg",
           column: 0
         },
         {
           name: "Post",
           comp: PostList,
           next: "#Project",
-          column: 2
+          bg: "../assets/img/bg_2.jpg",
+          column: 1
         },
         {
           name: "Project",
           comp: RepositoryList,
           next: "None",
+          bg: "../assets/img/bg_3.jpg",
           column: 0
         }
       ],
@@ -223,7 +228,7 @@ export default {
 
 .aboutPage {
   background-image: url("../assets/img/about_bg.jpg");
-  background-size: 120%;
+  background-size: cover;
 }
 
 .titles {
@@ -296,10 +301,6 @@ export default {
 
   .m_name {
     font-size: 40px;
-  }
-
-  .aboutPage {
-    background-size: 400%;
   }
 
   .bannerLarge {
