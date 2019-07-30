@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-layout fill-height>
     <!-- Show Images -->
-    <v-img :src="imgSrc" aspect-ratio="2.0">
+    <v-img :src="imgSrc">
       <v-layout align-center justify-center row fill-height>
         <v-flex text-xs-center>
           <span class="text-shadow display-2 font-weight-light">
@@ -14,8 +14,8 @@
     <v-dialog v-model="dialog" max-width="500px">
       <!-- Get Album Image -->
       <template v-slot:activator="{ on }">
-        <v-btn id="getAlbumBtn" @click="getAlbumImg" v-on="on" icon light>
-          <v-icon id="highlight-fontColor" size="40px">fa-caret-right</v-icon>
+        <v-btn id="getAlbumBtn" @click="getAlbumImg" v-on="on" flat large>
+          change
         </v-btn>
       </template>
 
@@ -79,7 +79,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-layout>
 </template>
 
 <script>
@@ -142,12 +142,14 @@ export default {
 
 <style scoped>
 .text-shadow {
-  text-shadow: 0 0 15px rgb(0, 0, 0);
+  text-shadow: 5px 5px 0 rgb(0, 0, 0);
   font-family: "Press Start 2P", cursive !important;
 }
 
 #getAlbumBtn {
   position: absolute;
-  right: 0px;
+  bottom: 10px;
+  left: 10px;
+  text-shadow: 0 0 5px rgb(0, 0, 0);
 }
 </style>
