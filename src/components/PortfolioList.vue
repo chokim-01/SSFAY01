@@ -69,7 +69,8 @@ export default {
     return {
       portfolios: [],
       limits: 6,
-      chkAuth: false
+      chkAuth: false,
+      cacheUrl: []
     };
   },
   components: {

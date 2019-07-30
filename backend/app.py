@@ -38,13 +38,34 @@ api = Api(app)
 
 # JWT is used for session
 app.config['JWT_SECRET_KEY'] = "jwt-secret"
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 jwt_manager = JWTManager()
 jwt_manager.init_app(app)
+
+blacklist = set()
+
 
 # CORS setting
 cors = CORS(app, resources={
   r"/api/*": {"origin": "*"},
 })
+
+
+@jwt_manager.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    return jti in blacklist
+
+
+@app.route('/api/refresh', methods=['POST'])
+@jwt_refresh_token_required
+def refresh():
+    current_user = get_jwt_identity()
+    ret = {
+        'access_token': create_access_token(identity=current_user)
+    }
+    return jsonify(ret), 200
 
 
 # Set no cache
@@ -112,7 +133,7 @@ def login():
     refreshToken = create_refresh_token(identity=token_identity)
 
     session = ({"accessToken": accessToken,
-                    "refresh_token": refreshToken})
+                    "refreshToken": refreshToken})
 
     return jsonify({"msg": "로그인 성공", "success": True, "user": result, "session": session})
 
