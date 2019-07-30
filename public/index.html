@@ -40,10 +40,6 @@
 </head>
 
 <body>
-  <noscript>
-    <strong>We're sorry but ssafy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-  </noscript>
-
   <div id="app"></div>
 
   <script type="text/javascript">
@@ -66,10 +62,11 @@
 
 </body>
 <script>
+//Service worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
 
-        navigator.serviceWorker.register('/service_worker.js').then(function(registration) {
+        navigator.serviceWorker.register('./service_worker.js').then(function(registration) {
             // Registration was successful
 
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
@@ -80,5 +77,45 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
+var confirmflag = confirm("알림을 받으시겠습니까?");
+if(confirmflag){
+
+ }else{
+             //취소 버튼 클릭 false
+}
+//Service worker push message
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+  console.log('Service Worker and Push is supported');
+
+  navigator.serviceWorker.register('/sw_message.js')
+  .then(function(swReg) {
+
+    swRegistration = swReg;
+    initialiseUI();
+  })
+  .catch(function(error) {
+    console.error('Service Worker Error', error);
+  });
+} else {
+  console.warn('Push messaging is not supported');
+  pushButton.textContent = 'Push Not Supported';
+}
+
+function initialiseUI() {
+  // Set the initial subscription value
+  swRegistration.pushManager.getSubscription()
+  .then(function(subscription) {
+    isSubscribed = !(subscription === null);
+
+    if (isSubscribed) {
+      console.log('User IS subscribed.');
+    } else {
+      console.log('User is NOT subscribed.');
+    }
+
+    updateBtn();
+  });
+}
+
 </script>
 </html>
