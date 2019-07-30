@@ -14,7 +14,6 @@
       <!-- Appers after login -->
       <div class="hidden-sm-and-down" v-if="this.$store.state.accessToken">
         {{ this.$store.state.umail }}
-        {{ this.$store.state.uauth }}
       </div>
 
       <!-- Spacing Logo and Menus -->
