@@ -63,10 +63,23 @@
 </body>
 <script>
 
-const applicationServerPublicKey = 'BHdd2PwLOsYaDQQOmqw_8KIIYOQYECWN' +
-  'lat0K8GScnytjV88e6Xifn0GMz7MbScAkxf_kVJhnp-0NrB_P4u6WHw';
+const applicationServerPublicKey = "BHdd2PwLOsYaDQQOmqw_8KIIYOQYECWNlat0K8GScnytjV88e6Xifn0GMz7MbScAkxf_kVJhnp-0NrB_P4u6WHw";
+/*
+//Service worker Registration
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
 
-'use strict';
+        navigator.serviceWorker.register('./sw-10.js')
+          .then(registration => {
+            console.log('Service Worker registered! Scope : ',registration.scope);
+        })
+        .catch(function(err) {
+            // registration failed :(
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
+*/
 
 const pushButton = document.querySelector('.js-push-btn');
 
