@@ -89,7 +89,7 @@
       >
         <v-container fill-height grid-list-md>
           <v-layout my-5 contents row wrap align-center>
-            <v-flex xs12>
+            <v-flex xs12 column>
               <h2
                 class="titles my-3 font-weight-light text-xs-center"
                 v-animate="{ value: 'fadeInUp', delay: 0 }"
@@ -221,7 +221,7 @@ export default {
 }
 
 #Portfolio {
-  background-image: url("../assets/img/bg_2.jpg");
+  background-image: url("../assets/img/bg_3.jpg");
 }
 
 #Post {
@@ -229,7 +229,7 @@ export default {
 }
 
 #Project {
-  background-image: url("../assets/img/bg_3.jpg");
+  background-image: url("../assets/img/bg_2.jpg");
 }
 
 .aboutPage {
