@@ -40,10 +40,6 @@
 </head>
 
 <body>
-  <noscript>
-    <strong>We're sorry but ssafy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-  </noscript>
-
   <div id="app"></div>
 
   <script type="text/javascript">
@@ -66,15 +62,15 @@
 
 </body>
 <script>
+//Service worker Registration
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
 
-        navigator.serviceWorker.register('/service_worker.js').then(function(registration) {
-            // Registration was successful
-
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-
-        }).catch(function(err) {
+        navigator.serviceWorker.register('./sw-10.js')
+          .then(registration => {
+            console.log('Service Worker registered! Scope : ',registration.scope);
+        })
+        .catch(function(err) {
             // registration failed :(
             console.log('ServiceWorker registration failed: ', err);
         });

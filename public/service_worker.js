@@ -1,11 +1,14 @@
 const SERVER_URL = "http://localhost";
 
-var CACHE_NAME = "v12";
+var CACHE_NAME = "v1";
 var urlsToCache = [
   "/",
   "/manifest.json",
   "/app.js",
+  "/css/common.css",
+  "/img/icons/favicon.png",
   "/img/icons/favicon-16x16.png",
+  "/img/icons/favicon-32x32.png",
   SERVER_URL + ":5000/api/get/portfolios",
   SERVER_URL + ":5000/api/get/posts",
   SERVER_URL + ":8080/fonts/fontawesome-webfont.af7ae505.woff2"
@@ -19,7 +22,6 @@ self.addEventListener("install", function(event) {
       .open(CACHE_NAME)
       .then(function(cache) {
         console.log("Opened cache");
-        console.log(store);
         return cache.addAll(urlsToCache);
       })
       .catch(function(err) {
@@ -28,10 +30,31 @@ self.addEventListener("install", function(event) {
   );
 });
 // ServiceWorker Fetch
+// ServiceWorker Fetch
 self.addEventListener("fetch", event => {
+  console.info("Event: Fetch");
+
+  var request = event.request;
+
+  //Tell the browser to wait for newtwork request and respond with below
   event.respondWith(
-    caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
+    //If request is already in cache, return it
+    caches.match(request).then(response => {
+      if (response) {
+        return response;
+      }
+
+      //if request is not cached, add it to cache
+      return fetch(request).then(response => {
+        var responseToCache = response.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(request, responseToCache).catch(err => {
+              console.warn(request.url + ': ' + err.message);
+          });
+        });
+
+        return response;
+      });
     })
   );
 });
