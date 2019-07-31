@@ -17,6 +17,7 @@
           :author="portfolios[idx - 1].author"
         ></Portfolio>
       </slide>
+      <hooper-navigation slot="hooper-addons"></hooper-navigation>
     </hooper>
 
     <hooper id="portfolio_large" :itemsToShow="4" :centerMode="true">
@@ -35,6 +36,7 @@
           :author="portfolios[idx - 1].author"
         ></Portfolio>
       </slide>
+      <hooper-navigation slot="hooper-addons"></hooper-navigation>
     </hooper>
 
     <!-- LoadMore and Wirte Portfolio Button -->
@@ -57,7 +59,7 @@
 <script>
 import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-import { Hooper, Slide } from "hooper";
+import { Hooper, Slide, Navigation as HooperNavigation } from "hooper";
 import "hooper/dist/hooper.css";
 
 export default {
@@ -76,7 +78,8 @@ export default {
   components: {
     Portfolio,
     Hooper,
-    Slide
+    Slide,
+    HooperNavigation
   },
   created() {
     if (this.$store.state.uauth > 0) {
@@ -109,6 +112,12 @@ export default {
 
 .hooper {
   height: 80%;
+}
+
+.icon {
+  height: 50px;
+  width: 50px;
+  background-color: white;
 }
 
 #portfolio_small {
