@@ -1,6 +1,7 @@
 <template>
   <v-layout mt-5 wrap>
     <!-- Set portfolio count -->
+    <!-- mobile size -->
     <hooper id="portfolio_small" :itemsToShow="1.25" :centerMode="true">
       <slide
         v-for="idx in portfolios.length > limits ? limits : portfolios.length"
@@ -17,8 +18,10 @@
           :author="portfolios[idx - 1].author"
         ></Portfolio>
       </slide>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
     </hooper>
 
+    <!-- web size -->
     <hooper id="portfolio_large" :itemsToShow="4" :centerMode="true">
       <slide
         v-for="idx in portfolios.length > limits ? limits : portfolios.length"
@@ -35,6 +38,8 @@
           :author="portfolios[idx - 1].author"
         ></Portfolio>
       </slide>
+      <hooper-navigation slot="hooper-addons"></hooper-navigation>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
     </hooper>
 
     <!-- LoadMore and Wirte Portfolio Button -->
@@ -57,7 +62,12 @@
 <script>
 import Server from "../services/Server.js";
 import Portfolio from "@/components/Portfolio";
-import { Hooper, Slide } from "hooper";
+import {
+  Hooper,
+  Slide,
+  Navigation as HooperNavigation,
+  Pagination as HooperPagination
+} from "hooper";
 import "hooper/dist/hooper.css";
 
 export default {
@@ -76,7 +86,9 @@ export default {
   components: {
     Portfolio,
     Hooper,
-    Slide
+    Slide,
+    HooperNavigation,
+    HooperPagination
   },
   created() {
     if (this.$store.state.uauth > 0) {
@@ -109,6 +121,13 @@ export default {
 
 .hooper {
   height: 80%;
+}
+
+.icon {
+  height: 50px;
+  width: 50px;
+  background-color: rgb(238, 238, 238, 80);
+  border-radius: 25%;
 }
 
 #portfolio_small {

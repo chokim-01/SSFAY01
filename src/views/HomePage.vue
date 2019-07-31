@@ -83,9 +83,9 @@
       <div
         class="page"
         v-for="view in views"
-        v-bind:id="view.name"
+        :id="view.name"
         :key="view.name"
-        v-bind:style="{ backgroundImage: 'url(' + view.bg + ')' }"
+        :class="view.name"
       >
         <v-container fill-height grid-list-md>
           <v-layout my-5 contents row wrap align-center>
@@ -128,22 +128,16 @@ export default {
         {
           name: "Portfolio",
           comp: PortfolioList,
-          next: "#Post",
-          bg: "../assets/img/bg_1.jpg",
           column: 0
         },
         {
           name: "Post",
           comp: PostList,
-          next: "#Project",
-          bg: "../assets/img/bg_2.jpg",
           column: 1
         },
         {
           name: "Project",
           comp: RepositoryList,
-          next: "None",
-          bg: "../assets/img/bg_3.jpg",
           column: 0
         }
       ],
@@ -226,8 +220,23 @@ export default {
   margin-bottom: auto;
 }
 
+#Portfolio {
+  background-image: url("../assets/img/bg_2.jpg");
+}
+
+#Post {
+  background-image: url("../assets/img/bg_1.jpg");
+}
+
+#Project {
+  background-image: url("../assets/img/bg_3.jpg");
+}
+
 .aboutPage {
   background-image: url("../assets/img/about_bg.jpg");
+}
+
+.page {
   background-size: cover;
 }
 
