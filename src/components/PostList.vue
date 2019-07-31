@@ -1,24 +1,42 @@
 <template>
-  <v-layout row wrap mw-700>
+  <v-layout row wrap mt-4>
     <!-- Set Post count -->
-    <v-flex
-      id="posts"
-      v-for="idx in posts.length > limits ? limits : posts.length"
-      :class="'xs' + 12 / column"
-      :key="idx.title"
-      px-3
-    >
-      <!-- Get Post information -->
-      <Post
-        :created_at="posts[idx - 1].created_at"
-        :title="posts[idx - 1].title"
-        :body="posts[idx - 1].body"
-        :num="posts[idx - 1].num"
-        :author="posts[idx - 1].author"
-      ></Post>
+    <!-- moblie size -->
+    <hooper id="post_small" :itemsToShow="1.25" :centerMode="true">
+      <slide
+        v-for="idx in posts.length > limits ? limits : posts.length"
+        :key="idx.title"
+      >
+        <!-- Get Post information -->
+        <Post
+          :created_at="posts[idx - 1].created_at"
+          :title="posts[idx - 1].title"
+          :body="posts[idx - 1].body"
+          :num="posts[idx - 1].num"
+          :author="posts[idx - 1].author"
+        ></Post>
+      </slide>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
+    </hooper>
 
-      <v-divider></v-divider>
-    </v-flex>
+    <!-- webb size -->
+    <hooper id="post_large" :itemsToShow="3" :centerMode="true">
+      <slide
+        v-for="idx in posts.length > limits ? limits : posts.length"
+        :key="idx.title"
+      >
+        <!-- Get Post information -->
+        <Post
+          :created_at="posts[idx - 1].created_at"
+          :title="posts[idx - 1].title"
+          :body="posts[idx - 1].body"
+          :num="posts[idx - 1].num"
+          :author="posts[idx - 1].author"
+        ></Post>
+      </slide>
+      <hooper-navigation slot="hooper-addons"></hooper-navigation>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
+    </hooper>
 
     <!-- LoadMore and Wirte Post Button -->
     <v-flex xs12 text-xs-center round my-5 v-if="loadMore">
@@ -40,6 +58,13 @@
 <script>
 import Server from "../services/Server.js";
 import Post from "@/components/Post";
+import {
+  Hooper,
+  Slide,
+  Navigation as HooperNavigation,
+  Pagination as HooperPagination
+} from "hooper";
+import "hooper/dist/hooper.css";
 
 export default {
   name: "PostList",
@@ -56,7 +81,11 @@ export default {
     };
   },
   components: {
-    Post
+    Post,
+    Hooper,
+    Slide,
+    HooperNavigation,
+    HooperPagination
   },
   created() {
     if (this.$store.state.uauth > 0) {
@@ -83,8 +112,17 @@ export default {
 </script>
 
 <style scoped>
-.mw-700 {
-  max-width: 700px;
-  margin: auto;
+#post_small {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  #post_large {
+    display: none;
+  }
+
+  #post_small {
+    display: block;
+  }
 }
 </style>

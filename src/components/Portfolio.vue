@@ -1,5 +1,6 @@
 <template>
   <v-card
+    id="portfolio_card"
     hover
     :to="{
       name: 'portfoliodetail',
@@ -33,3 +34,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#portfolio_card {
+  background-color: #222831;
+}
+</style>
