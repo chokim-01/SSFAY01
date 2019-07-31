@@ -89,7 +89,7 @@
       >
         <v-container fill-height grid-list-md>
           <v-layout my-5 contents row wrap align-center>
-            <v-flex xs12 column>
+            <v-flex xs12>
               <h2
                 class="titles my-3 font-weight-light text-xs-center"
                 v-animate="{ value: 'fadeInUp', delay: 0 }"
@@ -99,6 +99,36 @@
               <v-flex v-animate="{ value: 'flipInX', delay: 300 }">
                 <component :is="view.comp" :column="view.column"></component>
               </v-flex>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </div>
+
+      <!-- Context Us -->
+      <div class="page" id="contactUs">
+        <v-container fill-height grid-list-md>
+          <v-layout contents row wrap align-center>
+            <v-flex xs12>
+              <h2
+                class="titles font-weight-light text-xs-center"
+                v-animate="{ value: 'fadeInUp', delay: 0 }"
+              >
+                contact us
+              </h2>
+              <div
+                v-for="item in members"
+                :key="item.name_en"
+                class="text-xs-center"
+              >
+                <p id="name_en">{{ item.name_en }}</p>
+                <v-btn :href="item.github" icon>
+                  <v-icon>fa-github</v-icon>
+                </v-btn>
+                <v-btn :href="item.email" icon>
+                  <v-icon>fa-envelope-open</v-icon>
+                </v-btn>
+                <v-divider></v-divider>
+              </div>
             </v-flex>
           </v-layout>
         </v-container>
@@ -143,33 +173,42 @@ export default {
       ],
       members: [
         {
-          name: "양동권 \n",
-          profile: [
-            "전남대학교 소프트웨어공학전공",
-            "국립아시아문화전당 창제작센터 실습",
-            "빅데이터엔지니어양성과정 1기",
-            "삼성청년소프트웨어아카데미 1기"
-          ],
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
-        },
-        {
           name: "박사홍 \n",
+          name_en: "Sahong Pak",
           profile: [
             "조선대학교 컴퓨터공학과",
             "멋쟁이사자처럼 5기 운영진",
             "BOB 7기 보안제품개발 트랙",
             "삼성청년소프트웨어아카데미 1기"
           ],
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg"
+          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
+          github: "https://github.com/k3y6reak",
+          email: "mailto:k3y6reak@naver.com"
+        },
+        {
+          name: "양동권 \n",
+          name_en: "Dongkwon Yang",
+          profile: [
+            "전남대학교 소프트웨어공학전공",
+            "국립아시아문화전당 창제작센터 실습",
+            "빅데이터엔지니어양성과정 1기",
+            "삼성청년소프트웨어아카데미 1기"
+          ],
+          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
+          github: "https://github.com/ydk7819",
+          email: "mailto:ydk9557819@naver.com"
         },
         {
           name: "박근형 \n",
+          name_en: "Keounhyung Park",
           profile: [
             "조선대학교 컴퓨터공학전공",
             "정보보호 동아리 Hacker Login",
             "삼성청년소프트웨어아카데미 1기"
           ],
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
+          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+          github: "https://github.com/chokim-01",
+          email: "mailto:trial159@gmail.com"
         }
       ],
       type: "selector",
@@ -232,6 +271,10 @@ export default {
   background-image: url("../assets/img/bg_2.jpg");
 }
 
+#contactUs {
+  background-image: url("../assets/img/bg_4.jpg");
+}
+
 .aboutPage {
   background-image: url("../assets/img/about_bg.jpg");
 }
@@ -285,6 +328,11 @@ export default {
   flex-shrink: 0;
   margin: 0px !important;
   overflow: hidden;
+}
+
+#name_en {
+  font-family: "Do Hyeon", sans-serif;
+  font-size: 30px;
 }
 
 @media screen and (max-width: 600px) {
