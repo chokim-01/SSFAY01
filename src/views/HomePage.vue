@@ -111,7 +111,7 @@
             <v-flex xs12>
               <h2
                 class="titles font-weight-light text-xs-center"
-                v-animate="{ value: 'fadeInUp', delay: 0 }"
+                v-animate="{ value: 'fadeIn', delay: 0 }"
               >
                 contact us
               </h2>
@@ -119,13 +119,14 @@
                 v-for="item in members"
                 :key="item.name_en"
                 class="text-xs-center"
+                v-animate="{ value: 'fadeIn', delay: 300 }"
               >
                 <p id="name_en">{{ item.name_en }}</p>
-                <v-btn :href="item.github" icon>
-                  <v-icon>fa-github</v-icon>
+                <v-btn :href="item.github" icon class="mx-4 mb-3">
+                  <v-icon id="contact_icon">fa-github</v-icon>
                 </v-btn>
-                <v-btn :href="item.email" icon>
-                  <v-icon>fa-envelope-open</v-icon>
+                <v-btn :href="item.email" icon class="mx-4 mb-3">
+                  <v-icon id="contact_icon">fa-envelope-open</v-icon>
                 </v-btn>
                 <v-divider></v-divider>
               </div>
@@ -335,6 +336,10 @@ export default {
   font-size: 30px;
 }
 
+#contact_icon {
+  font-size: 50px;
+}
+
 @media screen and (max-width: 600px) {
   #about-img {
     border-radius: 50%;
@@ -350,6 +355,10 @@ export default {
 
   #about {
     height: 280px !important;
+  }
+
+  #contact_icon {
+    font-size: 30px;
   }
 
   .titles {
