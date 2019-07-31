@@ -7,7 +7,7 @@
           : repositories.length"
         :key="idx"
       >
-        <Repository :repos="repositories[idx - 1]" class="mx-4"></Repository>
+        <Repository :repos="repositories[idx - 1]"></Repository>
       </Slide>
       <hooper-pagination slot="hooper-addons"></hooper-pagination>
     </hooper>
@@ -19,10 +19,7 @@
           : repositories.length"
         :key="idx"
       >
-        <Repository
-          :repos="repositories[idx - 1]"
-          class="px-5 mx-5"
-        ></Repository>
+        <Repository :repos="repositories[idx - 1]"></Repository>
       </Slide>
       <hooper-navigation slot="hooper-addons"></hooper-navigation>
       <hooper-pagination slot="hooper-addons"></hooper-pagination>
@@ -79,6 +76,10 @@ export default {
 <style scoped>
 #project_small {
   display: none;
+}
+
+#project_large {
+  width: 100%;
 }
 
 @media screen and (max-width: 600px) {

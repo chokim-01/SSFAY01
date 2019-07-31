@@ -20,7 +20,7 @@
     </hooper>
 
     <!-- webb size -->
-    <hooper id="post_large" :itemsToShow="3" :centerMode="true">
+    <hooper id="post_large" :itemsToShow="4" :centerMode="true">
       <slide
         v-for="idx in posts.length > limits ? limits : posts.length"
         :key="idx.title"
