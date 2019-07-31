@@ -1,13 +1,16 @@
-var CACHE_NAME = "v11";
+const SERVER_URL = "http://localhost";
+
+var CACHE_NAME = "v12";
 var urlsToCache = [
   "/",
   "/manifest.json",
   "/app.js",
   "/img/icons/favicon-16x16.png",
-  "http://localhost:5000/api/get/portfolios",
-  "http://localhost:5000/api/get/posts",
-  "http://localhost:8080/fonts/fontawesome-webfont.af7ae505.woff2"
+  SERVER_URL + ":5000/api/get/portfolios",
+  SERVER_URL + ":5000/api/get/posts",
+  SERVER_URL + ":8080/fonts/fontawesome-webfont.af7ae505.woff2"
 ];
+
 // ServiceWorker install
 self.addEventListener("install", function(event) {
   // Perform install steps
@@ -16,6 +19,7 @@ self.addEventListener("install", function(event) {
       .open(CACHE_NAME)
       .then(function(cache) {
         console.log("Opened cache");
+        console.log(store);
         return cache.addAll(urlsToCache);
       })
       .catch(function(err) {

@@ -36,21 +36,30 @@ export default {
     return {
       imageName: "",
       imageUrl: "",
-      imageFile: ""
+      imageFile: "",
+      cnt: 0
     };
   },
-  created() {
+  mounted() {
     var self = this;
 
     // writePortfolio
-    this.$EventBus.$once("writePF", function(author, title, content) {
+    this.$EventBus.$on("writePF", function(author, title, content) {
+      self.getImgurUrl();
       self.sendPF(author, title, content);
     });
 
     // Image Banner upload
-    this.$EventBus.$once("uploadImgBanner", function() {
+    this.$EventBus.$on("uploadImgBanner", function() {
       self.sendBanner();
     });
+
+    this.sendBanner;
+    this.sendPF;
+    this.getImgurUrl;
+  },
+  beforeDestroy() {
+    this.$EventBus.$off("writePF");
   },
   methods: {
     sendFormData(author, title, body, img) {
@@ -75,20 +84,25 @@ export default {
       var form = this.makeFormData(bannerID);
       await ImgurApi(this.$store.state.IMGUR_URL).post(`image`, form);
     },
+    async getImgurUrl() {
+      if (this.imageUrl != "") {
+        const portfolioID = "3W37WEYawFLVyPi";
+        var form = this.makeFormData(portfolioID);
+        await ImgurApi(this.$store.state.IMGUR_URL)
+          .post(`image`, form)
+          .then(response => {
+            this.imageUrl = response.data.data.link;
+          });
+      } else {
+        this.imageUrl = "https://source.unsplash.com/random";
+      }
+    },
     async sendPF(author, title, content) {
-      const portfolioID = "3W37WEYawFLVyPi";
-      var form = this.makeFormData(portfolioID);
-      var self = this;
-      await ImgurApi(this.$store.state.IMGUR_URL)
-        .post(`image`, form)
-        .then(response => {
-          this.imageUrl = response.data.data.link;
-        });
       var portfolioForm = this.sendFormData(
         author,
         title,
         content,
-        self.imageUrl
+        this.imageUrl
       );
       await Server(this.$store.state.SERVER_URL).post(
         "/api/add/portfolio",
