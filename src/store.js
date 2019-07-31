@@ -8,11 +8,11 @@ export default new Vuex.Store({
     SERVER_URL: "http://localhost:5000",
     IMGUR_URL: "https://api.imgur.com/3/",
     DISQUS_URL: "https://webmobile-team10.disqus.com",
-    accessToken: "",
-    refreshToken: "",
+    accessToken: localStorage.accessToken,
+    refreshToken: localStorage.refreshToken,
     user: "",
-    umail: "",
-    uauth: 0,
+    umail: localStorage.umail,
+    uauth: localStorage.uauth,
     url: "https://source.unsplash.com/random",
     random_url: "https://source.unsplash.com/random"
   },
@@ -36,9 +36,17 @@ export default new Vuex.Store({
   actions: {
     login({ commit }, userInfo) {
       commit("login", userInfo);
+      localStorage.accessToken = userInfo.accessToken;
+      localStorage.refreshToken = userInfo.refreshToken;
+      localStorage.umail = userInfo.umail;
+      localStorage.uauth = userInfo.uauth;
     },
     logout({ commit }) {
       commit("logout");
+      localStorage.accessToken = "";
+      localStorage.refreshToken = "";
+      localStorage.umail = "";
+      localStorage.uauth = 0;
     }
   }
 });

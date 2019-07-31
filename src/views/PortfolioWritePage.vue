@@ -64,7 +64,6 @@ export default {
       if (this.chkNull()) {
         // writePF $on at compoents/Imgur.vue
         this.$EventBus.$emit("writePF", this.author, this.title, this.content);
-        this.$EventBus.$off("wirtePF");
       }
     }
   }
