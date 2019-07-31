@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
-import os, pymysql, hashlib, sys
+import os, pymysql, hashlib, sys, time
 import conn.conn as conn
 
 SALT = "SSAFY_WEBMOIBILE!@"
@@ -78,8 +78,19 @@ def set_response_headers(res):
 
 # Access at localhost:5000/
 # This path is root page
+
+def get_ip_addr():
+    return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+
+def get_time_now():
+    now = time.localtime()
+    return "%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+
 @app.route("/")
 def index():
+    f = open("./log/log", "a")
+    f.write(get_time_now() + " [Root Page] " + get_ip_addr() + "\r\n")
+    f.close()
     return app.send_static_file("index.html")
 
 # Access at not found page
@@ -135,12 +146,19 @@ def login():
     session = ({"accessToken": accessToken,
                     "refreshToken": refreshToken})
 
+    f = open("./log/log", "a")
+    f.write(get_time_now() + " [Login] " + get_ip_addr() + "\r\n")
+    f.close()
+
     return jsonify({"msg": "로그인 성공", "success": True, "user": result, "session": session})
 
 
 # Get one user using login
 @app.route("/api/logout", methods=["POST"])
 def logout():
+    f = open("./log/log", "a")
+    f.write(get_time_now() + " [Logout] " + get_ip_addr() + "\r\n")
+    f.close()
     return ""
 
 
