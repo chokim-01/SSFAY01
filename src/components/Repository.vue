@@ -124,7 +124,7 @@ h2 {
   color: #00adb5;
 }
 
-@media screen and (max-width: 600px){
+@media screen and (max-width: 600px) {
   #commit_msg_small {
     display: block;
   }
