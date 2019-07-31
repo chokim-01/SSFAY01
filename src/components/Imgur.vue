@@ -45,8 +45,18 @@ export default {
 
     // writePortfolio
     this.$EventBus.$on("writePF", function(author, title, content) {
-      self.getImgurUrl();
-      self.sendPF(author, title, content);
+      if (self.imageUrl !== "") {
+        self.getImgurUrl().then(res => {
+          self.imageUrl = res.data.data.link;
+          self.sendPF(author, title, content);
+        });
+      } else {
+        self.imageUrl = "https://source.unsplash.com/random";
+        self.sendPF(author, title, content);
+      }
+
+      alert("글을 작성했습니다.");
+      self.$router.push("/");
     });
 
     // Image Banner upload
@@ -84,32 +94,22 @@ export default {
       var form = this.makeFormData(bannerID);
       await ImgurApi(this.$store.state.IMGUR_URL).post(`image`, form);
     },
-    async getImgurUrl() {
-      if (this.imageUrl != "") {
-        const portfolioID = "3W37WEYawFLVyPi";
-        var form = this.makeFormData(portfolioID);
-        await ImgurApi(this.$store.state.IMGUR_URL)
-          .post(`image`, form)
-          .then(response => {
-            this.imageUrl = response.data.data.link;
-          });
-      } else {
-        this.imageUrl = "https://source.unsplash.com/random";
-      }
+    getImgurUrl() {
+      const portfolioID = "3W37WEYawFLVyPi";
+      var form = this.makeFormData(portfolioID);
+      return ImgurApi(this.$store.state.IMGUR_URL).post(`image`, form);
     },
-    async sendPF(author, title, content) {
+    sendPF(author, title, content) {
       var portfolioForm = this.sendFormData(
         author,
         title,
         content,
         this.imageUrl
       );
-      await Server(this.$store.state.SERVER_URL).post(
+      return Server(this.$store.state.SERVER_URL).post(
         "/api/add/portfolio",
         portfolioForm
       );
-      alert("글을 작성했습니다.");
-      window.location.href = "/";
     },
     selectImg() {
       this.$refs.image.click();
