@@ -62,60 +62,19 @@
 
 </body>
 <script>
-//Service worker
+//Service worker Registration
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
 
-        navigator.serviceWorker.register('./service_worker.js').then(function(registration) {
-            // Registration was successful
-
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-
-        }).catch(function(err) {
+        navigator.serviceWorker.register('./sw-10.js')
+          .then(registration => {
+            console.log('Service Worker registered! Scope : ',registration.scope);
+        })
+        .catch(function(err) {
             // registration failed :(
             console.log('ServiceWorker registration failed: ', err);
         });
     });
 }
-var confirmflag = confirm("알림을 받으시겠습니까?");
-if(confirmflag){
-
- }else{
-             //취소 버튼 클릭 false
-}
-//Service worker push message
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-  console.log('Service Worker and Push is supported');
-
-  navigator.serviceWorker.register('/sw_message.js')
-  .then(function(swReg) {
-
-    swRegistration = swReg;
-    initialiseUI();
-  })
-  .catch(function(error) {
-    console.error('Service Worker Error', error);
-  });
-} else {
-  console.warn('Push messaging is not supported');
-  pushButton.textContent = 'Push Not Supported';
-}
-
-function initialiseUI() {
-  // Set the initial subscription value
-  swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
-    isSubscribed = !(subscription === null);
-
-    if (isSubscribed) {
-      console.log('User IS subscribed.');
-    } else {
-      console.log('User is NOT subscribed.');
-    }
-
-    updateBtn();
-  });
-}
-
 </script>
 </html>
