@@ -1,13 +1,13 @@
 <template>
   <v-card id="post_card" class="mx-auto" hover>
-    <v-card-title class="pb-1">
+    <v-card-title id="post_title" class="pb-1 mt-2">
       <router-link
         :to="{
           name: 'postdetail',
           params: { post: { num, title, body, created_at, author } }
         }"
       >
-        <h2 class="font-weight-light mt-3">{{ title }}</h2>
+        <h3 class="font-weight-light mt-3">{{ title }}</h3>
       </router-link>
     </v-card-title>
     <v-card-text class="headline mb-4">
@@ -38,7 +38,7 @@ export default {
 
 <style scoped>
 #post_card {
-  max-width: 250px;
+  max-width: 300px;
   background-color: #222831;
 }
 
@@ -48,6 +48,7 @@ export default {
   text-overflow: ellipsis;
 }
 
+#post_title,
 #post_author,
 #post_date {
   overflow: hidden;
