@@ -1,22 +1,45 @@
 <template>
-  <v-layout column px-4>
-    <v-flex
-      id="repositores"
-      v-for="idx in repositories.length > limits ? limits : repositories.length"
-      :key="idx"
-    >
-      <v-divider v-if="idx === 1"></v-divider>
+  <v-layout column>
+    <hooper id="project_small" :itemsToShow="1" :centerMode="true">
+      <Slide
+        v-for="idx in repositories.length > limits
+          ? limits
+          : repositories.length"
+        :key="idx"
+      >
+        <Repository :repos="repositories[idx - 1]" class="mx-4"></Repository>
+      </Slide>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
+    </hooper>
 
-      <Repository :repos="repositories[idx - 1]"></Repository>
-
-      <v-divider></v-divider>
-    </v-flex>
+    <hooper id="project_large" :itemsToShow="1" :centerMode="true">
+      <Slide
+        v-for="idx in repositories.length > limits
+          ? limits
+          : repositories.length"
+        :key="idx"
+      >
+        <Repository
+          :repos="repositories[idx - 1]"
+          class="px-5 mx-5"
+        ></Repository>
+      </Slide>
+      <hooper-navigation slot="hooper-addons"></hooper-navigation>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
+    </hooper>
   </v-layout>
 </template>
 
 <script>
 import Repository from "@/components/Repository";
 import GitlabService from "@/services/GitlabService";
+import {
+  Hooper,
+  Slide,
+  Navigation as HooperNavigation,
+  Pagination as HooperPagination
+} from "hooper";
+import "hooper/dist/hooper.css";
 
 export default {
   name: "RepositoryList",
@@ -30,7 +53,11 @@ export default {
     };
   },
   components: {
-    Repository
+    Repository,
+    Hooper,
+    Slide,
+    HooperNavigation,
+    HooperPagination
   },
   mounted() {
     this.getGitlabRepos("k3y6reak");
@@ -48,3 +75,19 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#project_small {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  #project_large {
+    display: none;
+  }
+
+  #project_small {
+    display: block;
+  }
+}
+</style>
