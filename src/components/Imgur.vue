@@ -36,21 +36,40 @@ export default {
     return {
       imageName: "",
       imageUrl: "",
-      imageFile: ""
+      imageFile: "",
+      cnt: 0
     };
   },
-  created() {
+  mounted() {
     var self = this;
 
     // writePortfolio
-    this.$EventBus.$once("writePF", function(author, title, content) {
-      self.sendPF(author, title, content);
+    this.$EventBus.$on("writePF", function(author, title, content) {
+      if (self.imageUrl !== "") {
+        self.getImgurUrl().then(res => {
+          self.imageUrl = res.data.data.link;
+          self.sendPF(author, title, content);
+        });
+      } else {
+        self.imageUrl = "https://source.unsplash.com/random";
+        self.sendPF(author, title, content);
+      }
+
+      alert("글을 작성했습니다.");
+      self.$router.push("/");
     });
 
     // Image Banner upload
-    this.$EventBus.$once("uploadImgBanner", function() {
+    this.$EventBus.$on("uploadImgBanner", function() {
       self.sendBanner();
     });
+
+    this.sendBanner;
+    this.sendPF;
+    this.getImgurUrl;
+  },
+  beforeDestroy() {
+    this.$EventBus.$off("writePF");
   },
   methods: {
     sendFormData(author, title, body, img) {
@@ -75,27 +94,22 @@ export default {
       var form = this.makeFormData(bannerID);
       await ImgurApi(this.$store.state.IMGUR_URL).post(`image`, form);
     },
-    async sendPF(author, title, content) {
+    getImgurUrl() {
       const portfolioID = "3W37WEYawFLVyPi";
       var form = this.makeFormData(portfolioID);
-      var self = this;
-      await ImgurApi(this.$store.state.IMGUR_URL)
-        .post(`image`, form)
-        .then(response => {
-          this.imageUrl = response.data.data.link;
-        });
+      return ImgurApi(this.$store.state.IMGUR_URL).post(`image`, form);
+    },
+    sendPF(author, title, content) {
       var portfolioForm = this.sendFormData(
         author,
         title,
         content,
-        self.imageUrl
+        this.imageUrl
       );
-      await Server(this.$store.state.SERVER_URL).post(
+      return Server(this.$store.state.SERVER_URL).post(
         "/api/add/portfolio",
         portfolioForm
       );
-      alert("글을 작성했습니다.");
-      window.location.href = "/";
     },
     selectImg() {
       this.$refs.image.click();
