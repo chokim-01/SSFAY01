@@ -107,7 +107,6 @@ export default {
     };
   },
   created() {
-    this.$store.commit("setUrl", this.random_base_url);
     this.imgSrc = this.$store.state.url;
   },
   methods: {
