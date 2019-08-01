@@ -88,9 +88,6 @@ def get_time_now():
 
 @app.route("/")
 def index():
-    f = open("./log/log", "a")
-    f.write(get_time_now() + " [Root Page] " + get_ip_addr() + "\r\n")
-    f.close()
     return app.send_static_file("index.html")
 
 # Access at not found page
@@ -147,7 +144,7 @@ def login():
                     "refreshToken": refreshToken})
 
     f = open("./log/log", "a")
-    f.write(get_time_now() + " [Login] " + get_ip_addr() + "\r\n")
+    f.write(get_time_now() + "$" + "[Login]" + "$" + umail + "$" + get_ip_addr() + "\r\n")
     f.close()
 
     return jsonify({"msg": "로그인 성공", "success": True, "user": result, "session": session})
@@ -156,8 +153,10 @@ def login():
 # Get one user using login
 @app.route("/api/logout", methods=["POST"])
 def logout():
+    umail = request.form.get("umail")
+
     f = open("./log/log", "a")
-    f.write(get_time_now() + " [Logout] " + get_ip_addr() + "\r\n")
+    f.write(get_time_now() + "$" + "[Logout]" + "$" + umail + "$" + get_ip_addr() + "\r\n")
     f.close()
     return ""
 
@@ -281,6 +280,10 @@ def addPortfolio():
     cursor.execute(sql, (author, title, body, img))
     db.commit()
 
+    f = open("./log/log", "a")
+    f.write(get_time_now() + "$" + "[Add portfolio]" + "$" + author + "$" + get_ip_addr() + "\r\n")
+    f.close()
+
     return ""
 
 # Insert post
@@ -295,6 +298,10 @@ def addPost():
     sql = "insert into posts (num, author, title, body, created_at) values(0, %s, %s, %s, timestamp(now()))"
     cursor.execute(sql, (author, title, body))
     db.commit()
+
+    f = open("./log/log", "a")
+    f.write(get_time_now() + "$" + "[Add post]" + "$" + author + "$" + get_ip_addr() + "\r\n")
+    f.close()
 
     return ""
 
@@ -316,6 +323,10 @@ def addUser():
         return jsonify({"msg": "중복된 계정입니다."})
 
     db.commit()
+
+    f = open("./log/log", "a")
+    f.write(get_time_now() + "$" + "[Add user]" + "$" + umail + "$" + get_ip_addr() + "\r\n")
+    f.close()
 
     return jsonify({"msg" : "가입완료!"})
 

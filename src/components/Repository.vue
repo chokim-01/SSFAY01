@@ -16,6 +16,8 @@
       </v-flex>
     </v-layout>
 
+    <div>{{ commitsCnt }}</div>
+
     <v-sparkline
       id="commit_graph"
       :value="commitsCnt"
@@ -66,7 +68,7 @@ export default {
     gradient: gradients[5],
     gradientDirection: "top",
     gradients,
-    commitsCnt: [],
+    commitsCnt: [0],
     userCommits: [],
     users: ["박사홍", "양동권", "박근형"],
     autoDraw: false
@@ -78,11 +80,12 @@ export default {
   methods: {
     async drawStatGraph() {
       this.autoDraw = false;
-      var now = new Date();
-      var since = new Date();
-      var until = new Date();
 
       for (var day = -7; day <= 2; day++) {
+        var now = new Date();
+        var since = new Date();
+        var until = new Date();
+
         since.setDate(now.getDate() + day);
         until.setDate(now.getDate() + day);
         since.setHours(-15, 0, 0, 0);
