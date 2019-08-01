@@ -172,7 +172,6 @@ def login():
 @app.route("/api/logout", methods=["POST"])
 def logout():
     umail = request.form.get("umail")
-
     add_log("Logout", umail)
 
     return ""

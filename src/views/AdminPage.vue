@@ -330,7 +330,6 @@ export default {
         .get("/api/get/logs")
         .then(res => {
           this.logs = res.data;
-          console.log(res.data);
         });
     },
     deleteUser(item) {
