@@ -91,7 +91,7 @@ export default {
       form.append("num", this.post.num);
       form.append("title", this.post.title);
       form.append("body", this.post.body);
-      form.append("created_at", this.post.created_at);
+      form.append("loginId", this.$store.state.umail);
       return form;
     },
     updatePost() {

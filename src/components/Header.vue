@@ -300,8 +300,10 @@ export default {
       if (this.firebaseLogin == true) {
         await FirebaseService.logout();
       } else {
+        var form = new FormData();
+        form.append("umail", this.email);
         await Server(this.$store.state.SERVER_URL)
-          .post("/api/logout")
+          .post("/api/logout", form)
           .then(this.$store.dispatch("logout"));
       }
     }

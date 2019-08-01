@@ -1,5 +1,5 @@
 <template>
-  <div class="my-5">
+  <div id="project_div" class="my-5">
     <v-layout>
       <v-flex xs8>
         <!-- Gitlab Repository Name -->
@@ -22,7 +22,7 @@
       :gradient="gradient"
       :smooth="10 || false"
       :padding="8"
-      :line-width="2"
+      :line-width="3"
       :stroke-linecap="`round`"
       :gradient-direction="gradientDirection"
       :auto-draw="autoDraw"
@@ -66,7 +66,7 @@ export default {
     gradient: gradients[5],
     gradientDirection: "top",
     gradients,
-    commitsCnt: [],
+    commitsCnt: [0],
     userCommits: [],
     users: ["박사홍", "양동권", "박근형"],
     autoDraw: false
@@ -78,11 +78,12 @@ export default {
   methods: {
     async drawStatGraph() {
       this.autoDraw = false;
-      var now = new Date();
-      var since = new Date();
-      var until = new Date();
 
       for (var day = -7; day <= 2; day++) {
+        var now = new Date();
+        var since = new Date();
+        var until = new Date();
+
         since.setDate(now.getDate() + day);
         until.setDate(now.getDate() + day);
         since.setHours(-15, 0, 0, 0);
@@ -124,9 +125,22 @@ h2 {
   color: #00adb5;
 }
 
+#commit_graph {
+  width: 80%;
+}
+
+#project_div {
+  margin: auto;
+  width: 50%;
+}
+
 @media screen and (max-width: 600px) {
   #commit_msg_small {
     display: block;
+  }
+
+  #project_div {
+    width: 80%;
   }
 
   #commit_msg_large {
