@@ -16,8 +16,6 @@
       </v-flex>
     </v-layout>
 
-    <div>{{ commitsCnt }}</div>
-
     <v-sparkline
       id="commit_graph"
       :value="commitsCnt"

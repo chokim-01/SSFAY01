@@ -4,10 +4,14 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
-import os, pymysql, hashlib, sys, time
+import os, pymysql, hashlib, sys, time, threading
 import conn.conn as conn
 
+# Hash slat for user passwd sha256
 SALT = "SSAFY_WEBMOIBILE!@"
+
+# Prevent deadlock at white log
+lock = threading.Lock()
 
 # If you want to access database,
 # Use conn.db().cursor()
@@ -51,13 +55,14 @@ cors = CORS(app, resources={
   r"/api/*": {"origin": "*"},
 })
 
-
+# If user logout, session value insert blacklist
 @jwt_manager.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
 
 
+# If client user refresh page reconnect
 @app.route('/api/refresh', methods=['POST'])
 @jwt_refresh_token_required
 def refresh():
@@ -65,7 +70,7 @@ def refresh():
     ret = {
         'access_token': create_access_token(identity=current_user)
     }
-    return jsonify(ret), 200
+    return ""
 
 
 # Set no cache
@@ -76,19 +81,33 @@ def set_response_headers(res):
     res.headers["Expires"] = "0"
     return res
 
-# Access at localhost:5000/
-# This path is root page
-
+# Get client user ip
 def get_ip_addr():
     return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
 
-def get_time_now():
+
+# Get current time
+def get_current_time():
     now = time.localtime()
     return "%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
+
+# Add log
+def add_log(action, who):
+    lock.acquire()
+    f = open("./log/log", "a")
+    f.write(get_current_time() + "$" + action + "$" + who + "$" + get_ip_addr() + "\n")
+    f.close()
+    lock.release()
+    return ""
+
+
+# Access at localhost:5000/
+# This path is root page
 @app.route("/")
 def index():
     return app.send_static_file("index.html")
+
 
 # Access at not found page
 @app.errorhandler(404)
@@ -100,9 +119,10 @@ def page_not_found(e):
 ########################## GET DATA SECTION ###########################
 #######################################################################
 
+
 # Get posts data
 @app.route("/api/get/posts")
-def getPosts():
+def get_posts():
     cursor = conn.db().cursor()
     cursor.execute("select * from posts order by num desc")
     result = cursor.fetchall()
@@ -112,7 +132,7 @@ def getPosts():
 
 # Get portfolio data
 @app.route("/api/get/portfolios")
-def getPortfolios():
+def get_portfolios():
     cursor = conn.db().cursor()
     cursor.execute("select * from portfolios order by num desc")
     result = cursor.fetchall()
@@ -143,9 +163,7 @@ def login():
     session = ({"accessToken": accessToken,
                     "refreshToken": refreshToken})
 
-    f = open("./log/log", "a")
-    f.write(get_time_now() + "$" + "[Login]" + "$" + umail + "$" + get_ip_addr() + "\r\n")
-    f.close()
+    add_log("Login", umail)
 
     return jsonify({"msg": "로그인 성공", "success": True, "user": result, "session": session})
 
@@ -155,15 +173,14 @@ def login():
 def logout():
     umail = request.form.get("umail")
 
-    f = open("./log/log", "a")
-    f.write(get_time_now() + "$" + "[Logout]" + "$" + umail + "$" + get_ip_addr() + "\r\n")
-    f.close()
+    add_log("Logout", umail)
+
     return ""
 
 
 # Get all user data
 @app.route("/api/get/users")
-def getUsers():
+def get_users():
     cursor = conn.db().cursor()
     cursor.execute("select * from users")
     result = cursor.fetchall()
@@ -171,16 +188,43 @@ def getUsers():
     return jsonify(result)
 
 
+@app.route("/api/get/logs")
+def get_logs():
+    lock.acquire()
+    f = open("./log/log", "r")
+
+    logs = []
+    while True:
+        line = f.readline()
+        if not line: break
+
+        log = line.split("$")
+        log[-1] = log[-1][:-1] # remove newline character
+        log_titles = ["date", "behavior", "who", "ip"]
+        dict_log = {}
+
+        for idx in range(len(log)):
+            dict_log[log_titles[idx]] = log[idx]
+
+        logs.append(dict_log)
+
+    f.close()
+    lock.release()
+
+    return jsonify(logs)
+
 #######################################################################
 ########################## EDIT DATA SECTION ##########################
 #######################################################################
 
+
 # Edit portfolio
 @app.route("/api/edit/portfolio", methods=['POST'])
-def editPortfoilo():
+def edit_portfoilo():
     num = request.form.get("num")
     title = request.form.get("title")
     body = request.form.get("body")
+    login_id = request.form.get("loginId")
 
     db = conn.db()
     cursor = db.cursor()
@@ -188,14 +232,18 @@ def editPortfoilo():
     cursor.execute(sql, (title, body, num))
     db.commit()
 
+    add_log("Edit portfolio", login_id)
+
     return ""
+
 
 # Edit post
 @app.route("/api/edit/post", methods=["POST"])
-def editPost():
+def edit_post():
     num = request.form.get("num")
     title = request.form.get("title")
     body = request.form.get("body")
+    login_id = request.form.get("loginId")
 
     db = conn.db()
     cursor = db.cursor()
@@ -203,11 +251,14 @@ def editPost():
     cursor.execute(sql, (title, body, num))
     db.commit()
 
+    add_log("Edit post", login_id)
+
     return ""
+
 
 # Edit user
 @app.route("/api/edit/user", methods=["POST"])
-def editUser():
+def edit_user():
     umail = request.form.get("umail")
     uauth = request.form.get("uauth")
 
@@ -219,14 +270,17 @@ def editUser():
 
     return ""
 
+
 #######################################################################
 ######################### DELETE DATA SECITON #########################
 #######################################################################
 
+
 # Delete portfolio
 @app.route("/api/del/portfolio", methods=["POST"])
-def delPortfolio():
+def delete_portfolio():
     num = request.form.get("num")
+    login_id = request.form.get("loginId")
 
     db = conn.db()
     cursor = db.cursor()
@@ -234,12 +288,16 @@ def delPortfolio():
     cursor.execute(sql, (num))
     db.commit()
 
+    add_log("Delete portfolio", login_id)
+
     return ""
+
 
 # Delete post
 @app.route("/api/del/post", methods=["POST"])
-def delPost():
+def delete_post():
     num = request.form.get("num")
+    login_id = request.form.get("loginId")
 
     db = conn.db()
     cursor = db.cursor()
@@ -247,11 +305,14 @@ def delPost():
     cursor.execute(sql, (num))
     db.commit()
 
+    add_log("Delete post", login_id)
+
     return ""
+
 
 # Delete user
 @app.route("/api/del/user", methods=["POST"])
-def delUser():
+def delte_user():
     umail = request.form.get("umail")
 
     db = conn.db()
@@ -262,13 +323,15 @@ def delUser():
 
     return ""
 
+
 #######################################################################
 ######################### INSERT DATA SECITON #########################
 #######################################################################
 
+
 # Insert portfolios
 @app.route("/api/add/portfolio", methods=["POST"])
-def addPortfolio():
+def add_portfolio():
     author = request.form.get("author")
     title = request.form.get("title")
     body = request.form.get("body")
@@ -280,15 +343,14 @@ def addPortfolio():
     cursor.execute(sql, (author, title, body, img))
     db.commit()
 
-    f = open("./log/log", "a")
-    f.write(get_time_now() + "$" + "[Add portfolio]" + "$" + author + "$" + get_ip_addr() + "\r\n")
-    f.close()
+    add_log("Add portfolio", author)
 
     return ""
 
+
 # Insert post
 @app.route("/api/add/post", methods=["POST"])
-def addPost():
+def add_post():
     author = request.form.get("author")
     title = request.form.get("title")
     body = request.form.get("body")
@@ -299,16 +361,14 @@ def addPost():
     cursor.execute(sql, (author, title, body))
     db.commit()
 
-    f = open("./log/log", "a")
-    f.write(get_time_now() + "$" + "[Add post]" + "$" + author + "$" + get_ip_addr() + "\r\n")
-    f.close()
+    add_log("Add post", author)
 
     return ""
 
 
 # Insert user
 @app.route("/api/add/user", methods=["POST"])
-def addUser():
+def add_user():
     umail = request.form.get("umail")
     upasswd = request.form.get("upasswd") + SALT
     upasswd = hashlib.sha256(upasswd.encode()).hexdigest()
@@ -324,11 +384,10 @@ def addUser():
 
     db.commit()
 
-    f = open("./log/log", "a")
-    f.write(get_time_now() + "$" + "[Add user]" + "$" + umail + "$" + get_ip_addr() + "\r\n")
-    f.close()
+    add_log("Add user", umail)
 
     return jsonify({"msg" : "가입완료!"})
+
 
 if __name__ == "__main__":
   app.run(host="localhost", debug=True)
