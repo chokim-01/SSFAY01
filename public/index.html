@@ -71,6 +71,8 @@
 
 </body>
 <script>
+//Notification request
+Notification.requestPermission();
 //Service worker Registration
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
