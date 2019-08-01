@@ -119,6 +119,10 @@ export default {
   display: none;
 }
 
+#commit_msg_large {
+  font-size: 18px;
+}
+
 a,
 h2 {
   text-decoration: none;
