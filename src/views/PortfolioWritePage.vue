@@ -68,15 +68,6 @@ export default {
     },
     writePortfolio() {
       if (this.chkNull()) {
-
-        navigator.serviceWorker.ready.then(
-          navigator.serviceWorker.controller.postMessage({
-          'Title': this.title,
-          'Author': this.author,
-          'Content': this.content
-          })
-        );
-
         // writePF $on at compoents/Imgur.vue
         this.$EventBus.$emit("writePF", this.author, this.title, this.content);
       }
