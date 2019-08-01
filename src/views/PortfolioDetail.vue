@@ -96,8 +96,7 @@ export default {
       form.append("num", this.portfolio.num);
       form.append("title", this.portfolio.title);
       form.append("body", this.portfolio.body);
-      form.append("img", this.portfolio.img);
-      form.append("created_at", this.portfolio.created_at);
+      form.append("loginId", this.$store.state.umail);
       return form;
     },
     updatePortfolio() {
