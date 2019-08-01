@@ -206,7 +206,43 @@
           <v-tab-item>
             <v-card flat>
               <v-card-text>
-                로그
+                <!-- search-bar -->
+                <v-card-title>
+                  <v-spacer></v-spacer>
+                  <v-text-field
+                    v-model="search_log"
+                    append-icon="search"
+                    label="Search"
+                    single-line
+                    hide-details
+                    color="#00adb5"
+                  ></v-text-field>
+                </v-card-title>
+
+                <!-- Post data table -->
+                <v-data-table
+                  class="elevation-1"
+                  :headers="log_headers"
+                  :items="logs"
+                  :search="search_log"
+                  prev-icon="fa-caret-left"
+                  next-icon="fa-caret-right"
+                  sort-icon="fa-caret-down"
+                >
+                  <template v-slot:items="props">
+                    <!--  Log date -->
+                    <td>{{ props.item.date }}</td>
+
+                    <!-- Log behavior  -->
+                    <td>{{ props.item.behavior }}</td>
+
+                    <!-- Log who  -->
+                    <td>{{ props.item.who }}</td>
+
+                    <!-- Log ip -->
+                    <td>{{ props.item.ip }}</td>
+                  </template>
+                </v-data-table>
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -226,6 +262,7 @@ export default {
       search_user: "",
       search_portfolio: "",
       search_post: "",
+      search_log: "",
       user_headers: [
         { text: "Email", sortable: false, value: "uemail" },
         { text: "PassWord", sortable: false, value: "upasswd" },
@@ -247,7 +284,14 @@ export default {
         { text: "Actions", sortable: false, value: "num" }
       ],
       posts: [],
-      grades: ["🧑Guest", "👪Member", "🤴Admin"]
+      grades: ["🧑Guest", "👪Member", "🤴Admin"],
+      logs: [],
+      log_headers: [
+        { text: "Date", value: "date" },
+        { text: "Behavior", value: "behavior" },
+        { text: "Who", value: "who" },
+        { text: "IP", value: "ip" }
+      ]
     };
   },
   components: {
@@ -257,6 +301,7 @@ export default {
     this.getUsers();
     this.getPortfolios();
     this.getPosts();
+    this.getLogs();
   },
   methods: {
     async getUsers() {
@@ -278,6 +323,14 @@ export default {
         .get("/api/get/posts")
         .then(res => {
           this.posts = res.data;
+        });
+    },
+    async getLogs() {
+      await Server(this.$store.state.SERVER_URL)
+        .get("/api/get/logs")
+        .then(res => {
+          this.logs = res.data;
+          console.log(res.data);
         });
     },
     deleteUser(item) {
