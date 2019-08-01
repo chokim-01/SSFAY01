@@ -32,11 +32,7 @@ export default {
   },
   store,
   created: function() {
-    Server(this.$store.state.SERVER_URL)
-      .get("/api/refresh")
-      .then(res => {
-        console.log(res);
-      });
+    Server(this.$store.state.SERVER_URL).get("/api/refresh");
   },
   data() {
     return {};
