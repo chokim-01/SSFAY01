@@ -84,7 +84,7 @@ function urlB64ToUint8Array(base64String) {
   }
   return outputArray;
 }
-
+/*
 self.addEventListener("push", function(event) {
   console.log("[Service Worker] Push Received.");
   console.log("[Service Worker] Push had this data: ", event.data.text());
@@ -98,7 +98,7 @@ self.addEventListener("push", function(event) {
 
   event.waitUntil(self.registration.showNotification(title, options));
 });
-
+*/
 self.addEventListener("notificationclick", function(event) {
   console.log("[Service Worker] Notification click Received.");
 
