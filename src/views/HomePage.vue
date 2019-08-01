@@ -2,7 +2,7 @@
   <div class="fullpage-container">
     <div class="fullpage-wp" v-fullpage="opts" ref="example">
       <!-- Top image -->
-      <div class="page bannerPage">
+      <section class="page" id="bannerPage">
         <ImgBanner>
           <div id="imgBanner" slot="text" v-animate="{ value: 'flash' }">
             <h1 id="bannerTxt" class="bannerLarge">
@@ -14,7 +14,7 @@
             </div>
           </div>
         </ImgBanner>
-      </div>
+      </section>
 
       <!-- About Me -->
       <div class="page aboutPage">
@@ -212,8 +212,6 @@ export default {
           email: "mailto:trial159@gmail.com"
         }
       ],
-      type: "selector",
-      selector: "",
       duration: 400,
       offset: 50,
       opts: {
@@ -226,17 +224,9 @@ export default {
   methods: {
     getImgUrl(img) {
       return require("../assets/" + img);
-    },
-    check(value) {
-      this.selector = value;
     }
   },
   computed: {
-    target() {
-      const value = this[this.type];
-      if (!isNaN(value)) return Number(value);
-      else return value;
-    },
     options() {
       return {
         duration: this.duration,
