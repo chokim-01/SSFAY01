@@ -24,25 +24,14 @@ self.addEventListener("install", function(event) {
   );
 });
 // ServiceWorker Fetch
-self.addEventListener("fetch", event => {
-  var request = event.request;
-  //Tell the browser to wait for newtwork request and respond with below
+self.addEventListener("fetch", function(event) {
   event.respondWith(
-    //If request is already in cache, return it
-    caches.match(request).then(response => {
+    caches.match(event.request).then(function(response) {
+      // Cache hit - return response
       if (response) {
         return response;
       }
-
-      //if request is not cached, add it to cache
-      return fetch(request).then(response => {
-        var responseToCache = response.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(request, responseToCache);
-        });
-
-        return response;
-      });
+      return fetch(event.request);
     })
   );
 });
@@ -109,17 +98,6 @@ self.addEventListener("notificationclick", function(event) {
   );
 });
 
-self.addEventListener('message', function (event) {
-  console.log(event);
-  const title = event.data.Title;
-  const options = {
-    body: event.data.Content,
-    icon: "images/icon.png",
-    badge: "images/badge.png"
-  };
-
-  event.waitUntil(self.registration.showNotification(title, options));
-})
 
 self.addEventListener("pushsubscriptionchange", function(event) {
   console.log('[Service Worker]: "pushsubscriptionchange" event fired.');
