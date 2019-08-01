@@ -85,6 +85,19 @@ function urlB64ToUint8Array(base64String) {
   return outputArray;
 }
 
+self.addEventListener("push", function(event) {
+  console.log("[Service Worker] Push Received.");
+  console.log("[Service Worker] Push had this data: ", event.data.text());
+
+  const title = "TITLE";
+  const options = {
+    body: "CONTENT",
+    icon: "images/icon.png",
+    badge: "images/badge.png"
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
 
 self.addEventListener("notificationclick", function(event) {
   console.log("[Service Worker] Notification click Received.");
@@ -92,10 +105,10 @@ self.addEventListener("notificationclick", function(event) {
   event.notification.close();
 
   event.waitUntil(
-    //링크 뜨면 글번호로 가게 할거고...
-    clients.openWindow("https://k3y6reak.pythonanywhere.com/")
+    clients.openWindow("https://k3y6reak.pythonanywhere.com/Portfolio")
   );
 });
+
 self.addEventListener('message', function (event) {
   console.log(event);
   const title = event.data.Title;

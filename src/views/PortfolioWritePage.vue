@@ -31,10 +31,15 @@
 </template>
 
 <script>
-
 import markdownEditor from "vue-simplemde/src/markdown-editor";
 import Imgur from "../components/Imgur";
 
+/*
+const webpush = require("web-push");
+
+webpush.setGCMAPIKey(
+  "AAAAg4OB7Yk:APA91bFPb7kkVePgoWGDOfauKSBw45b5GwlV1qbo9XgLISbBRFI-t_LeZ-Pnu2q34vTMgtyWwFnBomUsoku_HA2Y5Kw0floMAtd4KzJiCPd7oP-3VpmYF5X9wg20vOF7lcTbvAHhBM94");
+*/
 export default {
   components: {
     markdownEditor,
@@ -63,12 +68,15 @@ export default {
     },
     writePortfolio() {
       if (this.chkNull()) {
+
         navigator.serviceWorker.ready.then(
           navigator.serviceWorker.controller.postMessage({
           'Title': this.title,
           'Author': this.author,
           'Content': this.content
-        }));
+          })
+        );
+
         // writePF $on at compoents/Imgur.vue
         this.$EventBus.$emit("writePF", this.author, this.title, this.content);
       }
