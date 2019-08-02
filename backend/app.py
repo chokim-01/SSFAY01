@@ -79,6 +79,9 @@ def set_response_headers(res):
     res.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     res.headers["Pragma"] = "no-cache"
     res.headers["Expires"] = "0"
+    res.headers.add('Access-Control-Allow-Origin', '*')
+    res.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    res.headers.add('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
     return res
 
 # Get client user ip
