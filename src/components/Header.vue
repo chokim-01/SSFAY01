@@ -101,6 +101,7 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
+        <!-- Bookmark Button -->
         <v-list-tile>
           <v-btn href="javascript:bookmarksite('home','/')" icon flat>
             <v-icon id="bookmarkBtn">fa-bookmark</v-icon>
@@ -116,6 +117,11 @@
           <v-list-tile-content>
             <v-list-tile-title>{{ menu.title }}</v-list-tile-title>
           </v-list-tile-content>
+        </v-list-tile>
+
+        <!-- Admin page -->
+        <v-list-tile v-if="this.$store.state.uauth == 2" to="/Admin">
+          <v-list-tile-title>Admin</v-list-tile-title>
         </v-list-tile>
 
         <!-- Translate Button -->
@@ -209,7 +215,7 @@
 
           <v-btn
             id="highlight-fontColor"
-            v-on:click="signIn"
+            v-on:click="login"
             @click="dialog_login = false"
             flat
           >
@@ -276,7 +282,7 @@ export default {
         });
       });
     },
-    async signIn() {
+    async login() {
       var form = new FormData();
       form.append("umail", this.email);
       form.append("upasswd", this.password);
@@ -301,7 +307,7 @@ export default {
         await FirebaseService.logout();
       } else {
         var form = new FormData();
-        form.append("umail", this.email);
+        form.append("umail", this.$store.state.umail);
         await Server(this.$store.state.SERVER_URL)
           .post("/api/logout", form)
           .then(this.$store.dispatch("logout"));

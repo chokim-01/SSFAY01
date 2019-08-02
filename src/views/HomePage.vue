@@ -116,16 +116,16 @@
                 contact us
               </h2>
               <div
+                class="text-xs-center"
                 v-for="item in members"
                 :key="item.name_en"
-                class="text-xs-center"
                 v-animate="{ value: 'fadeIn', delay: 300 }"
               >
                 <p id="name_en">{{ item.name_en }}</p>
-                <v-btn :href="item.github" icon class="mx-4 mb-3">
+                <v-btn class="mx-4 mb-3" :href="item.github" icon>
                   <v-icon id="contact_icon">fa-github</v-icon>
                 </v-btn>
-                <v-btn :href="item.email" icon class="mx-4 mb-3">
+                <v-btn class="mx-4 mb-3" :href="item.email" icon>
                   <v-icon id="contact_icon">fa-envelope-open</v-icon>
                 </v-btn>
                 <v-divider></v-divider>

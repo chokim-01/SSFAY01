@@ -1,7 +1,6 @@
 <template>
   <v-layout row wrap mt-4>
-    <!-- Set Post count -->
-    <!-- moblie size -->
+    <!-- Moblie size -->
     <hooper id="post_small" :itemsToShow="1.25" :centerMode="true">
       <slide
         v-for="idx in posts.length > limits ? limits : posts.length"
@@ -19,7 +18,7 @@
       <hooper-pagination slot="hooper-addons"></hooper-pagination>
     </hooper>
 
-    <!-- webb size -->
+    <!-- Web size -->
     <hooper id="post_large" :itemsToShow="4" :centerMode="true">
       <slide
         v-for="idx in posts.length > limits ? limits : posts.length"
