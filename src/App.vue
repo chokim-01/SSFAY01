@@ -22,7 +22,6 @@
 import store from "./store";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Server from "./services/Server.js";
 
 export default {
   name: "App",
@@ -30,17 +29,7 @@ export default {
     Header,
     Footer
   },
-  store,
-  created: function() {
-    Server(this.$store.state.SERVER_URL)
-      .get("/api/refresh")
-      .then(res => {
-        console.log(res);
-      });
-  },
-  data() {
-    return {};
-  }
+  store
 };
 
 // Alert Chrome Optimization
