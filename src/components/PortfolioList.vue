@@ -1,6 +1,5 @@
 <template>
   <v-layout mt-5 wrap>
-    <!-- Set portfolio count -->
     <!-- mobile size -->
     <hooper id="portfolio_small" :itemsToShow="1.25" :centerMode="true">
       <slide

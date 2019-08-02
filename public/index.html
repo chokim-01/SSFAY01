@@ -69,48 +69,4 @@
   </div>
 
 </body>
-<script>
-  const vapidPublicKey = "BG_FTCe-XzWKU325oKqS6LUP_1Q68Ptg0LfpG6_ZtwLCUwOdSbzjU1KgaZHb1LRNiSNO4GgYxZW0PtUfu2HoFRk";
-  const convertedVPkey = urlB64ToUint8Array(vapidPublicKey);
-  const applicationServerPublicKey = "AAAAg4OB7Yk:APA91bFPb7kkVePgoWGDOfauKSBw45b5GwlV1qbo9XgLISbBRFI-t_LeZ-Pnu2q34vTMgtyWwFnBomUsoku_HA2Y5Kw0floMAtd4KzJiCPd7oP-3VpmYF5X9wg20vOF7lcTbvAHhBM94";
-  //const p256dh = [4,164,101,63,151,116,212,72,113,246,49,47,135,185,0,22,214,104,199,250,199,114,91,193,35,106,253,209,37,81,227,95,181,133,154,77,166,116,46,178,164,109,199,148,231,186,21,63,92,234,160,235,93,100,121,184,78,88,152,12,217,134,61,105,93];
-  //const auth = [34,124,209,74,161,205,115,173,224,138,170,203,189,76,246,176];
-  //Notification request
-  Notification.requestPermission();
-  //Service worker Registration
-  function urlB64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-      .replace(/\-/g, '+')
-      .replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    for (let i = 0; i < rawData.length; ++i)
-      outputArray[i] = rawData.charCodeAt(i);
-    return outputArray;
-  }
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-
-      navigator.serviceWorker.register('./service_worker.js')
-        .then(registration => {
-          console.log('Service Worker registered! Scope : ', registration.scope);
-          registration.pushManager.subscribe({
-              userVisibleOnly: true,
-              applicationServerKey: convertedVPkey
-            })
-            .then(function(subscription) {
-              console.log("Subscribe!")
-
-            })
-            .catch(function(err) {
-              // registration failed :(
-              console.log('ServiceWorker registration failed: ', err);
-            });
-        });
-    })
-  }
-</script>
-
 </html>

@@ -43,6 +43,7 @@
           ></markdown-editor>
         </template>
 
+        <!-- Edit and Delte button -->
         <template v-if="authCheck">
           <div class="editBtn">
             <v-btn @click="updatePortfolio">수정</v-btn>

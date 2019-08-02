@@ -7,10 +7,13 @@ from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_r
 import os, pymysql, hashlib, sys, time, threading
 import conn.conn as conn
 
+# log file path
+LOG_PATH = "./log/log"
+
 # Hash slat for user passwd sha256
 SALT = "SSAFY_WEBMOIBILE!@"
 
-# Prevent deadlock at white log
+# Prevent deadlock at write log
 lock = threading.Lock()
 
 # If you want to access database,
@@ -68,7 +71,7 @@ def check_if_token_in_blacklist(decrypted_token):
 def refresh():
     current_user = get_jwt_identity()
     ret = {
-        'access_token': create_access_token(identity=current_user)
+        "access_token": create_access_token(identity=current_user)
     }
     return ""
 
@@ -83,7 +86,7 @@ def set_response_headers(res):
 
 # Get client user ip
 def get_ip_addr():
-    return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+    return request.environ.get("HTTP_X_REAL_IP", request.remote_addr)
 
 
 # Get current time
@@ -95,7 +98,7 @@ def get_current_time():
 # Add log
 def add_log(action, who):
     lock.acquire()
-    f = open("./log/log", "a")
+    f = open(LOG_PATH, "a")
     f.write(get_current_time() + "$" + action + "$" + who + "$" + get_ip_addr() + "\n")
     f.close()
     lock.release()
@@ -190,15 +193,18 @@ def get_users():
 @app.route("/api/get/logs")
 def get_logs():
     lock.acquire()
-    f = open("./log/log", "r")
+    f = open(LOG_PATH, "r")
 
     logs = []
     while True:
         line = f.readline()
         if not line: break
 
+        # logs are set CURRENT_TIME$BEHAVIOR$USER$CLIENT_IP
         log = line.split("$")
-        log[-1] = log[-1][:-1] # remove newline character
+
+        # remove newline character
+        log[-1] = log[-1][:-1]
         log_titles = ["date", "behavior", "who", "ip"]
         dict_log = {}
 

@@ -8,17 +8,17 @@
         </v-flex>
 
         <v-textarea
-          light
           v-model="content"
           placeholder="내용"
           rows="20"
           solo
+          light
         ></v-textarea>
 
         <!-- Write Portfolio Button -->
         <v-btn
-          id="highlight-backColor"
           class="right"
+          id="highlight-backColor"
           @click="writePost"
           depressed
         >
