@@ -1,10 +1,9 @@
 const SERVER_URL = "http://localhost";
 
-var CACHE_NAME = "v1";
 var urlsToCache = [
   "/",
-  "/manifest.json",
   "/app.js",
+  "/manifest.json",
   "/css/common.css",
   "/img/icons/favicon.png",
   "/img/icons/favicon-16x16.png",
@@ -14,106 +13,72 @@ var urlsToCache = [
   SERVER_URL + ":8080/fonts/fontawesome-webfont.af7ae505.woff2"
 ];
 
-// ServiceWorker install
-self.addEventListener("install", function(event) {
-  // Perform install steps
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
-      return cache.addAll(urlsToCache);
-    })
-  );
-});
-// ServiceWorker Fetch
-self.addEventListener("fetch", function(event) {
-  event.respondWith(
-    caches.match(event.request).then(function(response) {
-      // Cache hit - return response
-      if (response) {
-        return response;
-      }
-      return fetch(event.request);
+var CACHE = "cache-update-and-refresh";
+
+self.addEventListener("install", function(evt) {
+  evt.waitUntil(
+    caches.open(CACHE).then(function(cache) {
+      cache.addAll(urlsToCache);
     })
   );
 });
 
-//Remove before version with ServiceWorker
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keyList => {
-      return Promise.all(
-        keyList.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    })
-  );
+self.addEventListener("fetch", function(evt) {
+  if (evt.request.method == "POST") return;
+  evt.respondWith(fromCache(evt.request));
+
+  evt.waitUntil(update(evt.request).then(refresh));
 });
 
-// PushManager
-/* eslint-disable max-len */
-
-const applicationServerPublicKey =
-  "BH8-hIchXKMI6AKSee8gD0hhPThRqaEhIEtMJwcTjEQhiOKdG-_2tTIO-6hOAK4kwg5M9Saedjxp4hVE-khhWxY";
-
-/* eslint-enable max-len */
-
-function urlB64ToUint8Array(base64String) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/\-/g, "+")
-    .replace(/_/g, "/");
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
+function fromCache(request) {
+  return caches.open(CACHE).then(function(cache) {
+    return cache.match(request);
+  });
 }
-/*
-self.addEventListener("push", function(event) {
-  console.log("[Service Worker] Push Received.");
-  console.log("[Service Worker] Push had this data: ", event.data.text());
 
-  const title = "TITLE";
+function update(request) {
+  return caches.open(CACHE).then(function(cache) {
+    return fetch(request).then(function(response) {
+      return cache.put(request, response.clone()).then(function() {
+        return response;
+      });
+    });
+  });
+}
+
+function refresh(response) {
+  return self.clients.matchAll().then(function(clients) {
+    clients.forEach(function(client) {
+      var message = {
+        type: "refresh",
+        url: response.url,
+        eTag: response.headers.get("ETag")
+      };
+
+      client.postMessage(JSON.stringify(message));
+    });
+  });
+}
+self.addEventListener('push', function(event) {
+  console.log("[Service Worker] Push Received.");
+  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+
+  const title = "Push Codelab";
   const options = {
-    body: "CONTENT",
+    body: "Yay it works.",
     icon: "images/icon.png",
     badge: "images/badge.png"
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
 });
-*/
+
 self.addEventListener("notificationclick", function(event) {
   console.log("[Service Worker] Notification click Received.");
 
   event.notification.close();
 
-  event.waitUntil(
-    clients.openWindow("https://k3y6reak.pythonanywhere.com/Portfolio")
-  );
+  event.waitUntil(clients.openWindow("https://developers.google.com/web/"));
 });
-
-
-self.addEventListener("pushsubscriptionchange", function(event) {
-  console.log('[Service Worker]: "pushsubscriptionchange" event fired.');
-  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
-  event.waitUntil(
-    self.registration.pushManager
-      .subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: applicationServerKey
-      })
-      .then(function(newSubscription) {
-        // TODO: Send to application server
-      console.log("[Service Worker] New subscription: ", newSubscription);
-      })
-  );
-});
-//1. 글 작성 / 댓글 작성 된 시점을 어떻게 알 것인지...
-//2. 푸시알림 - 그냥보냄
-//3. 로그인 한 녀석이 누구인지...
+// PushManager
+/* eslint-disable max-len */
