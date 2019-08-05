@@ -4,7 +4,7 @@
       <v-container my-5>
         <!-- Title Text field-->
         <v-flex>
-          <v-text-field v-model="title" label="제목" solo></v-text-field>
+          <v-text-field color="#00adb5" box label="Title"></v-text-field>
         </v-flex>
 
         <!-- Markdown Editor -->

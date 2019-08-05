@@ -97,6 +97,14 @@ h5 {
   animation: sdb04 2s infinite;
 }
 
+.editor-toolbar {
+  display: none;
+}
+
+.CodeMirror {
+  background-color: #F2F2F2 !important;
+}
+
 #imgBanner {
   line-height: 1.2em;
 }

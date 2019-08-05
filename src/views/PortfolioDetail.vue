@@ -42,7 +42,12 @@
         <!-- Edit portfolio body -->
         <template v-else>
           <v-flex>
-            <v-text-field v-model="portfolio.title" solo></v-text-field>
+            <v-text-field
+              color="#00adb5"
+              v-model="portfolio.title"
+              box
+              label="Title"
+            ></v-text-field>
           </v-flex>
           <markdown-editor
             v-model="portfolio.body"
