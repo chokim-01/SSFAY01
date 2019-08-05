@@ -14,8 +14,18 @@
           </div>
 
           <!-- Portfolio author -->
-          <div>
+          <div class="mb-1">
             {{ portfolio.author }}
+            <template v-for="(grade, index) in grades">
+              <span
+                class="ml-2"
+                id="user_auth"
+                v-if="user_auth == index"
+                v-bind:key="grade"
+              >
+                {{ grade }}
+              </span>
+            </template>
           </div>
 
           <!-- Portfolio created time -->
@@ -79,7 +89,9 @@ export default {
     return {
       portfolio: this.$route.params.portfolio,
       editflag: true,
-      authCheck: false
+      authCheck: false,
+      user_auth: "",
+      grades: ["🧑Guest", "👪Member", "🤴Admin"]
     };
   },
   created() {
@@ -91,6 +103,9 @@ export default {
         this.authCheck = true;
       }
     }
+  },
+  mounted() {
+    this.getUserAuth();
   },
   methods: {
     makeFormData() {
@@ -117,6 +132,15 @@ export default {
       Server(this.$store.state.SERVER_URL).post("/api/del/portfolio", form);
       this.$router.push("/");
       alert("삭제 되었습니다.");
+    },
+    async getUserAuth() {
+      var form = new FormData();
+      form.append("umail", this.portfolio.author);
+      await Server(this.$store.state.SERVER_URL)
+        .post("/api/get/user_auth", form)
+        .then(res => {
+          this.user_auth = res.data[0].uauth;
+        });
     }
   }
 };
