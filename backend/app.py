@@ -143,6 +143,19 @@ def get_portfolios():
     return jsonify(result)
 
 
+# Get user auth
+@app.route("/api/get/user_auth", methods=["POST"])
+def get_user_auth():
+    umail = request.form.get("umail")
+
+    cursor = conn.db().cursor()
+    sql = "select uauth from users where umail = %s"
+    cursor.execute(sql, umail)
+    result = cursor.fetchall()
+
+    return jsonify(result)
+
+
 # Get one user using login
 @app.route("/api/login", methods=["POST"])
 def login():

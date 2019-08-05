@@ -1,30 +1,37 @@
 <template>
-  <div>
+  <div id="detail">
     <v-form>
-      <v-container my-5>
+      <!-- Portfolio img -->
+      <div class="mt-5">
+        <v-img :src="portfolio.img" height="300px" />
+      </div>
+
+      <v-container mt-3>
         <template v-if="editflag">
           <!-- Portfolio title -->
-          <v-layout justify-center>
-            <p class="posttitle">{{ portfolio.title }}</p>
-          </v-layout>
-
-          <hr />
+          <div id="title">
+            <h2 class="posttitle">{{ portfolio.title }}</h2>
+          </div>
 
           <!-- Portfolio author -->
-          <v-layout justify-end>
-            <v-chip color="#00adb5" label>
-              <v-icon left>mdi-account-circle-outline</v-icon>
-              {{ portfolio.author }}
-            </v-chip>
-          </v-layout>
+          <div class="mb-1">
+            {{ portfolio.author }}
+            <template v-for="(grade, index) in grades">
+              <span
+                class="ml-2"
+                id="user_auth"
+                v-if="user_auth == index"
+                v-bind:key="grade"
+              >
+                {{ grade }}
+              </span>
+            </template>
+          </div>
 
           <!-- Portfolio created time -->
-          <v-layout>
-            <v-chip color="grey" label text-color="white">
-              <v-icon left>label</v-icon>
-              {{ portfolio.created_at }}
-            </v-chip>
-          </v-layout>
+          <div>
+            {{ portfolio.created_at }}
+          </div>
 
           <!-- Portfolio body readonly -->
           <div class="postcontext my-5">
@@ -46,8 +53,12 @@
         <!-- Edit and Delte button -->
         <template v-if="authCheck">
           <div class="editBtn">
-            <v-btn @click="updatePortfolio">수정</v-btn>
-            <v-btn @click="deletePortfolio">삭제</v-btn>
+            <v-btn depressed color="#00adb5" @click="updatePortfolio">
+              수정
+            </v-btn>
+            <v-btn depressed color="error" @click="deletePortfolio">
+              삭제
+            </v-btn>
           </div>
         </template>
 
@@ -78,7 +89,9 @@ export default {
     return {
       portfolio: this.$route.params.portfolio,
       editflag: true,
-      authCheck: false
+      authCheck: false,
+      user_auth: "",
+      grades: ["🧑Guest", "👪Member", "🤴Admin"]
     };
   },
   created() {
@@ -90,6 +103,9 @@ export default {
         this.authCheck = true;
       }
     }
+  },
+  mounted() {
+    this.getUserAuth();
   },
   methods: {
     makeFormData() {
@@ -116,28 +132,44 @@ export default {
       Server(this.$store.state.SERVER_URL).post("/api/del/portfolio", form);
       this.$router.push("/");
       alert("삭제 되었습니다.");
+    },
+    async getUserAuth() {
+      var form = new FormData();
+      form.append("umail", this.portfolio.author);
+      await Server(this.$store.state.SERVER_URL)
+        .post("/api/get/user_auth", form)
+        .then(res => {
+          this.user_auth = res.data[0].uauth;
+        });
     }
   }
 };
 </script>
 
 <style>
+#title {
+  border-bottom: 0.8px solid #e6e6e6;
+  margin-bottom: 10px;
+}
+
+#detail {
+  background-color: #212121;
+  color: #e6e6e6;
+}
+
 .postcontext {
-  border: 2px solid white;
-  min-height: 500px;
+  font-family: "Nanum Gothic", sans-serif;
+  border: none !important;
+  color: #bdbdbd;
 }
 
 .posttitle {
-  font-size: 3em;
+  font-family: "Do Hyeon", sans-serif;
 }
 
-hr {
-  border: dotted;
-  width: 40%;
-  margin: 0 auto;
-}
-
-.editBtn {
-  float: right;
+@media screen and (max-width: 600px) {
+  h2 {
+    font-size: 25px !important;
+  }
 }
 </style>
