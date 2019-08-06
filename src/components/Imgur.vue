@@ -6,7 +6,11 @@
         class="text-xs-center text-sm-center text-md-center text-lg-center"
       >
         <!-- Show image -->
-        <img :src="imageUrl" height="150" v-if="imageUrl" />
+        <div
+          id="show_image"
+          v-if="imageUrl"
+          :style="{ backgroundImage: 'url(' + imageUrl + ')' }"
+        ></div>
 
         <v-text-field
           label="Thumbnail Image"
@@ -136,3 +140,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#show_image {
+  height: 200px;
+  width: 100%;
+  background-size: contain;
+  background-position: center;
+}
+</style>
