@@ -1,4 +1,4 @@
-const SERVER_URL = "http://localhost";
+const SERVER_URL = "https://chokim159.pythonanywhere.com";
 
 var urlsToCache = [
   "/",
@@ -8,8 +8,8 @@ var urlsToCache = [
   "/img/icons/favicon.png",
   "/img/icons/favicon-16x16.png",
   "/img/icons/favicon-32x32.png",
-  SERVER_URL + ":5000/api/get/portfolios",
-  SERVER_URL + ":5000/api/get/posts"
+  SERVER_URL + "/api/get/portfolios",
+  SERVER_URL + "/api/get/posts"
 ];
 
 var CACHE = "cache-update-and-refresh";
