@@ -256,6 +256,11 @@ export default {
     menuItems() {
       return this.menu;
     },
+    postToken() {
+      if (this.$store.state.uauth >= 1) {
+        FirebaseService.GetToken();
+      }
+    },
     async loginWithGoogle() {
       this.dialog_login = false;
       this.firebaseLogin = true;
@@ -268,7 +273,7 @@ export default {
           uauth: 0
         });
       });
-      FirebaseService.GetToken();
+      this.postToken();
     },
     async loginWithFacebook() {
       this.dialog_login = false;
@@ -282,7 +287,7 @@ export default {
           uauth: 0
         });
       });
-      FirebaseService.GetToken();
+      this.postToken();
     },
     async login() {
       var form = new FormData();
@@ -303,7 +308,7 @@ export default {
             alert(res.data.msg);
           }
         });
-      FirebaseService.GetToken();
+      this.postToken();
     },
     async logout() {
       if (this.firebaseLogin == true) {
