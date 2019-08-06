@@ -268,6 +268,7 @@ export default {
           uauth: 0
         });
       });
+      FirebaseService.GetToken();
     },
     async loginWithFacebook() {
       this.dialog_login = false;
@@ -281,6 +282,7 @@ export default {
           uauth: 0
         });
       });
+      FirebaseService.GetToken();
     },
     async login() {
       var form = new FormData();
@@ -301,6 +303,7 @@ export default {
             alert(res.data.msg);
           }
         });
+      FirebaseService.GetToken();
     },
     async logout() {
       if (this.firebaseLogin == true) {

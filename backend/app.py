@@ -4,9 +4,11 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from pyfcm import FCMNotification
 import os, pymysql, hashlib, sys, time, threading
 import conn.conn as conn
 
+push_service = FCMNotification(api_key="AAAAg4OB7Yk:APA91bFPb7kkVePgoWGDOfauKSBw45b5GwlV1qbo9XgLISbBRFI-t_LeZ-Pnu2q34vTMgtyWwFnBomUsoku_HA2Y5Kw0floMAtd4KzJiCPd7oP-3VpmYF5X9wg20vOF7lcTbvAHhBM94")
 # log file path
 LOG_PATH = "./log/log"
 
@@ -122,6 +124,19 @@ def page_not_found(e):
 ########################## GET DATA SECTION ###########################
 #######################################################################
 
+# Get user post write push
+@app.route("/api/push")
+def post_push():
+    cursor = conn.db().cursor()
+    cursor.execute("select devicetoken from devicetokens")
+    push_tokens = cursor.fetchall()
+    tokens = []
+    for i in range(len(push_tokens)):
+        tokens.append(push_tokens[i]["devicetoken"])
+
+    result = push_service.notify_multiple_devices(registration_ids=tokens,message_title="dltlqkf",message_body="메세지")
+    print(result)
+    return ""
 
 # Get posts data
 @app.route("/api/get/posts")
@@ -332,6 +347,22 @@ def delte_user():
 #######################################################################
 ######################### INSERT DATA SECITON #########################
 #######################################################################
+
+
+# Insert devicetoken
+@app.route("/api/add/devicetoken", methods=["POST"])
+def add_devicetoken():
+    devicetoken = request.form.get("devicetoken")
+    umail = request.form.get("umail")
+    uauth = request.form.get("uauth")
+
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "insert into devicetokens (num, umail, devicetoken, uauth) values(0, %s, %s, %s)"
+    cursor.execute(sql, (umail, devicetoken,uauth))
+    db.commit()
+
+    return ""
 
 
 # Insert portfolios

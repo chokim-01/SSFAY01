@@ -64,6 +64,7 @@ export default {
       if (this.chkNull()) {
         var form = this.makeFormData();
         Server(this.$store.state.SERVER_URL).post("/api/add/post", form);
+        Server(this.$store.state.SERVER_URL).get("/api/push");
         this.$router.push("/");
         alert("글을 작성했습니다.");
       }

@@ -4,6 +4,8 @@ import "firebase/auth";
 import "firebase/functions";
 import store from "@/store.js";
 import "firebase/functions";
+import "firebase/messaging";
+import Server from "./Server.js";
 
 const POSTS = "posts";
 
@@ -13,7 +15,8 @@ const config = {
   authDomain: "webmobile-b2664.firebaseapp.com",
   apiKey: "AIzaSyBJiIiY05ag2PU6B792QtpVIJZ6rvi7XBE",
   databaseURL: "https://webmobile-b2664.firebaseio.com",
-  storageBucket: "gs://webmobile-b2664.appspot.com"
+  storageBucket: "gs://webmobile-b2664.appspot.com",
+  messagingSenderId: "564847046025"
 };
 
 firebase.initializeApp(config);
@@ -77,6 +80,21 @@ export default {
       })
       .catch(function(error) {
         alert(error.massage);
+      });
+  },
+  GetToken() {
+    firebase
+      .messaging()
+      .getToken()
+      .then(devicetoken => {
+        var umail = store.state.umail;
+        var uauth = store.state.uauth;
+        var form = new FormData();
+        form.append("umail", umail);
+        form.append("uauth", uauth);
+        form.append("devicetoken", devicetoken);
+
+        Server(store.state.SERVER_URL).post("/api/add/devicetoken", form);
       });
   }
 };

@@ -15,7 +15,7 @@
 
         <!-- upload image -->
         <Imgur></Imgur>
-
+        <button id="writebutton">버튼</button>
         <!-- Write Portfolio Button -->
         <v-btn
           id="highlight-backColor"
