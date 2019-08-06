@@ -16,6 +16,27 @@
   font-size: 13px;
 }
 
+#detail_title {
+  border-bottom: 0.8px solid #e6e6e6;
+  margin-bottom: 10px;
+  font-family: "Do Hyeon", sans-serif;
+}
+
+#detail {
+  background-color: #212121;
+  color: #e6e6e6;
+}
+
+.editBtn {
+  text-align: right;
+}
+
+.postcontext {
+  font-family: "Nanum Gothic", sans-serif;
+  border: none !important;
+  color: #bdbdbd;
+}
+
 .repository-title {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -74,6 +95,14 @@ h5 {
 .scrollbtn {
   padding: 10px;
   animation: sdb04 2s infinite;
+}
+
+.editor-toolbar {
+  display: none;
+}
+
+.CodeMirror {
+  background-color: #F2F2F2 !important;
 }
 
 #imgBanner {

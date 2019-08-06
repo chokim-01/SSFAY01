@@ -9,58 +9,58 @@
           </span>
         </v-flex>
       </v-layout>
-    </v-img>
 
-    <v-dialog v-model="dialog" max-width="500px">
-      <!-- Get Album Image -->
-      <template v-slot:activator="{ on }">
-        <v-btn id="getAlbumBtn" @click="getAlbumImg" v-on="on" icon light>
-          <v-icon id="highlight-fontColor" size="40px">fa-caret-right</v-icon>
-        </v-btn>
-      </template>
+      <v-dialog v-model="dialog" max-width="500px">
+        <!-- Get Album Image -->
+        <template v-slot:activator="{ on }">
+          <v-btn id="getAlbumBtn" @click="getAlbumImg" v-on="on" flat large>
+            change
+          </v-btn>
+        </template>
 
-      <!-- Banner Dialog -->
-      <v-card>
-        <v-card-title class="headline">
-          Select Image
-        </v-card-title>
-        <v-card-text>
-          <v-flex xs12 md12 text-xs-center>
-            <v-btn
-              id="highlight-backColor"
-              @click="uploadBannerDialog = !uploadBannerDialog"
+        <!-- Banner Dialog -->
+        <v-card>
+          <v-card-title class="headline">
+            Select Image
+          </v-card-title>
+          <v-card-text>
+            <v-flex xs12 md12 text-xs-center>
+              <v-btn
+                id="highlight-backColor"
+                @click="uploadBannerDialog = !uploadBannerDialog"
+              >
+                Image upload
+              </v-btn>
+            </v-flex>
+
+            <!-- Select Album Image -->
+            <v-select
+              color="#00adb5"
+              :items="albumImgs"
+              label="Select Image"
+              item-text="title"
+              item-value="link"
+              v-model="selectedImg"
+              append-icon="fa-angle-down"
             >
-              Image upload
-            </v-btn>
-          </v-flex>
+            </v-select>
+          </v-card-text>
 
-          <!-- Select Album Image -->
-          <v-select
-            color="#00adb5"
-            :items="albumImgs"
-            label="Select Image"
-            item-text="title"
-            item-value="link"
-            v-model="selectedImg"
-            append-icon="fa-angle-down"
-          >
-          </v-select>
-        </v-card-text>
+          <!-- Close, RandomImg, Save Button -->
+          <v-card-actions>
+            <v-btn flat @click="dialog = false">Close</v-btn>
 
-        <!-- Close, RandomImg, Save Button -->
-        <v-card-actions>
-          <v-btn flat @click="dialog = false">Close</v-btn>
+            <v-spacer></v-spacer>
 
-          <v-spacer></v-spacer>
+            <v-btn flat @click="RandomImg">Random Img</v-btn>
 
-          <v-btn flat @click="RandomImg">Random Img</v-btn>
+            <v-spacer></v-spacer>
 
-          <v-spacer></v-spacer>
-
-          <v-btn flat @click="ChangeImg">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+            <v-btn flat @click="ChangeImg">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-img>
 
     <!-- Upload Banner Dialog -->
     <v-dialog v-model="uploadBannerDialog" max-width="300px">
@@ -141,12 +141,14 @@ export default {
 
 <style scoped>
 .text-shadow {
-  text-shadow: 0 0 15px rgb(0, 0, 0);
+  text-shadow: 5px 5px 0 rgb(0, 0, 0);
   font-family: "Press Start 2P", cursive !important;
 }
 
 #getAlbumBtn {
   position: absolute;
-  right: 0px;
+  bottom: 10px;
+  left: 10px;
+  text-shadow: 0 0 5px rgb(0, 0, 0);
 }
 </style>
