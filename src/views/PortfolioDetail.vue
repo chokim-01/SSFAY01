@@ -9,8 +9,8 @@
       <v-container mt-3>
         <template v-if="editflag">
           <!-- Portfolio title -->
-          <div id="title">
-            <h2 class="posttitle">{{ portfolio.title }}</h2>
+          <div id="detail_title">
+            <h2>{{ portfolio.title }}</h2>
           </div>
 
           <!-- Portfolio author -->
@@ -42,7 +42,12 @@
         <!-- Edit portfolio body -->
         <template v-else>
           <v-flex>
-            <v-text-field v-model="portfolio.title" solo></v-text-field>
+            <v-text-field
+              color="#00adb5"
+              v-model="portfolio.title"
+              box
+              label="Title"
+            ></v-text-field>
           </v-flex>
           <markdown-editor
             v-model="portfolio.body"
@@ -145,31 +150,3 @@ export default {
   }
 };
 </script>
-
-<style>
-#title {
-  border-bottom: 0.8px solid #e6e6e6;
-  margin-bottom: 10px;
-}
-
-#detail {
-  background-color: #212121;
-  color: #e6e6e6;
-}
-
-.postcontext {
-  font-family: "Nanum Gothic", sans-serif;
-  border: none !important;
-  color: #bdbdbd;
-}
-
-.posttitle {
-  font-family: "Do Hyeon", sans-serif;
-}
-
-@media screen and (max-width: 600px) {
-  h2 {
-    font-size: 25px !important;
-  }
-}
-</style>
