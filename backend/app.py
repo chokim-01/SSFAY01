@@ -375,7 +375,7 @@ def add_devicetoken():
     cursor.execute(sql, (umail, devicetoken,uauth))
     db.commit()
 
-    return ""
+    return jsonify({"msg" : "전송!"})
 
 
 # Insert portfolios
