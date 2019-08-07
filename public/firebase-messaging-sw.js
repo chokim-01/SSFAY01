@@ -1,8 +1,9 @@
 self.addEventListener("push", function(event) {
-  const title = "Push Codelab";
+  console.log(event);
+  const title = "글이 작성되었습니다.";
   const options = {
-    body: "Yay it works.",
-    icon: "images/icon.png",
+    body: "확인점.",
+    icon: "./img/icons/favicon.png",
     badge: "images/badge.png"
   };
 
@@ -12,5 +13,5 @@ self.addEventListener("push", function(event) {
 self.addEventListener("notificationclick", function(event) {
   event.notification.close();
 
-  event.waitUntil(clients.openWindow("https://developers.google.com/web/"));
+  event.waitUntil(clients.openWindow("https://chokim159.pythonanywhere.com/"));
 });
