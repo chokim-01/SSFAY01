@@ -4,7 +4,12 @@
       <v-container my-5>
         <!-- Title Text field-->
         <v-flex>
-          <v-text-field color="#00adb5" box label="Title"></v-text-field>
+          <v-text-field
+            v-model="title"
+            color="#00adb5"
+            box
+            label="Title"
+          ></v-text-field>
         </v-flex>
 
         <v-textarea
@@ -64,6 +69,7 @@ export default {
       if (this.chkNull()) {
         var form = this.makeFormData();
         Server(this.$store.state.SERVER_URL).post("/api/add/post", form);
+        Server(this.$store.state.SERVER_URL).get("/api/push");
         this.$router.push("/");
         alert("글을 작성했습니다.");
       }

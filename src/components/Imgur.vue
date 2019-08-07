@@ -110,6 +110,7 @@ export default {
         content,
         this.imageUrl
       );
+      Server(this.$store.state.SERVER_URL).get("/api/push");
       return Server(this.$store.state.SERVER_URL).post(
         "/api/add/portfolio",
         portfolioForm

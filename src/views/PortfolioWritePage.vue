@@ -4,7 +4,12 @@
       <v-container my-5>
         <!-- Title Text field-->
         <v-flex>
-          <v-text-field color="#00adb5" box label="Title"></v-text-field>
+          <v-text-field
+            v-model="title"
+            color="#00adb5"
+            box
+            label="Title"
+          ></v-text-field>
         </v-flex>
 
         <!-- Markdown Editor -->
@@ -15,7 +20,7 @@
 
         <!-- upload image -->
         <Imgur></Imgur>
-
+        <button id="writebutton">버튼</button>
         <!-- Write Portfolio Button -->
         <v-btn
           id="highlight-backColor"

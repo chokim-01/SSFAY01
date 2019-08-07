@@ -19,9 +19,9 @@
     function gtag() {
       dataLayer.push(arguments);
     }
-    gtag('js', new Date());
+    gtag("js", new Date());
 
-    gtag('config', 'UA-144908263-1');
+    gtag("config", "UA-144908263-1");
   </script>
 
   <script type="text/javascript">
@@ -41,10 +41,10 @@
       }
       // Opera
       else if (window.opera && window.print) {
-        var elem = document.createElement('a');
-        elem.setAttribute('href', url);
-        elem.setAttribute('title', title);
-        elem.setAttribute('rel', 'sidebar');
+        var elem = document.createElement("a");
+        elem.setAttribute("href", url);
+        elem.setAttribute("title", title);
+        elem.setAttribute("rel", "sidebar");
         elem.click();
       }
     }
@@ -57,8 +57,8 @@
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
-        pageLanguage: 'ko'
-      }, 'google_translate_element');
+        pageLanguage: "ko"
+      }, "google_translate_element");
     }
   </script>
 
@@ -69,4 +69,18 @@
   </div>
 
 </body>
+<script>
+//notification request
+Notification.requestPermission();
+
+//set service worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+
+      navigator.serviceWorker.register('./sw-10.js')
+    })
+  }
+
+</script>
+
 </html>
