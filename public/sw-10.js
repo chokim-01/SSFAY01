@@ -1,4 +1,4 @@
-const SERVER_URL = "http://localhost";
+const SERVER_URL = "http://localhost:5000";
 
 var CACHE_NAME = "v1";
 var urlsToCache = [
@@ -9,8 +9,8 @@ var urlsToCache = [
   "/img/icons/favicon-16x16.png",
   "/img/icons/favicon-32x32.png",
   "/fonts/fontawesome-webfont.af7ae505.woff2",
-  SERVER_URL + ":5000/api/get/portfolios",
-  SERVER_URL + ":5000/api/get/posts"
+  SERVER_URL + "/api/get/portfolios",
+  SERVER_URL + "/api/get/posts"
 ];
 
 // ServiceWorker install
@@ -26,6 +26,9 @@ self.addEventListener("install", function(event) {
 // ServiceWorker Fetch
 self.addEventListener("fetch", event => {
   var request = event.request;
+  if (request.method == "POST") {
+    return;
+  }
   //Tell the browser to wait for newtwork request and respond with below
   event.respondWith(
     caches.match(request).then(response => {

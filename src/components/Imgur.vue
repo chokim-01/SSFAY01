@@ -93,6 +93,13 @@ export default {
 
       return form;
     },
+    pushFormData(title) {
+      var form = new FormData();
+      form.append("title", "Portfolio가 등록되었습니다.");
+      form.append("message", title);
+
+      return form;
+    },
     async sendBanner() {
       const bannerID = "N9DRFuvC9ppf6r4";
       var form = this.makeFormData(bannerID);
@@ -110,7 +117,10 @@ export default {
         content,
         this.imageUrl
       );
-      Server(this.$store.state.SERVER_URL).get("/api/push");
+
+      var postform = this.pushFormData(title);
+
+      Server(this.$store.state.SERVER_URL).post("/api/post/push", postform);
       return Server(this.$store.state.SERVER_URL).post(
         "/api/add/portfolio",
         portfolioForm
