@@ -28,6 +28,14 @@ create table portfolios (
 	created_at timestamp not null
 );
 
+drop table if exists devicetokens;
+create table devicetokens (
+	num int not null auto_increment primary key,
+    umail varchar(30) not null,
+	devicetoken varchar(155) not null unique,
+    uauth int not null
+);
+
 
 # posts data
 insert into posts (num, author, title, body, created_at) values(0, "dev1@dev.com", "test", "testset", timestamp(now()));
@@ -55,6 +63,9 @@ insert into users (umail, upasswd, uauth) values("admin@admin.com", "51b66b5e8e0
 # portfolios data
 insert into portfolios (num, author, title, body, img, created_at) values(0, "dev1@dev.com", "test1", "testset1", "https://source.unsplash.com/random", timestamp(now()));
 insert into portfolios (num, author, title, body, img, created_at) values(0, "dev2@dev.com", "test2", "testset2", "https://source.unsplash.com/random", timestamp(now()));
+insert into portfolios (num, author, title, body, img, created_at) values(0, "dev2@dev.com", "test2", "testset2", "https://source.unsplash.com/random", timestamp(now()));
+insert into portfolios (num, author, title, body, img, created_at) values(0, "dev2@dev.com", "test2", "testset2", "https://source.unsplash.com/random", timestamp(now()));
 insert into portfolios (num, author, title, body, img, created_at) values(0, "dev3@dev.com", "test3", "testset3", "https://source.unsplash.com/random", timestamp(now()));
 insert into portfolios (num, author, title, body, img, created_at) values(0, "dev4@dev.com", "test4", "testset4", "https://source.unsplash.com/random", timestamp(now()));
 insert into portfolios (num, author, title, body, img, created_at) values(0, "dev5@dev.com", "test5", "testset5", "https://source.unsplash.com/random", timestamp(now()));
+select * from users;
