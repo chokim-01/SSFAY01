@@ -21,8 +21,8 @@
 
             <v-flex xs12>
               <v-text-field
-                label="Password"
                 v-model="password"
+                label="Password"
                 type="password"
                 color="#00adb5"
                 required
@@ -47,7 +47,7 @@ import Server from "../services/Server.js";
 
 export default {
   name: "signUpPage",
-  data: function() {
+  data() {
     return {
       email: "",
       password: ""

@@ -35,6 +35,8 @@
         >
           {{ menu.title }}
         </v-btn>
+
+        <!-- Admin Menu -->
         <v-btn v-if="this.$store.state.uauth == 2" to="/Admin" flat router>
           Admin
         </v-btn>
@@ -108,6 +110,7 @@
           </v-btn>
         </v-list-tile>
 
+        <!-- Menu -->
         <v-list-tile
           v-for="menu in menus"
           :key="menu.title"
@@ -119,7 +122,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <!-- Admin page -->
+        <!-- Admin Menu -->
         <v-list-tile v-if="this.$store.state.uauth == 2" to="/Admin">
           <v-list-tile-title>Admin</v-list-tile-title>
         </v-list-tile>
@@ -228,30 +231,32 @@
 </template>
 
 <script>
-import FirebaseService from "@/services/FirebaseService";
+import FirebaseService from "@/services/FirebaseService.js";
 import Server from "@/services/Server.js";
 
 export default {
   name: "Header",
-  data: () => ({
-    menus: [
-      {
-        title: "Portfolio",
-        route: "/Portfolio"
-      },
-      {
-        title: "Post",
-        route: "/Post"
-      }
-    ],
-    language: "KOR",
-    email: "",
-    password: "",
-    dialog: false,
-    dialog_login: false,
-    drawer: null,
-    firebaseLogin: false
-  }),
+  data() {
+    return {
+      menus: [
+        {
+          title: "Portfolio",
+          route: "/Portfolio"
+        },
+        {
+          title: "Post",
+          route: "/Post"
+        }
+      ],
+      language: "KOR",
+      email: "",
+      password: "",
+      dialog: false,
+      dialog_login: false,
+      drawer: null,
+      firebaseLogin: false
+    };
+  },
   methods: {
     menuItems() {
       return this.menu;

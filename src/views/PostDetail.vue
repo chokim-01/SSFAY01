@@ -45,8 +45,8 @@
             <v-text-field
               color="#00adb5"
               v-model="post.title"
-              box
               label="Title"
+              box
             ></v-text-field>
           </v-flex>
           <markdown-editor
@@ -58,10 +58,10 @@
         <!-- Edit and Delte button -->
         <template v-if="authCheck">
           <div class="editBtn">
-            <v-btn depressed color="#00adb5" @click="updatePost">
+            <v-btn color="#00adb5" @click="updatePost" depressed>
               수정
             </v-btn>
-            <v-btn depressed color="error" @click="deletePost">
+            <v-btn color="error" @click="deletePost" depressed>
               삭제
             </v-btn>
           </div>

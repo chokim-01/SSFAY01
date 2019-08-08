@@ -83,8 +83,8 @@
 </template>
 
 <script>
-import Imgur from "../components/Imgur";
-import ImgurApi from "../services/ImgurApi";
+import Imgur from "./Imgur.vue";
+import ImgurApi from "../services/ImgurApi.js";
 
 export default {
   name: "ImgBanner",

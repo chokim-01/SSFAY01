@@ -86,6 +86,7 @@ def set_response_headers(res):
     res.headers["Expires"] = "0"
     return res
 
+
 # Get client user ip
 def get_ip_addr():
     return request.environ.get("HTTP_X_REAL_IP", request.remote_addr)
@@ -123,6 +124,7 @@ def page_not_found(e):
 #######################################################################
 ########################## GET DATA SECTION ###########################
 #######################################################################
+
 
 
 # Get posts data
@@ -272,6 +274,7 @@ def get_logs():
     lock.release()
 
     return jsonify(logs)
+
 
 #######################################################################
 ########################## EDIT DATA SECTION ##########################

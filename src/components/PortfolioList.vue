@@ -60,7 +60,7 @@
 
 <script>
 import Server from "../services/Server.js";
-import Portfolio from "@/components/Portfolio";
+import Portfolio from "@/components/Portfolio.vue";
 import {
   Hooper,
   Slide,

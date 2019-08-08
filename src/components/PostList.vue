@@ -56,7 +56,7 @@
 
 <script>
 import Server from "../services/Server.js";
-import Post from "@/components/Post";
+import Post from "@/components/Post.vue";
 import {
   Hooper,
   Slide,
