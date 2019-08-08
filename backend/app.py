@@ -124,19 +124,6 @@ def page_not_found(e):
 ########################## GET DATA SECTION ###########################
 #######################################################################
 
-# Get user post write push
-@app.route("/api/push")
-def post_push():
-    cursor = conn.db().cursor()
-    cursor.execute("select devicetoken from devicetokens")
-    push_tokens = cursor.fetchall()
-    tokens = []
-    for i in range(len(push_tokens)):
-        tokens.append(push_tokens[i]["devicetoken"])
-
-    result = push_service.notify_multiple_devices(registration_ids=tokens,message_title="dltlqkf",message_body="메세지")
-    print(result)
-    return ""
 
 # Get posts data
 @app.route("/api/get/posts")
@@ -169,6 +156,46 @@ def get_user_auth():
     result = cursor.fetchall()
 
     return jsonify(result)
+
+
+# Post user post write push
+@app.route("/api/post/push", methods=["POST"])
+def comment_push():
+    # title : post or portfolio
+    # message : title of post
+    title = request.form.get("title")
+    message = request.form.get("message")
+
+    cursor = conn.db().cursor()
+    cursor.execute("select devicetoken from devicetokens")
+    push_tokens = cursor.fetchall()
+    tokens = []
+    for i in range(len(push_tokens)):
+        tokens.append(push_tokens[i]["devicetoken"])
+
+    result = push_service.notify_multiple_devices(registration_ids=tokens, message_title=title, message_body=message, content_available=True)
+    print(result)
+    return ""
+
+
+# Post user comment write push
+@app.route("/api/comment/push", methods=["POST"])
+def post_push():
+    # title : comment
+    # message : Portfolio/post title
+    title = request.form.get("title")
+    message = request.form.get("message")
+
+    cursor = conn.db().cursor()
+    cursor.execute("select devicetoken from devicetokens where uauth = 2")
+    push_tokens = cursor.fetchall()
+    tokens = []
+    for i in range(len(push_tokens)):
+        tokens.append(push_tokens[i]["devicetoken"])
+
+    result = push_service.notify_multiple_devices(registration_ids=tokens, message_title=title, message_body=message, content_available=True)
+    print(result)
+    return ""
 
 
 # Get one user using login

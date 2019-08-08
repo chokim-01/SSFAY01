@@ -65,11 +65,20 @@ export default {
       form.append("body", this.content);
       return form;
     },
+    pushFormData(title) {
+      var form = new FormData();
+      form.append("title", "Post가 등록되었습니다.");
+      form.append("message", title);
+
+      return form;
+    },
     writePost() {
       if (this.chkNull()) {
         var form = this.makeFormData();
+        var postform = this.pushFormData(this.title);
+
         Server(this.$store.state.SERVER_URL).post("/api/add/post", form);
-        Server(this.$store.state.SERVER_URL).get("/api/push");
+        Server(this.$store.state.SERVER_URL).post("/api/post/push", postform);
         this.$router.push("/");
         alert("글을 작성했습니다.");
       }

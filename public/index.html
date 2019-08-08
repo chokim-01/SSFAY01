@@ -77,7 +77,8 @@ Notification.requestPermission();
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
 
-      navigator.serviceWorker.register('./sw-10.js')
+      navigator.serviceWorker.register('./sw-10.js');
+      
     })
   }
 
