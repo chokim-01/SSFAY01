@@ -66,13 +66,14 @@
             </v-btn>
           </div>
         </template>
-
+        <v-btn @click="vb">버튼</v-btn>
         <!-- Post Comments -->
         <div class="comments">
           <VueDisqus
             shortname="webmobile-team10"
             :url="this.$store.state.DISQUS_URL + '/post' + post.num"
             :identifier="'post' + post.num"
+            v-on:new-comment="newComment"
           ></VueDisqus>
         </div>
       </v-container>
@@ -97,7 +98,8 @@ export default {
       authCheck: false,
       random_base_url: "https://source.unsplash.com/random",
       user_auth: "",
-      grades: ["🧑Guest", "👪Member", "🤴Admin"]
+      grades: ["🧑Guest", "👪Member", "🤴Admin"],
+      oncomment: ""
     };
   },
   created() {
@@ -138,6 +140,17 @@ export default {
       Server(this.$store.state.SERVER_URL).post("/api/del/post", form);
       this.$router.push("/");
       alert("삭제 되었습니다.");
+    },
+    pushFormData(title) {
+      var form = new FormData();
+      form.append("title", "Comment가 등록되었습니다.");
+      form.append("message", "Portfolio : " + title);
+
+      return form;
+    },
+    newComment() {
+      var form = this.pushFormData(this.post.title);
+      Server(this.$store.state.SERVER_URL).post("/api/comment/push", form);
     },
     async getUserAuth() {
       var form = new FormData();
