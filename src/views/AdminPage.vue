@@ -253,7 +253,7 @@
 </template>
 
 <script>
-import ImgBanner from "../components/ImgBanner";
+import ImgBanner from "../components/ImgBanner.vue";
 import Server from "../services/Server.js";
 
 export default {

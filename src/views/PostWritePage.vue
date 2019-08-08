@@ -7,8 +7,8 @@
           <v-text-field
             v-model="title"
             color="#00adb5"
-            box
             label="Title"
+            box
           ></v-text-field>
         </v-flex>
 

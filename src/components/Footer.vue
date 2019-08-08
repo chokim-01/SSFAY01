@@ -34,26 +34,28 @@
 
 <script>
 export default {
-  data: () => ({
-    contacts: [
-      {
-        img: "fa-gitlab",
-        link: "https://lab.ssafy.com/dongkwon"
-      },
-      {
-        img: "fa-instagram",
-        link: "https://www.instagram.com/kkkdddyd/"
-      },
-      {
-        img: "fa-github",
-        link: "https://github.com/ydk7819"
-      },
-      {
-        img: "fa-google-plus",
-        link: "mailto:ydk7819@gmail.com"
-      }
-    ]
-  })
+  data() {
+    return {
+      contacts: [
+        {
+          img: "fa-gitlab",
+          link: "https://lab.ssafy.com/dongkwon"
+        },
+        {
+          img: "fa-instagram",
+          link: "https://www.instagram.com/kkkdddyd/"
+        },
+        {
+          img: "fa-github",
+          link: "https://github.com/ydk7819"
+        },
+        {
+          img: "fa-google-plus",
+          link: "mailto:ydk7819@gmail.com"
+        }
+      ]
+    };
+  }
 };
 
 window.myWidgetParam ? window.myWidgetParam : (window.myWidgetParam = []);

@@ -1,5 +1,5 @@
 <template>
-  <div id="project_div" class="my-5">
+  <div class="my-5" id="project_div">
     <v-layout>
       <v-flex xs8>
         <!-- Gitlab Repository Name -->
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import GitlabService from "@/services/GitlabService";
+import GitlabService from "@/services/GitlabService.js";
 
 const gradients = [
   ["#222"],
@@ -61,16 +61,18 @@ export default {
   props: {
     repos: { type: null }
   },
-  data: () => ({
-    url: "https://lab.ssafy.com",
-    gradient: gradients[5],
-    gradientDirection: "top",
-    gradients,
-    commitsCnt: [0],
-    userCommits: [],
-    users: ["박사홍", "양동권", "박근형"],
-    autoDraw: false
-  }),
+  data() {
+    return {
+      url: "https://lab.ssafy.com",
+      gradient: gradients[5],
+      gradientDirection: "top",
+      gradients,
+      commitsCnt: [0],
+      userCommits: [],
+      users: ["박사홍", "양동권", "박근형"],
+      autoDraw: false
+    };
+  },
   mounted() {
     this.drawStatGraph();
     this.usersCommits();

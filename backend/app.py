@@ -86,6 +86,7 @@ def set_response_headers(res):
     res.headers["Expires"] = "0"
     return res
 
+
 # Get client user ip
 def get_ip_addr():
     return request.environ.get("HTTP_X_REAL_IP", request.remote_addr)
@@ -137,6 +138,7 @@ def post_push():
     result = push_service.notify_multiple_devices(registration_ids=tokens,message_title="dltlqkf",message_body="메세지")
     print(result)
     return ""
+
 
 # Get posts data
 @app.route("/api/get/posts")
@@ -245,6 +247,7 @@ def get_logs():
     lock.release()
 
     return jsonify(logs)
+
 
 #######################################################################
 ########################## EDIT DATA SECTION ##########################

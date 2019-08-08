@@ -45,8 +45,8 @@
             <v-text-field
               color="#00adb5"
               v-model="portfolio.title"
-              box
               label="Title"
+              box
             ></v-text-field>
           </v-flex>
           <markdown-editor

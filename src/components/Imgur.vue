@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import ImgurApi from "../services/ImgurApi";
+import ImgurApi from "../services/ImgurApi.js";
 import Server from "../services/Server.js";
 
 export default {
