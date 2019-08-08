@@ -138,6 +138,17 @@ export default {
       this.$router.push("/");
       alert("삭제 되었습니다.");
     },
+    pushFormData(title) {
+      var form = new FormData();
+      form.append("title", "Comment가 등록되었습니다.");
+      form.append("message", "Portfolio : " + title);
+
+      return form;
+    },
+    newComment() {
+      var form = this.pushFormData(this.portfolio.title);
+      Server(this.$store.state.SERVER_URL).post("/api/comment/push", form);
+    },
     async getUserAuth() {
       var form = new FormData();
       form.append("umail", this.portfolio.author);
