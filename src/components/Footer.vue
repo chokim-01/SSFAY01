@@ -4,7 +4,23 @@
       <v-card-title id="footer-item" py0>
         <!-- weather -->
         <div id="weather">
-          <div id="openweathermap-widget-24"></div>
+          <v-card>
+            <v-layout>
+              <v-flex xs5>
+                {{ weather_icon }}
+                <img :src="weather_icon"/>
+              </v-flex>
+              <v-flex xs7>
+                <v-card-title primary-title>
+                  <div>
+                    <div class="headline">{{ city }}</div>
+                    <div>{{ now_weather }}</div>
+                    <div>{{ temp }}°C</div>
+                  </div>
+                </v-card-title>
+              </v-flex>
+            </v-layout>
+          </v-card>
         </div>
 
         <v-spacer></v-spacer>
@@ -53,29 +69,55 @@ export default {
           img: "fa-google-plus",
           link: "mailto:ydk7819@gmail.com"
         }
-      ]
+      ],
+      latitude: "",
+      longitude: "",
+      now_weather: "",
+      city: "",
+      temp: "",
+      weather_icon: ""
     };
+  },
+  mounted() {
+    this.getLocation();
+  },
+  methods: {
+    async getLocation() {
+      if (navigator.geolocation) {
+        //위치 정보를 얻기
+        navigator.geolocation.getCurrentPosition(this.showPosition);
+      } else {
+        alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
+      }
+    },
+    showPosition(position) {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+      var apiKey = "843e94f1b4901a3e5dbad93a0befb2e5";
+      const apiURL = "http://api.openweathermap.org/data/2.5/weather";
+      this.$http({
+        method: "GET",
+        url: apiURL,
+        params: {
+          appid: apiKey,
+          lon: this.longitude,
+          lat: this.latitude
+        }
+      })
+        .then(res => {
+          console.log(res)
+          this.now_weather = res.data.weather[0].main;
+          this.city = res.data.name;
+          this.temp = res.data.main.temp - 273.15;
+          this.weather_icon =
+            "~src/assets/img/" + res.data.weather[0].icon + ".png";
+        })
+        .catch(err => {
+          console.log("err : " + err);
+        });
+    }
   }
 };
-
-window.myWidgetParam ? window.myWidgetParam : (window.myWidgetParam = []);
-window.myWidgetParam.push({
-  id: 24,
-  cityid: "1841811",
-  appid: "843e94f1b4901a3e5dbad93a0befb2e5",
-  units: "metric",
-  containerid: "openweathermap-widget-24"
-});
-
-(function() {
-  var script = document.createElement("script");
-  script.async = true;
-  script.charset = "utf-8";
-  script.src =
-    "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(script, s);
-})();
 </script>
 
 <style scoped>
