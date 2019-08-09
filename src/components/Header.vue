@@ -17,7 +17,7 @@
       </div>
 
       <!-- Spacing Logo and Menus -->
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-toolbar-items class="hidden-sm-and-down">
         <!-- Bookmark Button -->
@@ -57,7 +57,9 @@
           <v-card>
             <v-card-title>
               <span>Change Language</span>
-              <v-spacer></v-spacer>
+
+              <v-spacer />
+
               <v-menu bottom left>
                 <template v-slot:activator="{ on }">
                   <v-btn icon v-on="on">
@@ -101,7 +103,7 @@
       </v-list>
 
       <v-list class="pt-0" dense>
-        <v-divider></v-divider>
+        <v-divider />
 
         <!-- Bookmark Button -->
         <v-list-tile>
@@ -163,8 +165,8 @@
             <v-layout wrap>
               <v-flex xs12>
                 <v-text-field
-                  label="Email"
                   v-model="email"
+                  label="Email"
                   color="#00adb5"
                   required
                 ></v-text-field>
@@ -172,8 +174,8 @@
 
               <v-flex xs12>
                 <v-text-field
-                  label="Password"
                   v-model="password"
+                  label="Password"
                   type="password"
                   color="#00adb5"
                   required
@@ -330,7 +332,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #blog_name {
   font-family: "Russo One", sans-serif;
   font-size: 20px;

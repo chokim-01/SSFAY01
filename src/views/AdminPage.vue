@@ -21,7 +21,8 @@
             <v-card flat>
               <!-- search-bar -->
               <v-card-title>
-                <v-spacer></v-spacer>
+                <v-spacer />
+
                 <v-text-field
                   v-model="search_user"
                   append-icon="search"
@@ -100,9 +101,9 @@
                   v-model="search_portfolio"
                   append-icon="search"
                   label="Search"
+                  color="#00adb5"
                   single-line
                   hide-details
-                  color="#00adb5"
                 ></v-text-field>
               </v-card-title>
 
@@ -208,7 +209,8 @@
               <v-card-text>
                 <!-- search-bar -->
                 <v-card-title>
-                  <v-spacer></v-spacer>
+                  <v-spacer />
+
                   <v-text-field
                     v-model="search_log"
                     append-icon="search"

@@ -18,8 +18,6 @@ self.addEventListener("push", function(event) {
 });
 
 self.addEventListener("notificationclick", function(event) {
-  console.log(event.notification);
   event.notification.close();
-  //event.waitUntil(clients.openWindow(event.notification.data));
   event.waitUntil(clients.openWindow("https://chokim159.pythonanywhere.com/"));
 });

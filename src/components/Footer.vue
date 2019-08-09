@@ -7,7 +7,7 @@
           <div id="openweathermap-widget-24"></div>
         </div>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
 
         <!-- contact -->
         <div id="footer-contact">

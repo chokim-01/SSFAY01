@@ -1,7 +1,7 @@
 <template>
   <v-card
-    id="post_card"
     class="mx-auto"
+    id="post_card"
     :to="{
       name: `postdetail`,
       params: { post: { num, title, body, created_at, author } }
@@ -9,15 +9,15 @@
     hover
   >
     <!-- Post title -->
-    <v-card-title id="post_title" class="pb-1 mt-2">
+    <v-card-title class="pb-1 mt-2" id="post_title">
       <h3 class="font-weight-light mt-3">{{ title }}</h3>
     </v-card-title>
 
     <!-- Post body, author, created time -->
     <v-card-text class="headline mb-4">
-      <p id="post_contents" class="mb-1 font-weight-light">{{ body }}</p>
-      <p id="post_author" class="mb-0 font-weight-light">{{ author }}</p>
-      <div id="post_date" class="color-666 caption">{{ created_at }}</div>
+      <p class="mb-1 font-weight-light" id="post_contents">{{ body }}</p>
+      <p class="mb-0 font-weight-light" id="post_author">{{ author }}</p>
+      <div class="color-666 caption" id="post_date">{{ created_at }}</div>
     </v-card-text>
   </v-card>
 </template>

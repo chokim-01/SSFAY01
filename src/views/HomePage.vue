@@ -118,17 +118,19 @@
               <div
                 class="text-xs-center"
                 v-for="item in members"
-                :key="item.name_en"
                 v-animate="{ value: 'fadeIn', delay: 300 }"
+                :key="item.name_en"
               >
                 <p id="name_en">{{ item.name_en }}</p>
+
                 <v-btn class="mx-4 mb-3" :href="item.github" icon>
                   <v-icon id="contact_icon">fa-github</v-icon>
                 </v-btn>
+
                 <v-btn class="mx-4 mb-3" :href="item.email" icon>
                   <v-icon id="contact_icon">fa-envelope-open</v-icon>
                 </v-btn>
-                <v-divider></v-divider>
+                <v-divider />
               </div>
             </v-flex>
           </v-layout>

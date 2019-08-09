@@ -11,8 +11,8 @@
           <v-layout wrap>
             <v-flex xs12>
               <v-text-field
-                label="Email"
                 v-model="email"
+                label="Email"
                 color="#00adb5"
                 required
               >

@@ -69,6 +69,7 @@
   </div>
 
 </body>
+
 <script>
 //notification request
 Notification.requestPermission();
@@ -76,9 +77,7 @@ Notification.requestPermission();
 //set service worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-
       navigator.serviceWorker.register('./sw-10.js');
-
     })
   }
 

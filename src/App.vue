@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-app dark>
-      <Header> </Header>
+      <Header />
+
       <v-content>
         <router-view />
       </v-content>
@@ -9,11 +10,11 @@
       <!-- Buttom to Top Button -->
       <back-to-top bottom="90px" right="20px">
         <button type="button" class="btn btn-info btn-to-top">
-          <i class="fa fa-chevron-up"></i>
+          <i class="fa fa-chevron-up" />
         </button>
       </back-to-top>
 
-      <Footer v-if="this.$route.path != '/'"> </Footer>
+      <Footer v-if="this.$route.path != '/'" />
     </v-app>
   </div>
 </template>

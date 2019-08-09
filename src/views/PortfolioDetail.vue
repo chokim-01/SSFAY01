@@ -49,6 +49,7 @@
               box
             ></v-text-field>
           </v-flex>
+
           <markdown-editor
             v-model="portfolio.body"
             ref="markdownEditor"
@@ -58,10 +59,10 @@
         <!-- Edit and Delte button -->
         <template v-if="authCheck">
           <div class="editBtn">
-            <v-btn depressed color="#00adb5" @click="updatePortfolio">
+            <v-btn color="#00adb5" @click="updatePortfolio" depressed>
               수정
             </v-btn>
-            <v-btn depressed color="error" @click="deletePortfolio">
+            <v-btn color="error" @click="deletePortfolio" depressed>
               삭제
             </v-btn>
           </div>

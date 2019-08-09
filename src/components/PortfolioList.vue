@@ -43,13 +43,13 @@
 
     <!-- LoadMore and Wirte Portfolio Button -->
     <v-flex v-if="loadMore" xs12 text-xs-center round my-5>
-      <v-btn depressed id="highlight-backColor" v-on:click="loadMorePortfolios">
+      <v-btn id="highlight-backColor" v-on:click="loadMorePortfolios" depressed>
         <v-icon size="25" class="mr-2">fa-plus</v-icon>
         <span> 더 보기 </span>
       </v-btn>
 
       <template v-if="chkAuth">
-        <v-btn depressed id="highlight-backColor" to="/portfolioWrite">
+        <v-btn id="highlight-backColor" to="/portfolioWrite" depressed>
           <v-icon class="mr-2">fa-edit</v-icon>
           <span>글쓰기</span>
         </v-btn>

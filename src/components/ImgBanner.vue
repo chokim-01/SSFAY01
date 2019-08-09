@@ -35,8 +35,8 @@
 
             <!-- Select Album Image -->
             <v-select
-              color="#00adb5"
               :items="albumImgs"
+              color="#00adb5"
               label="Select Image"
               item-text="title"
               item-value="link"
@@ -50,11 +50,11 @@
           <v-card-actions>
             <v-btn flat @click="dialog = false">Close</v-btn>
 
-            <v-spacer></v-spacer>
+            <v-spacer />
 
             <v-btn flat @click="RandomImg">Random Img</v-btn>
 
-            <v-spacer></v-spacer>
+            <v-spacer />
 
             <v-btn flat @click="ChangeImg">Save</v-btn>
           </v-card-actions>
@@ -71,11 +71,11 @@
         </v-card-title>
 
         <!-- Imgur components -->
-        <Imgur></Imgur>
+        <Imgur />
 
         <v-card-actions>
-          <v-btn flat @click="uploadBannerDialog = false">Close</v-btn>
-          <v-btn flat @click="Upload()">Upload</v-btn>
+          <v-btn @click="uploadBannerDialog = false" flat>Close</v-btn>
+          <v-btn @click="Upload()" flat>Upload</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

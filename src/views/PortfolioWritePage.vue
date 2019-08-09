@@ -76,6 +76,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import "~simplemde/dist/simplemde.min.css";
 </style>

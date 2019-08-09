@@ -43,8 +43,8 @@
         <template v-else>
           <v-flex>
             <v-text-field
-              color="#00adb5"
               v-model="post.title"
+              color="#00adb5"
               label="Title"
               box
             ></v-text-field>
@@ -58,22 +58,22 @@
         <!-- Edit and Delte button -->
         <template v-if="authCheck">
           <div class="editBtn">
-            <v-btn color="#00adb5" @click="updatePost" depressed>
+            <v-btn @click="updatePost" color="#00adb5" depressed>
               수정
             </v-btn>
-            <v-btn color="error" @click="deletePost" depressed>
+            <v-btn @click="deletePost" color="error" depressed>
               삭제
             </v-btn>
           </div>
         </template>
-        <v-btn @click="vb">버튼</v-btn>
+
         <!-- Post Comments -->
         <div class="comments">
           <VueDisqus
-            shortname="webmobile-team10"
             :url="this.$store.state.DISQUS_URL + '/post' + post.num"
             :identifier="'post' + post.num"
             v-on:new-comment="newComment"
+            shortname="webmobile-team10"
           ></VueDisqus>
         </div>
       </v-container>

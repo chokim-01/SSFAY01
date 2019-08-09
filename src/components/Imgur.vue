@@ -2,8 +2,8 @@
   <v-content>
     <v-container fluid>
       <v-flex
-        xs12
         class="text-xs-center text-sm-center text-md-center text-lg-center"
+        xs12
       >
         <!-- Show image -->
         <div
@@ -13,18 +13,18 @@
         ></div>
 
         <v-text-field
-          label="Thumbnail Image"
           @click="selectImg"
+          label="Thumbnail Image"
           v-model="imageName"
           prepend-icon="attach_file"
         ></v-text-field>
 
         <input
+          @change="selectedImg"
           type="file"
           style="display: none"
           ref="image"
           accept="image/*"
-          @change="selectedImg"
         />
       </v-flex>
     </v-container>

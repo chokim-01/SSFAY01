@@ -171,12 +171,13 @@ def comment_push():
     cursor = conn.db().cursor()
     cursor.execute("select devicetoken from devicetokens")
     push_tokens = cursor.fetchall()
+
     tokens = []
     for i in range(len(push_tokens)):
         tokens.append(push_tokens[i]["devicetoken"])
 
     result = push_service.notify_multiple_devices(registration_ids=tokens, message_title=title, message_body=message, content_available=True)
-    print(result)
+
     return ""
 
 
@@ -192,11 +193,12 @@ def post_push():
     cursor.execute("select devicetoken from devicetokens where uauth = 2")
     push_tokens = cursor.fetchall()
     tokens = []
+
     for i in range(len(push_tokens)):
         tokens.append(push_tokens[i]["devicetoken"])
 
     result = push_service.notify_multiple_devices(registration_ids=tokens, message_title=title, message_body=message, content_available=True)
-    print(result)
+
     return ""
 
 
@@ -405,7 +407,7 @@ def add_devicetoken():
     cursor.execute(sql, (umail, devicetoken,uauth))
     db.commit()
 
-    return jsonify({"msg" : "전송!"})
+    return ""
 
 
 # Insert portfolios
