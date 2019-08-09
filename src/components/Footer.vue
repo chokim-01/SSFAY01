@@ -1,17 +1,17 @@
 <template>
   <v-footer dark height="auto">
     <v-card class="grey lighten-3 flex" flat tile>
-      <v-card-title id="footer-item" py0>
+      <v-card-title id="footer-item">
         <!-- weather -->
-        <div>
-          <v-card id="weather">
+        <div id="weather">
+          <v-card light flat class="grey lighten-3">
             <v-layout>
-              <v-flex xs5>
+              <v-flex xs6class="align-center">
                 <img id="weather_icon_id" :src="weather_icon" />
               </v-flex>
-              <v-flex xs7>
-                <v-card-title primary-title>
-                  <div>
+              <v-flex xs6>
+                <v-card-title primary-title text-xs-right>
+                  <div class="text-xs-right">
                     <div class="headline">{{ temp }}°C</div>
                     <div>{{ city }}</div>
                     <div>{{ now_weather }}</div>
