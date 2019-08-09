@@ -404,7 +404,11 @@ def add_devicetoken():
     db = conn.db()
     cursor = db.cursor()
     sql = "insert into devicetokens (num, umail, devicetoken, uauth) values(0, %s, %s, %s)"
-    cursor.execute(sql, (umail, devicetoken,uauth))
+
+    try:
+        cursor.execute(sql, (umail, devicetoken,uauth))
+    except pymysql.err.IntegrityError as e:
+        return ""
     db.commit()
 
     return ""
