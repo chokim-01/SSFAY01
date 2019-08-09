@@ -3,19 +3,18 @@
     <v-card class="grey lighten-3 flex" flat tile>
       <v-card-title id="footer-item" py0>
         <!-- weather -->
-        <div id="weather">
-          <v-card>
+        <div>
+          <v-card id="weather">
             <v-layout>
               <v-flex xs5>
-                {{ weather_icon }}
-                <img :src="weather_icon"/>
+                <img id="weather_icon_id" :src="weather_icon" />
               </v-flex>
               <v-flex xs7>
                 <v-card-title primary-title>
                   <div>
-                    <div class="headline">{{ city }}</div>
+                    <div class="headline">{{ temp }}°C</div>
+                    <div>{{ city }}</div>
                     <div>{{ now_weather }}</div>
-                    <div>{{ temp }}°C</div>
                   </div>
                 </v-card-title>
               </v-flex>
@@ -78,6 +77,9 @@ export default {
       weather_icon: ""
     };
   },
+  computed() {
+    this.showPosition();
+  },
   mounted() {
     this.getLocation();
   },
@@ -103,24 +105,24 @@ export default {
           lon: this.longitude,
           lat: this.latitude
         }
-      })
-        .then(res => {
-          console.log(res)
-          this.now_weather = res.data.weather[0].main;
-          this.city = res.data.name;
-          this.temp = res.data.main.temp - 273.15;
-          this.weather_icon =
-            "~src/assets/img/" + res.data.weather[0].icon + ".png";
-        })
-        .catch(err => {
-          console.log("err : " + err);
-        });
+      }).then(res => {
+        this.now_weather = res.data.weather[0].main;
+        this.city = res.data.name;
+        this.temp = res.data.main.temp - 273.15;
+        this.weather_icon = require("../assets/img/weather/" +
+          res.data.weather[0].icon +
+          ".png");
+      });
     }
   }
 };
 </script>
 
 <style scoped>
+#weather_icon_id {
+  width: 100%;
+}
+
 #footer-contact {
   margin: 30px;
 }
