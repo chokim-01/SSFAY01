@@ -69,3 +69,7 @@ insert into portfolios (num, author, title, body, img, created_at) values(0, "de
 insert into portfolios (num, author, title, body, img, created_at) values(0, "dev4@dev.com", "test4", "testset4", "https://source.unsplash.com/random", timestamp(now()));
 insert into portfolios (num, author, title, body, img, created_at) values(0, "dev5@dev.com", "test5", "testset5", "https://source.unsplash.com/random", timestamp(now()));
 select * from users;
+
+create event if not exists delete_devicetokens
+ON SCHEDULE EVERY 1 DAY STARTS current_timestamp()
+do delete from databasename.devicetokens where date(ts) <= date(subdate(now(),interval 1 DAY));
