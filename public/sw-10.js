@@ -29,11 +29,13 @@ self.addEventListener("fetch", event => {
   if (request.method == "POST") {
     return;
   }
-
   //Tell the browser to wait for newtwork request and respond with below
   event.respondWith(
     caches.match(request).then(response => {
       response;
+      if (response) {
+        return response;
+      }
 
       return fetch(request).then(response => {
         var responseToCache = response.clone();
