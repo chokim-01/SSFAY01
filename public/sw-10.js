@@ -29,7 +29,6 @@ self.addEventListener("fetch", event => {
   if (request.method == "POST") {
     return;
   }
-
   //Tell the browser to wait for newtwork request and respond with below
   event.respondWith(
     caches.match(request).then(response => {
