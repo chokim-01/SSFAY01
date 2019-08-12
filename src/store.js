@@ -40,6 +40,7 @@ export default new Vuex.Store({
       localStorage.refreshToken = userInfo.refreshToken;
       localStorage.umail = userInfo.umail;
       localStorage.uauth = userInfo.uauth;
+      localStorage.setupTime = new Date().getTime();
     },
     logout({ commit }) {
       commit("logout");
@@ -47,6 +48,7 @@ export default new Vuex.Store({
       localStorage.refreshToken = "";
       localStorage.umail = "";
       localStorage.uauth = 0;
+      localStorage.setupTime = 0;
     }
   }
 });
