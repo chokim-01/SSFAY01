@@ -33,6 +33,12 @@ export default {
   store
 };
 
+// localStorage clear 8 hours
+setInterval(function() {
+  var time = new Date().getTime();
+  if (time > localStorage.setupTime + 8 * 60 * 60 * 1000) localStorage.clear();
+}, 30 * 60 * 1000);
+
 // Alert Chrome Optimization
 const { detect } = require("detect-browser");
 const browser = detect();
