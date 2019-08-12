@@ -144,7 +144,7 @@ export default {
     pushFormData(title) {
       var form = new FormData();
       form.append("title", "Comment가 등록되었습니다.");
-      form.append("message", "Portfolio : " + title);
+      form.append("message", "Post Title : " + title);
 
       return form;
     },

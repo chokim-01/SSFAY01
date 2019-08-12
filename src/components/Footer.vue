@@ -96,7 +96,7 @@ export default {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
       var apiKey = "843e94f1b4901a3e5dbad93a0befb2e5";
-      const apiURL = "http://api.openweathermap.org/data/2.5/weather";
+      const apiURL = "https://api.openweathermap.org/data/2.5/weather";
       this.$http({
         method: "GET",
         url: apiURL,
