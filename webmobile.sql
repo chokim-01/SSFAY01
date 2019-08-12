@@ -31,8 +31,8 @@ create table portfolios (
 drop table if exists devicetokens;
 create table devicetokens (
 	num int not null auto_increment primary key,
-    umail varchar(30) not null,
-	devicetoken varchar(155) not null unique,
+    umail varchar(30) not null unique,
+	devicetoken varchar(155) not null,
     uauth int not null
 );
 
