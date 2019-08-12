@@ -400,15 +400,22 @@ def add_devicetoken():
     devicetoken = request.form.get("devicetoken")
     umail = request.form.get("umail")
     uauth = request.form.get("uauth")
-
+    # Search
     db = conn.db()
     cursor = db.cursor()
-    sql = "insert into devicetokens (num, umail, devicetoken, uauth) values(0, %s, %s, %s)"
+    sql = "select * from devicetokens where umail = %s"
+    cursor.execute(sql, umail)
+    result = cursor.fetchone()
 
-    try:
-        cursor.execute(sql, (umail, devicetoken,uauth))
-    except pymysql.err.IntegrityError as e:
-        return ""
+    # If exist update
+    if result:
+        sql = "update devicetokens set devicetoken = %s where umail = %s"
+        cursor.execute(sql, (devicetoken, umail))
+    # If not exist insert
+    else:
+        sql = "insert into devicetokens (num, umail, devicetoken, uauth) values(0, %s, %s, %s)"
+        cursor.execute(sql, (umail, devicetoken, uauth))
+
     db.commit()
 
     return ""
