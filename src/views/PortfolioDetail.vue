@@ -73,6 +73,7 @@
           <VueDisqus
             shortname="webmobile-team10"
             :url="this.$store.state.DISQUS_URL + '/portfolio' + portfolio.num"
+            v-on:new-comment="newComment"
             :identifier="'portfolio' + portfolio.num"
           ></VueDisqus>
         </div>
@@ -142,7 +143,7 @@ export default {
     pushFormData(title) {
       var form = new FormData();
       form.append("title", "Comment가 등록되었습니다.");
-      form.append("message", "Portfolio : " + title);
+      form.append("message", "Portfolio Title : " + title);
 
       return form;
     },
