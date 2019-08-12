@@ -349,6 +349,7 @@ export default {
     deletePortfolio(item) {
       var form = new FormData();
       form.append("num", item.num);
+      form.append("loginId", this.$store.state.umail);
 
       const index = this.portfolios.indexOf(item);
       if (
@@ -361,6 +362,7 @@ export default {
     deletePost(item) {
       var form = new FormData();
       form.append("num", item.num);
+      form.append("loginId", this.$store.state.umail);
 
       const index = this.posts.indexOf(item);
       if (

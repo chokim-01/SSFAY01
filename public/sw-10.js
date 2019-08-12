@@ -34,6 +34,14 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(request).then(response => {
       response;
+      if (response) {
+        if (
+          response.url.indexOf("get/posts") == -1 &&
+          response.url.indexOf("get/portfolios")
+        ) {
+          return response;
+        }
+      }
 
       return fetch(request).then(response => {
         var responseToCache = response.clone();
