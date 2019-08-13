@@ -266,7 +266,7 @@ export default {
       search_post: "",
       search_log: "",
       user_headers: [
-        { text: "Email", sortable: false, value: "uemail" },
+        { text: "Email", sortable: false, value: "umail" },
         { text: "PassWord", sortable: false, value: "upasswd" },
         { text: "Grade", value: "uauth" },
         { text: "Actions", sortable: false, value: "num" }
