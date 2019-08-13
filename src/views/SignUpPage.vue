@@ -56,6 +56,7 @@ export default {
   methods: {
     async signUp() {
       if (this.email != "" && this.password != "") {
+        var self = this;
         var userForm = new FormData();
         userForm.append("umail", this.email);
         userForm.append("upasswd", this.password);
@@ -63,6 +64,9 @@ export default {
           .post("/api/add/user", userForm)
           .then(res => {
             alert(res.data.msg);
+            if (res.data.msg == "가입완료!") {
+              self.$router.push("/");
+            }
           });
       } else {
         alert("입력정보를 확인하세요.");
