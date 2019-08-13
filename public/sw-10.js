@@ -33,19 +33,21 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(request).then(response => {
       response;
-      if (response) {
-        return response;
-      }
+      var before_response = response;
 
-      return fetch(request).then(response => {
-        var responseToCache = response.clone();
+      return fetch(request)
+        .then(response => {
+          var responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(request, responseToCache);
+          });
+          return response;
+        })
+        .catch(err => {
+          err;
 
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(request, responseToCache);
+          return before_response;
         });
-
-        return response;
-      });
     })
   );
 });
