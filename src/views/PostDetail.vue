@@ -1,62 +1,79 @@
 <template>
-  <div>
+  <div id="detail">
     <v-form>
-      <v-container my-5>
+      <!-- random img -->
+      <div class="mt-5">
+        <v-img :src="random_base_url" height="300px" />
+      </div>
+
+      <v-container mt-3>
         <template v-if="editflag">
           <!-- Post title -->
-          <v-layout justify-center>
-            <p class="posttitle">{{ post.title }}</p>
-          </v-layout>
-
-          <hr />
+          <div id="detail_title">
+            <h2>{{ post.title }}</h2>
+          </div>
 
           <!-- Post author -->
-          <v-layout justify-end>
-            <v-chip color="#00adb5" label>
-              <v-icon left>mdi-account-circle-outline</v-icon>
-              {{ post.author }}
-            </v-chip>
-          </v-layout>
+          <div class="mb-1">
+            {{ post.author }}
+            <template v-for="(grade, index) in grades">
+              <span
+                class="ml-2"
+                id="user_auth"
+                v-if="user_auth == index"
+                v-bind:key="grade"
+              >
+                {{ grade }}
+              </span>
+            </template>
+          </div>
 
           <!-- Post created time -->
-          <v-layout>
-            <v-chip color="grey" label text-color="white">
-              <v-icon left>label</v-icon>
-              {{ post.created_at }}
-            </v-chip>
-          </v-layout>
-        </template>
+          <div>
+            {{ post.created_at }}
+          </div>
 
-        <!-- Edit page If user click edit button -->
-        <template v-else>
-          <v-flex>
-            <v-text-field v-model="post.title" solo></v-text-field>
-          </v-flex>
-        </template>
-
-        <!-- Post body -->
-        <v-textarea
-          class="postcontext my-5"
-          v-model="post.body"
-          placeholder="내용"
-          :readonly="editflag"
-          rows="20"
-          solo
-          light
-        ></v-textarea>
-
-        <template v-if="authCheck">
-          <div class="editBtn">
-            <v-btn @click="updatePost">수정</v-btn>
-            <v-btn @click="deletePost">삭제</v-btn>
+          <!-- Post body readonly -->
+          <div class="postcontext my-5">
+            <vue-markdown>{{ post.body }}</vue-markdown>
           </div>
         </template>
+
+        <!-- Edit portfolio body -->
+        <template v-else>
+          <v-flex>
+            <v-text-field
+              v-model="post.title"
+              color="#00adb5"
+              label="Title"
+              box
+            ></v-text-field>
+          </v-flex>
+          <markdown-editor
+            v-model="post.body"
+            ref="markdownEditor"
+          ></markdown-editor>
+        </template>
+
+        <!-- Edit and Delte button -->
+        <template v-if="authCheck">
+          <div class="editBtn">
+            <v-btn @click="updatePost" color="#00adb5" depressed>
+              수정
+            </v-btn>
+            <v-btn @click="deletePost" color="error" depressed>
+              삭제
+            </v-btn>
+          </div>
+        </template>
+
+        <!-- Post Comments -->
         <div class="comments">
-          <!-- Post Comments -->
           <VueDisqus
-            shortname="webmobile-team10"
             :url="this.$store.state.DISQUS_URL + '/post' + post.num"
             :identifier="'post' + post.num"
+            v-on:new-comment="newComment"
+            shortname="webmobile-team10"
           ></VueDisqus>
         </div>
       </v-container>
@@ -65,14 +82,24 @@
 </template>
 
 <script>
+import markdownEditor from "vue-simplemde/src/markdown-editor";
+import VueMarkdown from "vue-markdown";
 import Server from "../services/Server.js";
 
 export default {
+  components: {
+    VueMarkdown,
+    markdownEditor
+  },
   data() {
     return {
       post: this.$route.params.post,
       editflag: true,
-      authCheck: false
+      authCheck: false,
+      random_base_url: "https://source.unsplash.com/random",
+      user_auth: "",
+      grades: ["🧑Guest", "👪Member", "🤴Admin"],
+      oncomment: ""
     };
   },
   created() {
@@ -84,6 +111,9 @@ export default {
         this.authCheck = true;
       }
     }
+  },
+  mounted() {
+    this.getUserAuth();
   },
   methods: {
     makeFormData() {
@@ -110,28 +140,27 @@ export default {
       Server(this.$store.state.SERVER_URL).post("/api/del/post", form);
       this.$router.push("/");
       alert("삭제 되었습니다.");
+    },
+    pushFormData(title) {
+      var form = new FormData();
+      form.append("title", "Comment가 등록되었습니다.");
+      form.append("message", "Post Title : " + title);
+
+      return form;
+    },
+    newComment() {
+      var form = this.pushFormData(this.post.title);
+      Server(this.$store.state.SERVER_URL).post("/api/comment/push", form);
+    },
+    async getUserAuth() {
+      var form = new FormData();
+      form.append("umail", this.post.author);
+      await Server(this.$store.state.SERVER_URL)
+        .post("/api/get/user_auth", form)
+        .then(res => {
+          this.user_auth = res.data[0].uauth;
+        });
     }
   }
 };
 </script>
-
-<style>
-.postcontext {
-  border: 2px solid white;
-  min-height: 500px;
-}
-
-.posttitle {
-  font-size: 3em;
-}
-
-hr {
-  border: dotted;
-  width: 40%;
-  margin: 0 auto;
-}
-
-.editBtn {
-  float: right;
-}
-</style>

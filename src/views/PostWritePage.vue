@@ -4,7 +4,12 @@
       <v-container my-5>
         <!-- Title Text field-->
         <v-flex>
-          <v-text-field v-model="title" label="제목" solo></v-text-field>
+          <v-text-field
+            v-model="title"
+            color="#00adb5"
+            label="Title"
+            box
+          ></v-text-field>
         </v-flex>
 
         <v-textarea
@@ -60,10 +65,20 @@ export default {
       form.append("body", this.content);
       return form;
     },
+    pushFormData(title) {
+      var form = new FormData();
+      form.append("title", "Post가 등록되었습니다.");
+      form.append("message", title);
+
+      return form;
+    },
     writePost() {
       if (this.chkNull()) {
         var form = this.makeFormData();
+        var postform = this.pushFormData(this.title);
+
         Server(this.$store.state.SERVER_URL).post("/api/add/post", form);
+        Server(this.$store.state.SERVER_URL).post("/api/post/push", postform);
         this.$router.push("/");
         alert("글을 작성했습니다.");
       }
@@ -72,6 +87,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import "~simplemde/dist/simplemde.min.css";
 </style>

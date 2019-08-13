@@ -21,7 +21,8 @@
             <v-card flat>
               <!-- search-bar -->
               <v-card-title>
-                <v-spacer></v-spacer>
+                <v-spacer />
+
                 <v-text-field
                   v-model="search_user"
                   append-icon="search"
@@ -100,9 +101,9 @@
                   v-model="search_portfolio"
                   append-icon="search"
                   label="Search"
+                  color="#00adb5"
                   single-line
                   hide-details
-                  color="#00adb5"
                 ></v-text-field>
               </v-card-title>
 
@@ -208,7 +209,8 @@
               <v-card-text>
                 <!-- search-bar -->
                 <v-card-title>
-                  <v-spacer></v-spacer>
+                  <v-spacer />
+
                   <v-text-field
                     v-model="search_log"
                     append-icon="search"
@@ -253,7 +255,7 @@
 </template>
 
 <script>
-import ImgBanner from "../components/ImgBanner";
+import ImgBanner from "../components/ImgBanner.vue";
 import Server from "../services/Server.js";
 
 export default {
@@ -264,7 +266,7 @@ export default {
       search_post: "",
       search_log: "",
       user_headers: [
-        { text: "Email", sortable: false, value: "uemail" },
+        { text: "Email", sortable: false, value: "umail" },
         { text: "PassWord", sortable: false, value: "upasswd" },
         { text: "Grade", value: "uauth" },
         { text: "Actions", sortable: false, value: "num" }
@@ -347,6 +349,7 @@ export default {
     deletePortfolio(item) {
       var form = new FormData();
       form.append("num", item.num);
+      form.append("loginId", this.$store.state.umail);
 
       const index = this.portfolios.indexOf(item);
       if (
@@ -359,6 +362,7 @@ export default {
     deletePost(item) {
       var form = new FormData();
       form.append("num", item.num);
+      form.append("loginId", this.$store.state.umail);
 
       const index = this.posts.indexOf(item);
       if (

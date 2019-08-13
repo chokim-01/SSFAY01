@@ -5,10 +5,10 @@
       <section class="page" id="bannerPage">
         <ImgBanner>
           <div id="imgBanner" slot="text" v-animate="{ value: 'flash' }">
-            <h1 id="bannerTxt" class="bannerLarge">
+            <h1 class="bannerLarge" id="bannerTxt">
               Keep Going
             </h1>
-            <div id="bannerTxt" class="bannerSmall">
+            <div class="bannerSmall" id="bannerTxt">
               <h1>Keep</h1>
               <h1>Going</h1>
             </div>
@@ -43,24 +43,24 @@
 
             <!-- content -->
             <v-carousel
+              id="about"
               hide-delimiters
               hide-controls
               vertical
               grid-list-md
               text-xs-center
-              id="about"
               v-animate="{ value: 'fadeInLeft', delay: 600 }"
             >
               <!-- Get member information -->
               <v-carousel-item v-for="(member, i) in members" :key="i">
                 <v-layout id="aboutMe" mx-2 row align-center>
                   <!-- Member Image -->
-                  <v-flex md6 id="about-img">
+                  <v-flex id="about-img" md6>
                     <v-img id="about-img2" v-bind:src="member.src" />
                   </v-flex>
 
                   <!-- Each information of Member -->
-                  <v-flex xs12 md6 id="about-text" text-xs-right>
+                  <v-flex id="about-text" xs12 md6 text-xs-right>
                     <h2
                       class="titles m_name font-weight-light"
                       id="highlight-fontColor"
@@ -118,17 +118,19 @@
               <div
                 class="text-xs-center"
                 v-for="item in members"
-                :key="item.name_en"
                 v-animate="{ value: 'fadeIn', delay: 300 }"
+                :key="item.name_en"
               >
                 <p id="name_en">{{ item.name_en }}</p>
+
                 <v-btn class="mx-4 mb-3" :href="item.github" icon>
                   <v-icon id="contact_icon">fa-github</v-icon>
                 </v-btn>
+
                 <v-btn class="mx-4 mb-3" :href="item.email" icon>
                   <v-icon id="contact_icon">fa-envelope-open</v-icon>
                 </v-btn>
-                <v-divider></v-divider>
+                <v-divider />
               </div>
             </v-flex>
           </v-layout>
@@ -139,10 +141,10 @@
 </template>
 
 <script>
-import ImgBanner from "../components/HomeImgBanner";
-import PortfolioList from "../components/PortfolioList";
-import PostList from "../components/PostList";
-import RepositoryList from "../components/RepositoryList";
+import ImgBanner from "../components/HomeImgBanner.vue";
+import PortfolioList from "../components/PortfolioList.vue";
+import PostList from "../components/PostList.vue";
+import RepositoryList from "../components/RepositoryList.vue";
 
 export default {
   name: "HomePage",

@@ -17,7 +17,7 @@
       </div>
 
       <!-- Spacing Logo and Menus -->
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-toolbar-items class="hidden-sm-and-down">
         <!-- Bookmark Button -->
@@ -35,6 +35,8 @@
         >
           {{ menu.title }}
         </v-btn>
+
+        <!-- Admin Menu -->
         <v-btn v-if="this.$store.state.uauth == 2" to="/Admin" flat router>
           Admin
         </v-btn>
@@ -55,7 +57,9 @@
           <v-card>
             <v-card-title>
               <span>Change Language</span>
-              <v-spacer></v-spacer>
+
+              <v-spacer />
+
               <v-menu bottom left>
                 <template v-slot:activator="{ on }">
                   <v-btn icon v-on="on">
@@ -99,7 +103,7 @@
       </v-list>
 
       <v-list class="pt-0" dense>
-        <v-divider></v-divider>
+        <v-divider />
 
         <!-- Bookmark Button -->
         <v-list-tile>
@@ -108,6 +112,7 @@
           </v-btn>
         </v-list-tile>
 
+        <!-- Menu -->
         <v-list-tile
           v-for="menu in menus"
           :key="menu.title"
@@ -119,7 +124,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <!-- Admin page -->
+        <!-- Admin Menu -->
         <v-list-tile v-if="this.$store.state.uauth == 2" to="/Admin">
           <v-list-tile-title>Admin</v-list-tile-title>
         </v-list-tile>
@@ -160,8 +165,8 @@
             <v-layout wrap>
               <v-flex xs12>
                 <v-text-field
-                  label="Email"
                   v-model="email"
+                  label="Email"
                   color="#00adb5"
                   required
                 ></v-text-field>
@@ -169,8 +174,8 @@
 
               <v-flex xs12>
                 <v-text-field
-                  label="Password"
                   v-model="password"
+                  label="Password"
                   type="password"
                   color="#00adb5"
                   required
@@ -228,33 +233,40 @@
 </template>
 
 <script>
-import FirebaseService from "@/services/FirebaseService";
+import FirebaseService from "@/services/FirebaseService.js";
 import Server from "@/services/Server.js";
 
 export default {
   name: "Header",
-  data: () => ({
-    menus: [
-      {
-        title: "Portfolio",
-        route: "/Portfolio"
-      },
-      {
-        title: "Post",
-        route: "/Post"
-      }
-    ],
-    language: "KOR",
-    email: "",
-    password: "",
-    dialog: false,
-    dialog_login: false,
-    drawer: null,
-    firebaseLogin: false
-  }),
+  data() {
+    return {
+      menus: [
+        {
+          title: "Portfolio",
+          route: "/Portfolio"
+        },
+        {
+          title: "Post",
+          route: "/Post"
+        }
+      ],
+      language: "KOR",
+      email: "",
+      password: "",
+      dialog: false,
+      dialog_login: false,
+      drawer: null,
+      firebaseLogin: false
+    };
+  },
   methods: {
     menuItems() {
       return this.menu;
+    },
+    postToken() {
+      if (this.$store.state.uauth >= 1) {
+        FirebaseService.GetToken();
+      }
     },
     async loginWithGoogle() {
       this.dialog_login = false;
@@ -268,6 +280,7 @@ export default {
           uauth: 0
         });
       });
+      this.postToken();
     },
     async loginWithFacebook() {
       this.dialog_login = false;
@@ -281,6 +294,7 @@ export default {
           uauth: 0
         });
       });
+      this.postToken();
     },
     async login() {
       var form = new FormData();
@@ -301,6 +315,7 @@ export default {
             alert(res.data.msg);
           }
         });
+      this.postToken();
     },
     async logout() {
       if (this.firebaseLogin == true) {
@@ -317,7 +332,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #blog_name {
   font-family: "Russo One", sans-serif;
   font-size: 20px;

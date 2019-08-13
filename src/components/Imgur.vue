@@ -2,25 +2,29 @@
   <v-content>
     <v-container fluid>
       <v-flex
-        xs12
         class="text-xs-center text-sm-center text-md-center text-lg-center"
+        xs12
       >
         <!-- Show image -->
-        <img :src="imageUrl" height="150" v-if="imageUrl" />
+        <div
+          id="show_image"
+          v-if="imageUrl"
+          :style="{ backgroundImage: 'url(' + imageUrl + ')' }"
+        ></div>
 
         <v-text-field
-          label="Thumbnail Image"
           @click="selectImg"
+          label="Thumbnail Image"
           v-model="imageName"
           prepend-icon="attach_file"
         ></v-text-field>
 
         <input
+          @change="selectedImg"
           type="file"
           style="display: none"
           ref="image"
           accept="image/*"
-          @change="selectedImg"
         />
       </v-flex>
     </v-container>
@@ -28,7 +32,7 @@
 </template>
 
 <script>
-import ImgurApi from "../services/ImgurApi";
+import ImgurApi from "../services/ImgurApi.js";
 import Server from "../services/Server.js";
 
 export default {
@@ -89,6 +93,13 @@ export default {
 
       return form;
     },
+    pushFormData(title) {
+      var form = new FormData();
+      form.append("title", "Portfolio가 등록되었습니다.");
+      form.append("message", title);
+
+      return form;
+    },
     async sendBanner() {
       const bannerID = "N9DRFuvC9ppf6r4";
       var form = this.makeFormData(bannerID);
@@ -106,6 +117,10 @@ export default {
         content,
         this.imageUrl
       );
+
+      var postform = this.pushFormData(title);
+
+      Server(this.$store.state.SERVER_URL).post("/api/post/push", postform);
       return Server(this.$store.state.SERVER_URL).post(
         "/api/add/portfolio",
         portfolioForm
@@ -136,3 +151,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#show_image {
+  height: 200px;
+  width: 100%;
+  background-size: contain;
+  background-position: center;
+}
+</style>

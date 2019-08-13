@@ -4,7 +4,12 @@
       <v-container my-5>
         <!-- Title Text field-->
         <v-flex>
-          <v-text-field v-model="title" label="제목" solo></v-text-field>
+          <v-text-field
+            v-model="title"
+            color="#00adb5"
+            label="Title"
+            box
+          ></v-text-field>
         </v-flex>
 
         <!-- Markdown Editor -->
@@ -18,8 +23,8 @@
 
         <!-- Write Portfolio Button -->
         <v-btn
-          id="highlight-backColor"
           class="right"
+          id="highlight-backColor"
           @click="writePortfolio"
           depressed
         >
@@ -32,7 +37,7 @@
 
 <script>
 import markdownEditor from "vue-simplemde/src/markdown-editor";
-import Imgur from "../components/Imgur";
+import Imgur from "../components/Imgur.vue";
 
 export default {
   components: {
@@ -70,6 +75,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import "~simplemde/dist/simplemde.min.css";
 </style>

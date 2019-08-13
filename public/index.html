@@ -9,19 +9,18 @@
   <link rel="icon" type="image/png" href="./img/icons/favicon.png" sizes="192x192">
   <title>ssafy</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Do+Hyeon|Press+Start+2P|Russo+One&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Nanum+Gothic|Do+Hyeon|Press+Start+2P|Russo+One&display=swap">
   <link rel="stylesheet" href="./css/common.css">
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144908263-1"></script>
+
   <script>
     window.dataLayer = window.dataLayer || [];
 
     function gtag() {
       dataLayer.push(arguments);
     }
-    gtag('js', new Date());
+    gtag("js", new Date());
 
-    gtag('config', 'UA-144908263-1');
+    gtag("config", "UA-144908263-1");
   </script>
 
   <script type="text/javascript">
@@ -41,14 +40,15 @@
       }
       // Opera
       else if (window.opera && window.print) {
-        var elem = document.createElement('a');
-        elem.setAttribute('href', url);
-        elem.setAttribute('title', title);
-        elem.setAttribute('rel', 'sidebar');
+        var elem = document.createElement("a");
+        elem.setAttribute("href", url);
+        elem.setAttribute("title", title);
+        elem.setAttribute("rel", "sidebar");
         elem.click();
       }
     }
   </script>
+
 </head>
 
 <body>
@@ -57,8 +57,8 @@
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
-        pageLanguage: 'ko'
-      }, 'google_translate_element');
+        pageLanguage: "ko"
+      }, "google_translate_element");
     }
   </script>
 
@@ -69,4 +69,18 @@
   </div>
 
 </body>
+
+<script>
+//notification request
+Notification.requestPermission();
+
+//set service worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('./sw-10.js');
+    })
+  }
+
+</script>
+
 </html>

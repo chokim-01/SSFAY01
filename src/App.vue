@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-app dark>
-      <Header> </Header>
+      <Header />
+
       <v-content>
         <router-view />
       </v-content>
@@ -9,19 +10,19 @@
       <!-- Buttom to Top Button -->
       <back-to-top bottom="90px" right="20px">
         <button type="button" class="btn btn-info btn-to-top">
-          <i class="fa fa-chevron-up"></i>
+          <i class="fa fa-chevron-up" />
         </button>
       </back-to-top>
 
-      <Footer v-if="this.$route.path != '/'"> </Footer>
+      <Footer v-if="this.$route.path != '/'" />
     </v-app>
   </div>
 </template>
 
 <script>
-import store from "./store";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import store from "./store.js";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
@@ -31,6 +32,12 @@ export default {
   },
   store
 };
+
+// localStorage clear 8 hours
+setInterval(function() {
+  var time = new Date().getTime();
+  if (time > localStorage.setupTime + 8 * 60 * 60 * 1000) localStorage.clear();
+}, 30 * 60 * 1000);
 
 // Alert Chrome Optimization
 const { detect } = require("detect-browser");

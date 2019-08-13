@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import ImgBanner from "../components/ImgBanner";
-import PostList from "../components/PostList";
+import ImgBanner from "../components/ImgBanner.vue";
+import PostList from "../components/PostList.vue";
 
 export default {
   name: "PostPage",

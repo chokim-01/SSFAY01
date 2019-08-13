@@ -4,9 +4,11 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from pyfcm import FCMNotification
 import os, pymysql, hashlib, sys, time, threading
 import conn.conn as conn
 
+push_service = FCMNotification(api_key="AAAAg4OB7Yk:APA91bFPb7kkVePgoWGDOfauKSBw45b5GwlV1qbo9XgLISbBRFI-t_LeZ-Pnu2q34vTMgtyWwFnBomUsoku_HA2Y5Kw0floMAtd4KzJiCPd7oP-3VpmYF5X9wg20vOF7lcTbvAHhBM94")
 # log file path
 LOG_PATH = "./log/log"
 
@@ -84,6 +86,7 @@ def set_response_headers(res):
     res.headers["Expires"] = "0"
     return res
 
+
 # Get client user ip
 def get_ip_addr():
     return request.environ.get("HTTP_X_REAL_IP", request.remote_addr)
@@ -123,6 +126,7 @@ def page_not_found(e):
 #######################################################################
 
 
+
 # Get posts data
 @app.route("/api/get/posts")
 def get_posts():
@@ -141,6 +145,61 @@ def get_portfolios():
     result = cursor.fetchall()
 
     return jsonify(result)
+
+
+# Get user auth
+@app.route("/api/get/user_auth", methods=["POST"])
+def get_user_auth():
+    umail = request.form.get("umail")
+
+    cursor = conn.db().cursor()
+    sql = "select uauth from users where umail = %s"
+    cursor.execute(sql, umail)
+    result = cursor.fetchall()
+
+    return jsonify(result)
+
+
+# Post user post write push
+@app.route("/api/post/push", methods=["POST"])
+def comment_push():
+    # title : post or portfolio
+    # message : title of post
+    title = request.form.get("title")
+    message = request.form.get("message")
+
+    cursor = conn.db().cursor()
+    cursor.execute("select devicetoken from devicetokens")
+    push_tokens = cursor.fetchall()
+
+    tokens = []
+    for i in range(len(push_tokens)):
+        tokens.append(push_tokens[i]["devicetoken"])
+
+    result = push_service.notify_multiple_devices(registration_ids=tokens, message_title=title, message_body=message, content_available=True)
+
+    return ""
+
+
+# Post user comment write push
+@app.route("/api/comment/push", methods=["POST"])
+def post_push():
+    # title : comment
+    # message : Portfolio/post title
+    title = request.form.get("title")
+    message = request.form.get("message")
+
+    cursor = conn.db().cursor()
+    cursor.execute("select devicetoken from devicetokens where uauth = 2")
+    push_tokens = cursor.fetchall()
+    tokens = []
+
+    for i in range(len(push_tokens)):
+        tokens.append(push_tokens[i]["devicetoken"])
+
+    result = push_service.notify_multiple_devices(registration_ids=tokens, message_title=title, message_body=message, content_available=True)
+
+    return ""
 
 
 # Get one user using login
@@ -217,6 +276,7 @@ def get_logs():
     lock.release()
 
     return jsonify(logs)
+
 
 #######################################################################
 ########################## EDIT DATA SECTION ##########################
@@ -332,6 +392,33 @@ def delte_user():
 #######################################################################
 ######################### INSERT DATA SECITON #########################
 #######################################################################
+
+
+# Insert devicetoken
+@app.route("/api/add/devicetoken", methods=["POST"])
+def add_devicetoken():
+    devicetoken = request.form.get("devicetoken")
+    umail = request.form.get("umail")
+    uauth = request.form.get("uauth")
+    # Search
+    db = conn.db()
+    cursor = db.cursor()
+    sql = "select * from devicetokens where umail = %s"
+    cursor.execute(sql, umail)
+    result = cursor.fetchone()
+
+    # If exist update
+    if result:
+        sql = "update devicetokens set devicetoken = %s where umail = %s"
+        cursor.execute(sql, (devicetoken, umail))
+    # If not exist insert
+    else:
+        sql = "insert into devicetokens (num, umail, devicetoken, uauth) values(0, %s, %s, %s)"
+        cursor.execute(sql, (umail, devicetoken, uauth))
+
+    db.commit()
+
+    return ""
 
 
 # Insert portfolios

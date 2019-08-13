@@ -11,8 +11,8 @@
           <v-layout wrap>
             <v-flex xs12>
               <v-text-field
-                label="Email"
                 v-model="email"
+                label="Email"
                 color="#00adb5"
                 required
               >
@@ -21,8 +21,8 @@
 
             <v-flex xs12>
               <v-text-field
-                label="Password"
                 v-model="password"
+                label="Password"
                 type="password"
                 color="#00adb5"
                 required
@@ -47,7 +47,7 @@ import Server from "../services/Server.js";
 
 export default {
   name: "signUpPage",
-  data: function() {
+  data() {
     return {
       email: "",
       password: ""
@@ -56,6 +56,7 @@ export default {
   methods: {
     async signUp() {
       if (this.email != "" && this.password != "") {
+        var self = this;
         var userForm = new FormData();
         userForm.append("umail", this.email);
         userForm.append("upasswd", this.password);
@@ -63,6 +64,9 @@ export default {
           .post("/api/add/user", userForm)
           .then(res => {
             alert(res.data.msg);
+            if (res.data.msg == "가입완료!") {
+              self.$router.push("/");
+            }
           });
       } else {
         alert("입력정보를 확인하세요.");

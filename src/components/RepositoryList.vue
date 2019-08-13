@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import Repository from "@/components/Repository";
-import GitlabService from "@/services/GitlabService";
+import Repository from "@/components/Repository.vue";
+import GitlabService from "@/services/GitlabService.js";
 import {
   Hooper,
   Slide,

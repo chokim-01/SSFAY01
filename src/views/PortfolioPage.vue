@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import ImgBanner from "../components/ImgBanner";
-import PortfolioList from "../components/PortfolioList";
+import ImgBanner from "../components/ImgBanner.vue";
+import PortfolioList from "../components/PortfolioList.vue";
 
 export default {
   name: "PortfolioPage",
